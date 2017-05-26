@@ -1,0 +1,7 @@
+# Comandos para não enviar arquivos binários para o github
+# Ignora tudo
+*
+# Não ignora arquivos com extensão
+!*.*
+# Não ignora diretórios
+!*/
