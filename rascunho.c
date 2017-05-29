@@ -43,7 +43,7 @@ char
   *p;
 FILE *arquivo;
 
-double complex
+double _Complex
   g,
   Yn[MAX_NOS+1][MAX_NOS+2];
 
@@ -52,7 +52,7 @@ double complex
 int resolversistema(void)
 {
   int i,j,l, a;
-  double complex t, p;
+  double _Complex t, p;
 
   for (i=1; i<=neq; i++) {
     t=0.0 +0.0*I;
@@ -136,18 +136,18 @@ void operacional (int na,int nb,int nc,int nd) {
   somar(C,nc,nd);
 }
 
-void transcondutancia(double complex gm,int n1,int n2,int n3,int n4) {
+void transcondutancia(double _Complex gm,int n1,int n2,int n3,int n4) {
   Yn[L[n1]][C[n3]]+=gm;
   Yn[L[n2]][C[n4]]+=gm;
   Yn[L[n1]][C[n4]]-=gm;
   Yn[L[n2]][C[n3]]-=gm;
 }
 
-void condutancia(double complex g, int a, int b){
+void condutancia(double _Complex g, int a, int b){
   transcondutancia(g,a,b,a,b);
 }
 
-void corrente(double complex i, int a, int b) {
+void corrente(double _Complex i, int a, int b) {
   Yn[L[a]][neq+1]-=i;
   Yn[L[b]][neq+1]+=i;
 }
@@ -298,8 +298,8 @@ int main(void)
   for (i=1; i<=ne; i++) {
     tipo=netlist[i].nome[0];
     if (tipo=='R') condutancia(1/netlist[i].valor,netlist[i].a,netlist[i].b);
-    else if (tipo=='L') condutancia((-1/netlist[i].valor)*I,netlist[i].a,netlist[i].b);
-    else if (tipo=='C') condutancia(netlist[i].valor*I,netlist[i].a,netlist[i].b);
+    else if (tipo=='L') condutancia((-1/netlist[i].valor)*_Complex_I,netlist[i].a,netlist[i].b);
+    else if (tipo=='C') condutancia(netlist[i].valor*_Complex_I,netlist[i].a,netlist[i].b);
     else if (tipo=='G') transcondutancia(netlist[i].valor,netlist[i].a,netlist[i].b,netlist[i].c,netlist[i].d);
     else if (tipo=='I') corrente(netlist[i].valor,netlist[i].a,netlist[i].b);
     else if (tipo=='V') {
