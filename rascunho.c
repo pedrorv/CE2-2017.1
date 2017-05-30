@@ -11,6 +11,7 @@
 #define MAX_ELEM 50
 #define MAX_NOS 50
 #define TOLG 1e-9
+#define GMAX 1000000
 #define DEBUG
 
 typedef struct elemento { /* Elemento do netlist */
@@ -190,8 +191,8 @@ int main(void)
       netlist[ne].b=numero(nb);
     }
     if (tipo=='I' || tipo=='V') {
-      sscanf(p,"%10s%10s%lg",na,nb,&netlist[ne].valor);
-      printf("%s %s %s %g\n",netlist[ne].nome,na,nb,netlist[ne].valor);
+      sscanf(p,"%10s%10s%lg%lg%lg",na,nb,&netlist[ne].modulo,&netlist[ne].fase,&netlist[ne].valor);
+      printf("%s %s %s %g %g %g\n",netlist[ne].nome,na,nb,netlist[ne].modulo,netlist[ne].fase,netlist[ne].valor);
       netlist[ne].a=numero(na);
       netlist[ne].b=numero(nb);
     }
@@ -277,8 +278,11 @@ int main(void)
   printf("Netlist interno final\n");
   for (i=1; i<=ne; i++) {
     tipo=netlist[i].nome[0];
-    if (tipo=='R' || tipo=='I' || tipo=='V') {
+    if (tipo=='R' || tipo=='L' || tipo=='C') {
       printf("%s %d %d %g\n",netlist[i].nome,netlist[i].a,netlist[i].b,netlist[i].valor);
+    }
+    else if (tipo=='I' || tipo=='V') {
+      printf("%s %d %d %g %g %g\n",netlist[i].nome,netlist[i].a,netlist[i].b,netlist[i].modulo,netlist[i].fase,netlist[i].valor);
     }
     else if (tipo=='G' || tipo=='E' || tipo=='F' || tipo=='H') {
       printf("%s %d %d %d %d %g\n",netlist[i].nome,netlist[i].a,netlist[i].b,netlist[i].c,netlist[i].d,netlist[i].valor);
@@ -304,7 +308,7 @@ int main(void)
   for (i=1; i<=ne; i++) {
     tipo=netlist[i].nome[0];
     if (tipo=='R') condutancia(1/netlist[i].valor,netlist[i].a,netlist[i].b);
-    else if (tipo=='L') condutancia(Gmax,netlist[i].a,netlist[i].b);
+    else if (tipo=='L') condutancia(GMAX,netlist[i].a,netlist[i].b);
     else if (tipo=='C') condutancia(0,netlist[i].a,netlist[i].b);
     else if (tipo=='G') transcondutancia(netlist[i].valor,netlist[i].a,netlist[i].b,netlist[i].c,netlist[i].d);
     else if (tipo=='I') corrente(netlist[i].valor,netlist[i].a,netlist[i].b);
