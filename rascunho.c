@@ -44,22 +44,26 @@ char
   *p;
 FILE *arquivo;
 
-double _Complex
+double
   g,
   Yn[MAX_NOS+1][MAX_NOS+2];
+
+double _Complex
+  gPS,
+  YPSn[MAX_NOS+1][MAX_NOS+2];
 
 /* Resolucao de sistema de equacoes lineares.
    Metodo de Gauss-Jordan com condensacao pivotal */
 int resolversistema(void)
 {
   int i,j,l, a;
-  double _Complex t, p;
+  double  t, p;
 
   for (i=1; i<=neq; i++) {
     t=0.0 +0.0*I;
     a=i;
     for (l=i; l<=neq; l++) {
-      if (cabs(Yn[l][i])>cabs(t)) {
+      if (fabs(Yn[l][i])>cabs(t)) {
 	a=l;
 	t=Yn[l][i];
       }
@@ -71,7 +75,7 @@ int resolversistema(void)
 	Yn[a][l]=p;
       }
     }
-    if (cabs(t)<TOLG) {
+    if (fabs(t)<TOLG) {
       printf("Sistema singular\n");
       return 1;
     }
@@ -137,18 +141,18 @@ void operacional (int na,int nb,int nc,int nd) {
   somar(C,nc,nd);
 }
 
-void transcondutancia(double _Complex gm,int n1,int n2,int n3,int n4) {
+void transcondutancia(double gm,int n1,int n2,int n3,int n4) {
   Yn[L[n1]][C[n3]]+=gm;
   Yn[L[n2]][C[n4]]+=gm;
   Yn[L[n1]][C[n4]]-=gm;
   Yn[L[n2]][C[n3]]-=gm;
 }
 
-void condutancia(double _Complex g, int a, int b){
+void condutancia(double g, int a, int b){
   transcondutancia(g,a,b,a,b);
 }
 
-void corrente(double _Complex i, int a, int b) {
+void corrente(double i, int a, int b) {
   Yn[L[a]][neq+1]-=i;
   Yn[L[b]][neq+1]+=i;
 }
@@ -214,6 +218,7 @@ int main(void)
       netlist[ne].c=numero(nc);
       netlist[ne].d=numero(nd);
     }
+    /*else if (tipo=='.') {} -> .AC <LIN ou OCT ou DEC> <pontos> <início> <fim> */
     else if (tipo=='*') { /* Comentario comeca com "*" */
       printf("Comentario: %s",txt);
       ne--;
@@ -376,6 +381,8 @@ int main(void)
       printf("%s %s (%d): nao calculada\n",txt,lista[i],C[i]);
   }
   getch();
+	
+  /*Pequenos sinais */
   return 0;
 }
 
