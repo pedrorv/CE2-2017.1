@@ -15,7 +15,7 @@
 
 typedef struct elemento { /* Elemento do netlist */
   char nome[MAX_NOME];
-  double valor;
+  double valor, modulo, fase;
   int a,b,c,d,x,y;
 } elemento;
 
@@ -183,7 +183,13 @@ int main(void)
     sscanf(txt,"%10s",netlist[ne].nome);
     p=txt+strlen(netlist[ne].nome); /* Inicio dos parametros */
     /* O que e lido depende do tipo */
-    if (tipo=='R' || tipo=='L' || tipo=='C' || tipo=='I' || tipo=='V') {
+    if (tipo=='R' || tipo=='L' || tipo=='C') {
+      sscanf(p,"%10s%10s%lg",na,nb,&netlist[ne].valor);
+      printf("%s %s %s %g\n",netlist[ne].nome,na,nb,netlist[ne].valor);
+      netlist[ne].a=numero(na);
+      netlist[ne].b=numero(nb);
+    }
+    if (tipo=='I' || tipo=='V') {
       sscanf(p,"%10s%10s%lg",na,nb,&netlist[ne].valor);
       printf("%s %s %s %g\n",netlist[ne].nome,na,nb,netlist[ne].valor);
       netlist[ne].a=numero(na);
@@ -294,12 +300,12 @@ int main(void)
     for (j=0; j<=neq+1; j++)
       Yn[i][j]=0;
   }
-  /* Monta estampas */
+  /* Monta estampas do ponto de operação*/
   for (i=1; i<=ne; i++) {
     tipo=netlist[i].nome[0];
     if (tipo=='R') condutancia(1/netlist[i].valor,netlist[i].a,netlist[i].b);
-    else if (tipo=='L') condutancia((-1/netlist[i].valor)*_Complex_I,netlist[i].a,netlist[i].b);
-    else if (tipo=='C') condutancia(netlist[i].valor*_Complex_I,netlist[i].a,netlist[i].b);
+    else if (tipo=='L') condutancia(Gmax,netlist[i].a,netlist[i].b);
+    else if (tipo=='C') condutancia(0,netlist[i].a,netlist[i].b);
     else if (tipo=='G') transcondutancia(netlist[i].valor,netlist[i].a,netlist[i].b,netlist[i].c,netlist[i].d);
     else if (tipo=='I') corrente(netlist[i].valor,netlist[i].a,netlist[i].b);
     else if (tipo=='V') {
