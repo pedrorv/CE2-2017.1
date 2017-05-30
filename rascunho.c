@@ -15,7 +15,7 @@
 #define DEBUG
 
 typedef struct elemento { /* Elemento do netlist */
-  char nome[MAX_NOME];
+  char nome[MAX_NOME],la,lb;
   double valor, modulo, fase;
   int a,b,c,d,x,y;
 } elemento;
@@ -185,12 +185,14 @@ int main(void)
     p=txt+strlen(netlist[ne].nome); /* Inicio dos parametros */
     /* O que e lido depende do tipo */
     if (tipo=='R' || tipo=='L' || tipo=='C') {
-      sscanf(p,"%10s%10s%lg",na,nb,&netlist[ne].valor);
-      printf("%s %s %s %g\n",netlist[ne].nome,na,nb,netlist[ne].valor);
-      netlist[ne].a=numero(na);
-      netlist[ne].b=numero(nb);
+      sscanf(p,"%10s%10s%lg",la,lb,&netlist[ne].valor);
+      printf("%s %s %s %g\n",netlist[ne].nome,la,lb,netlist[ne].valor);
     }
-    if (tipo=='I' || tipo=='V') {
+    else if (tipo=='K') {
+      sscanf(p,"%10s%10s%lg",&netlist[ne].la,&netlist[ne].lb,&netlist[ne].valor);
+      printf("%s %s %s %g\n",netlist[ne].nome,netlist[ne].la,netlist[ne].lb,netlist[ne].valor);
+    }
+    else if (tipo=='I' || tipo=='V') {
       sscanf(p,"%10s%10s%lg%lg%lg",na,nb,&netlist[ne].modulo,&netlist[ne].fase,&netlist[ne].valor);
       printf("%s %s %s %g %g %g\n",netlist[ne].nome,na,nb,netlist[ne].modulo,netlist[ne].fase,netlist[ne].valor);
       netlist[ne].a=numero(na);
@@ -281,6 +283,9 @@ int main(void)
     if (tipo=='R' || tipo=='L' || tipo=='C') {
       printf("%s %d %d %g\n",netlist[i].nome,netlist[i].a,netlist[i].b,netlist[i].valor);
     }
+    else if (tipo=='K') {
+      printf("%s %s %s %g\n",netlist[i].nome,netlist[i].la,netlist[i].lb,netlist[i].valor);
+    }
     else if (tipo=='I' || tipo=='V') {
       printf("%s %d %d %g %g %g\n",netlist[i].nome,netlist[i].a,netlist[i].b,netlist[i].modulo,netlist[i].fase,netlist[i].valor);
     }
@@ -311,6 +316,7 @@ int main(void)
     else if (tipo=='L') condutancia(GMAX,netlist[i].a,netlist[i].b);
     else if (tipo=='C') condutancia(0,netlist[i].a,netlist[i].b);
     else if (tipo=='G') transcondutancia(netlist[i].valor,netlist[i].a,netlist[i].b,netlist[i].c,netlist[i].d);
+    else if (tipo=='K');
     else if (tipo=='I') corrente(netlist[i].valor,netlist[i].a,netlist[i].b);
     else if (tipo=='V') {
       transcondutancia(1,0,netlist[i].x,netlist[i].a,netlist[i].b);
