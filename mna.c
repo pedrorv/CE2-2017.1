@@ -56,7 +56,8 @@ void fasorcorrente(double modulo, double fase, int a, int b, double _Complex Yn[
   Yn[L[b]][neq+1]+=modulo*(cos(fase)+sin(fase)*I);
 }
 
-void mnaPO(elemento netlist[MAX_ELEM],double  Yn[MAX_NOS+1][MAX_NOS+2], double Yn1[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C){
+
+void mnaPO(elemento netlist[MAX_ELEM],double  Yn[MAX_NOS+1][MAX_NOS+2], double Yn1[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, int ne){
   char tipo;
   int i;
   for (i=1; i<=ne; i++) {
@@ -84,24 +85,22 @@ void mnaPO(elemento netlist[MAX_ELEM],double  Yn[MAX_NOS+1][MAX_NOS+2], double Y
       transcondutancia(netlist[i].valor,netlist[i].y,0,netlist[i].x,0,Yn1,L,C);
       transcondutancia(1,netlist[i].c,netlist[i].d,netlist[i].x,0,Yn1,L,C);
     }
-    else if (tipo=='O') {
+    else if (tipo=='O');
     }
 }
 
-void mnaPS(elemento netlist[MAX_ELEM], double _Complex Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, double f){
+void mnaPS(elemento netlist[MAX_ELEM], double _Complex Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, double f,ne){
   char tipo;
-  int i;
-  double _Complex jw;
-  
-  jw=2*PI*f*I;
-    
+  int i,j;
+  double _Complex jw=2*PI*f*I;
+   
   for (i=1; i<=ne; i++) {
     tipo=netlist[i].nome[0];
     if (tipo=='R') admitancia(1/netlist[i].valor,netlist[i].a,netlist[i].b,Yn,L,C);
-    else if (tipo=='L') admitancia(1/(netlist[i].valor*jw),netlist[i].a,netlist[i].b,Yn,L,C);
+    else if (tipo=='L') admitancia((netlist[i].valor*jw),netlist[i].a,netlist[i].b,Yn,L,C);
     else if (tipo=='C') admitancia((netlist[i].valor*jw),netlist[i].a,netlist[i].b,Yn,L,C);
-    else if (tipo=='G') admitancia(netlist[i].valor,netlist[i].a,netlist[i].b,netlist[i].c,netlist[i].d,Yn,L,C);
-    else if (tipo=='K');
+    else if (tipo=='G') transadmitancia(netlist[i].valor,netlist[i].a,netlist[i].b,netlist[i].c,netlist[i].d,Yn,L,C);
+    else if (tipo=='K') acoplamento(netlist[i].valor,netlist[i].la,netlist[i].lb,netlist,Yn,L,C,ne);
     else if (tipo=='I') fasorcorrente(netlist[i].modulo,netlist[i].fase,netlist[i].a,netlist[i].b,Yn,L,C);
     else if (tipo=='V') {
       transadmitancia(1,0,netlist[i].x,netlist[i].a,netlist[i].b,Yn,L,C);
@@ -120,6 +119,6 @@ void mnaPS(elemento netlist[MAX_ELEM], double _Complex Yn[MAX_NOS+1][MAX_NOS+2],
       transadmitancia(netlist[i].valor,netlist[i].y,0,netlist[i].x,0,Yn,L,C);
       transadmitancia(1,netlist[i].c,netlist[i].d,netlist[i].x,0,Yn,L,C);
     }
-    else if (tipo=='O') {
+    else if (tipo=='O');
     }
 }
