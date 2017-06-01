@@ -24,23 +24,26 @@ void operacional (int na,int nb,int nc,int nd, tabela L, tabela C) {
   somar(C,nc,nd);
 }
 
-void transcondutancia(double gm,int n1,int n2,int n3,int n4,double Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C) {
+void transcondutancia(double gm,int n1,int n2,int n3,int n4, double Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C) {
   Yn[L[n1]][C[n3]]+=gm;
   Yn[L[n2]][C[n4]]+=gm;
   Yn[L[n1]][C[n4]]-=gm;
   Yn[L[n2]][C[n3]]-=gm;
 }
 
+void transadmitancia(double _Complex ym,int n1,int n2,int n3,int n4, double _Complex Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C) {
+  Yn[L[n1]][C[n3]]+=ym;
+  Yn[L[n2]][C[n4]]+=ym;
+  Yn[L[n1]][C[n4]]-=ym;
+  Yn[L[n2]][C[n3]]-=ym;
+}
 
 void condutancia(double g, int a, int b,double Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C){
   transcondutancia(g,a,b,a,b,Yn,L,C);
 }
 
 void admitancia(double _Complex  y, int a, int b, double _Complex Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C){
-  Yn[L[a]][C[a]]+=y;
-  Yn[L[b]][C[b]]+=y;
-  Yn[L[a]][C[b]]-=y;
-  Yn[L[b]][C[na]]-=y;
+  transadmitancia(y,a,b,a,b,Yn,L,C);
 }
 
 void corrente(double i, int a, int b,double  Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C) {
@@ -85,12 +88,12 @@ void mnaPO(elemento netlist[MAX_ELEM],double  Yn[MAX_NOS+1][MAX_NOS+2], double Y
     }
 }
 
-  void mnaPS(elemento netlist[MAX_ELEM], double _Complex Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, double f){
+void mnaPS(elemento netlist[MAX_ELEM], double _Complex Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, double f){
   char tipo;
   int i;
   double _Complex jw;
   
-  jw=2*pi*f*I;
+  jw=2*PI*f*I;
     
   for (i=1; i<=ne; i++) {
     tipo=netlist[i].nome[0];
@@ -101,21 +104,21 @@ void mnaPO(elemento netlist[MAX_ELEM],double  Yn[MAX_NOS+1][MAX_NOS+2], double Y
     else if (tipo=='K');
     else if (tipo=='I') fasorcorrente(netlist[i].modulo,netlist[i].fase,netlist[i].a,netlist[i].b,Yn,L,C);
     else if (tipo=='V') {
-      transcondutancia(1,0,netlist[i].x,netlist[i].a,netlist[i].b,Yn,L,C);
+      transadmitancia(1,0,netlist[i].x,netlist[i].a,netlist[i].b,Yn,L,C);
       fasorcorrente(netlist[i].modulo,netlist[i].fase,netlist[i].x,0,Yn,L,C);
     }
     else if (tipo=='E') {
-      transcondutancia(1,0,netlist[i].x,netlist[i].a,netlist[i].b,Yn,L,C);
-      transcondutancia(netlist[i].valor,netlist[i].x,0,netlist[i].c,netlist[i].d,Yn,L,C);
+      transadmitancia(1,0,netlist[i].x,netlist[i].a,netlist[i].b,Yn,L,C);
+      transadmitancia(netlist[i].valor,netlist[i].x,0,netlist[i].c,netlist[i].d,Yn,L,C);
     }
     else if (tipo=='F') {
-      transcondutancia(netlist[i].valor,netlist[i].a,netlist[i].b,netlist[i].x,0,Yn,L,C);
-      transcondutancia(1,netlist[i].c,netlist[i].d,netlist[i].x,0,Yn,L,C);
+      transadmitancia(netlist[i].valor,netlist[i].a,netlist[i].b,netlist[i].x,0,Yn,L,C);
+      transadmitancia(1,netlist[i].c,netlist[i].d,netlist[i].x,0,Yn,L,C);
     }
     else if (tipo=='H') {
-      transcondutancia(1,0,netlist[i].y,netlist[i].a,netlist[i].b,Yn,L,C);
-      transcondutancia(netlist[i].valor,netlist[i].y,0,netlist[i].x,0,Yn,L,C);
-      transcondutancia(1,netlist[i].c,netlist[i].d,netlist[i].x,0,Yn,L,C);
+      transadmitancia(1,0,netlist[i].y,netlist[i].a,netlist[i].b,Yn,L,C);
+      transadmitancia(netlist[i].valor,netlist[i].y,0,netlist[i].x,0,Yn,L,C);
+      transadmitancia(1,netlist[i].c,netlist[i].d,netlist[i].x,0,Yn,L,C);
     }
     else if (tipo=='O') {
     }
