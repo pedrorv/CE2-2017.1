@@ -56,6 +56,25 @@ void fasorcorrente(double modulo, double fase, int a, int b, double _Complex Yn[
   Yn[L[b]][neq+1]+=modulo*(cos(fase)+sin(fase)*I);
 }
 
+void acoplamento(double k,char la[],char lb[],elemento netlist[MAX_ELEM],double  Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, double f,int ne){
+  int i,a,b,c,d;
+  double l1,l2,m;
+  
+  for (i=1; i<=ne; i++) {
+    if(netlist[i].nome==la){
+      l1=netlist[i].valor;
+      a=netlist[i].a;
+      b=netlist[i].b;
+    }
+    if(netlist[i].nome==lb){
+      l2=netlist[i].valor;
+      c=netlist[i].a;
+      d=netlist[i].b;
+    }
+  }
+  m=k*sqrt(l1*l2);
+  transadmitancia(,netlist[i].a,netlist[i].b,netlist[i].c,netlist[i].d,Yn,L,C);
+}
 
 void mnaPO(elemento netlist[MAX_ELEM],double  Yn[MAX_NOS+1][MAX_NOS+2], double Yn1[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, int ne){
   char tipo;
@@ -63,7 +82,7 @@ void mnaPO(elemento netlist[MAX_ELEM],double  Yn[MAX_NOS+1][MAX_NOS+2], double Y
   for (i=1; i<=ne; i++) {
     tipo=netlist[i].nome[0];
     if (tipo=='R') condutancia(1/netlist[i].valor,netlist[i].a,netlist[i].b,Yn1,L,C);
-    else if (tipo=='L') condutancia(GMAX,netlist[i].a,netlist[i].b,Yn1,L,C);
+    else if (tipo=='L') ;
     else if (tipo=='C') condutancia(0,netlist[i].a,netlist[i].b,Yn1,L,C);
     else if (tipo=='G') transcondutancia(netlist[i].valor,netlist[i].a,netlist[i].b,netlist[i].c,netlist[i].d,Yn1,L,C);
     else if (tipo=='K');
@@ -89,7 +108,7 @@ void mnaPO(elemento netlist[MAX_ELEM],double  Yn[MAX_NOS+1][MAX_NOS+2], double Y
     }
 }
 
-void mnaPS(elemento netlist[MAX_ELEM], double _Complex Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, double f,ne){
+void mnaPS(elemento netlist[MAX_ELEM], double _Complex Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, double f,int ne){
   char tipo;
   int i,j;
   double _Complex jw=2*PI*f*I;
@@ -97,10 +116,10 @@ void mnaPS(elemento netlist[MAX_ELEM], double _Complex Yn[MAX_NOS+1][MAX_NOS+2],
   for (i=1; i<=ne; i++) {
     tipo=netlist[i].nome[0];
     if (tipo=='R') admitancia(1/netlist[i].valor,netlist[i].a,netlist[i].b,Yn,L,C);
-    else if (tipo=='L') admitancia((netlist[i].valor*jw),netlist[i].a,netlist[i].b,Yn,L,C);
+    else if (tipo=='L') ;
     else if (tipo=='C') admitancia((netlist[i].valor*jw),netlist[i].a,netlist[i].b,Yn,L,C);
     else if (tipo=='G') transadmitancia(netlist[i].valor,netlist[i].a,netlist[i].b,netlist[i].c,netlist[i].d,Yn,L,C);
-    else if (tipo=='K') acoplamento(netlist[i].valor,netlist[i].la,netlist[i].lb,netlist,Yn,L,C,ne);
+    else if (tipo=='K') ;
     else if (tipo=='I') fasorcorrente(netlist[i].modulo,netlist[i].fase,netlist[i].a,netlist[i].b,Yn,L,C);
     else if (tipo=='V') {
       transadmitancia(1,0,netlist[i].x,netlist[i].a,netlist[i].b,Yn,L,C);
