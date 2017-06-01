@@ -1,6 +1,6 @@
-#include tipos.h
-#include mna.h
-#include stdio.h
+#include "tipos.h"
+#include "mna.h"
+#include <stdio.h>
 
 void somar(int *Q, int a, int b) {
   int i,a1,b1;
