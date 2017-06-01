@@ -15,7 +15,7 @@
 #define DEBUG
 
 typedef struct elemento { /* Elemento do netlist */
-  char nome[MAX_NOME],la,lb;
+  char nome[MAX_NOME],la[MAX_NOME],lb[MAX_NOME];
   double valor, modulo, fase;
   int a,b,c,d,x,y;
 } elemento;
