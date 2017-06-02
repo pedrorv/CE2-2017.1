@@ -49,7 +49,7 @@ int testeconvergenciaPO(double  Yn[MAX_NOS+1][MAX_NOS+2], double  Yn1[MAX_NOS+1]
    for (i=1; i<=neq; i++) {
      for (j=neq+1; j>0; j--) { 
        d=Yn[i][j]-Yn1[i][j];
-       if (fabs(d)>CONV_CONST) return 1;
+       if (fabs(d)>CONST_CONV) return 1;
      }     
    }
    return 0;
