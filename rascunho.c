@@ -245,6 +245,14 @@ int main(void)
       netlist[i].x=nv;
       operacional(netlist[i].a,netlist[i].b,0,netlist[i].x);
     }
+    else if (tipo=='L') {
+      nv++;
+      testarnos();
+      strcpy(lista[nv],"j"); /* Tem espaco para mais dois caracteres */
+      strcat(lista[nv],netlist[i].nome);
+      netlist[i].x=nv;
+      operacional(netlist[i].a,netlist[i].b,0,netlist[i].x);
+    }
     else if (tipo=='O') {
       operacional(netlist[i].a,netlist[i].b,netlist[i].c,netlist[i].d);
       neq--;
