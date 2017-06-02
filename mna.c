@@ -57,23 +57,23 @@ void fasorcorrente(double modulo, double fase, int a, int b, double _Complex Yn[
 }
 
 void acoplamento(double k,char la[],char lb[],elemento netlist[MAX_ELEM],double  Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, double f,int ne){
-  int i,a,b,c,d;
+  int i,a,b;
   double l1,l2,m;
+  double _Complex jw=2*PI*f*I;
   
   for (i=1; i<=ne; i++) {
     if(netlist[i].nome==la){
       l1=netlist[i].valor;
-      a=netlist[i].a;
-      b=netlist[i].b;
+      a=i;
     }
     if(netlist[i].nome==lb){
       l2=netlist[i].valor;
-      c=netlist[i].a;
-      d=netlist[i].b;
+      b=i;
     }
   }
   m=k*sqrt(l1*l2);
-  transadmitancia(,netlist[i].a,netlist[i].b,netlist[i].c,netlist[i].d,Yn,L,C);
+  transadmitancia(m*jw,netlist[a].x,0,netlist[b].x,0,Yn,L,C);
+  transadmitancia(m*jw,netlist[b].x,0,netlist[a].x,0,Yn,L,C);
 }
 
 void mnaPO(elemento netlist[MAX_ELEM],double  Yn[MAX_NOS+1][MAX_NOS+2], double Yn1[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, int ne){
@@ -82,7 +82,10 @@ void mnaPO(elemento netlist[MAX_ELEM],double  Yn[MAX_NOS+1][MAX_NOS+2], double Y
   for (i=1; i<=ne; i++) {
     tipo=netlist[i].nome[0];
     if (tipo=='R') condutancia(1/netlist[i].valor,netlist[i].a,netlist[i].b,Yn1,L,C);
-    else if (tipo=='L') ;
+    else if (tipo=='L') {
+      transcondutancia(1,0,netlist[i].x,netlist[i].a,netlist[i].b,Yn1,L,C);
+      condutancia(0,netlist[i].x,0,Yn1,L,C);
+    }
     else if (tipo=='C') condutancia(0,netlist[i].a,netlist[i].b,Yn1,L,C);
     else if (tipo=='G') transcondutancia(netlist[i].valor,netlist[i].a,netlist[i].b,netlist[i].c,netlist[i].d,Yn1,L,C);
     else if (tipo=='K');
@@ -116,7 +119,10 @@ void mnaPS(elemento netlist[MAX_ELEM], double _Complex Yn[MAX_NOS+1][MAX_NOS+2],
   for (i=1; i<=ne; i++) {
     tipo=netlist[i].nome[0];
     if (tipo=='R') admitancia(1/netlist[i].valor,netlist[i].a,netlist[i].b,Yn,L,C);
-    else if (tipo=='L') ;
+    else if (tipo=='L') {
+      transadmitancia(1,0,netlist[i].x,netlist[i].a,netlist[i].b,Yn,L,C);
+      admitancia((netlist[i].valor*jw),netlist[i].x,0,Yn,L,C);
+    }
     else if (tipo=='C') admitancia((netlist[i].valor*jw),netlist[i].a,netlist[i].b,Yn,L,C);
     else if (tipo=='G') transadmitancia(netlist[i].valor,netlist[i].a,netlist[i].b,netlist[i].c,netlist[i].d,Yn,L,C);
     else if (tipo=='K') ;
