@@ -1,3 +1,6 @@
+#ifndef TIPOS_H
+#define TIPOS_H
+
 typedef struct elemento { /* Elemento do netlist */
   char nome[MAX_NOME],la[MAX_NOME],lb[MAX_NOME];
   double valor, modulo, fase;
@@ -5,3 +8,5 @@ typedef struct elemento { /* Elemento do netlist */
 } elemento;
 
 typedef int tabela[MAX_NOS+1];
+
+#endif
