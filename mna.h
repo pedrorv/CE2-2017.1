@@ -1,4 +1,5 @@
 #include "tipos.h"
+#include "macros.h"
 
 void somar(int *Q, int a, int b);
 
@@ -8,7 +9,7 @@ void transcondutancia(double gm,int n1,int n2,int n3,int n4, double Yn[MAX_NOS+1
 
 void transadmitancia(double _Complex ym,int n1,int n2,int n3,int n4, double _Complex Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C);
 
-void condutancia(double g, int a, int b,double Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C;
+void condutancia(double g, int a, int b,double Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C);
                  
 void admitancia(double _Complex  y, int a, int b, double _Complex Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C);
 
