@@ -5,3 +5,5 @@
 !*.*
 # Não ignora diretórios
 !*/
+# Ignora .exe 
+*.exe
