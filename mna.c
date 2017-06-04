@@ -1,5 +1,6 @@
 #include "tipos.h"
 #include "mna.h"
+#include "macros.h"
 #include <math.h>
 #include <complex.h>
 #include <stdio.h>
