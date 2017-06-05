@@ -1,5 +1,5 @@
-#include "tipos.h"
 #include "macros.h"
+#include "tipos.h"
 
 void resolversistemaPO(double  Yn[MAX_NOS+1][MAX_NOS+2],int neq);
 

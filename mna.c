@@ -1,16 +1,26 @@
-#include "tipos.h"
-#include "mna.h"
-#include "macros.h"
-#include <math.h>
 #include <complex.h>
+#include <math.h>
 #include <stdio.h>
+
+#include "macros.h"
+#include "mna.h"
+#include "tipos.h"
 
 void somar(int *Q, int a, int b) {
   int i,a1,b1;
 
-  if (Q[a]>Q[b]) {a1=Q[b]; b1=Q[a];}
-  else {a1=Q[a]; b1=Q[b];}
-  if (a1==b1) {printf("Circuito invalido"); exit(1);}
+  if (Q[a]>Q[b]) {
+    a1=Q[b]; b1=Q[a];
+  }
+  else {
+    a1=Q[a]; b1=Q[b];
+  }
+
+  if (a1==b1) {
+    printf("Circuito invalido"); 
+    exit(1);
+  }
+
   for (i=1; i<=MAX_NOS; i++) {
     if (Q[i]==b1) Q[i]=a1;
     if (Q[i]>b1) Q[i]--;
@@ -18,9 +28,10 @@ void somar(int *Q, int a, int b) {
 }
 
 void operacional (int na,int nb,int nc,int nd, tabela L, tabela C) {
-#ifdef DEBUG
-  printf("Saida: %d %d; entrada %d %d\n",na,nb,nc,nd);
-#endif
+  #ifdef DEBUG
+    printf("Saida: %d %d; entrada %d %d\n",na,nb,nc,nd);
+  #endif
+
   somar(L,na,nb);
   somar(C,nc,nd);
 }
@@ -72,6 +83,7 @@ void acoplamento(double k,char la[],char lb[],elemento netlist[MAX_ELEM],double 
       b=i;
     }
   }
+
   m=k*sqrt(l1*l2);
   transadmitancia(m*jw,netlist[a].x,0,netlist[b].x,0,Yn,L,C);
   transadmitancia(m*jw,netlist[b].x,0,netlist[a].x,0,Yn,L,C);
@@ -80,17 +92,27 @@ void acoplamento(double k,char la[],char lb[],elemento netlist[MAX_ELEM],double 
 void mnaPO(elemento netlist[MAX_ELEM],double  Yn[MAX_NOS+1][MAX_NOS+2], double Yn1[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, int ne){
   char tipo;
   int i;
+
   for (i=1; i<=ne; i++) {
     tipo=netlist[i].nome[0];
-    if (tipo=='R') condutancia(1/netlist[i].valor,netlist[i].a,netlist[i].b,Yn1,L,C);
+
+    if (tipo=='R') {
+      condutancia(1/netlist[i].valor,netlist[i].a,netlist[i].b,Yn1,L,C);
+    }
     else if (tipo=='L') {
       transcondutancia(1,0,netlist[i].x,netlist[i].a,netlist[i].b,Yn1,L,C);
       condutancia(0,netlist[i].x,0,Yn1,L,C);
     }
-    else if (tipo=='C') condutancia(0,netlist[i].a,netlist[i].b,Yn1,L,C);
-    else if (tipo=='G') transcondutancia(netlist[i].valor,netlist[i].a,netlist[i].b,netlist[i].c,netlist[i].d,Yn1,L,C);
+    else if (tipo=='C') {
+      condutancia(0,netlist[i].a,netlist[i].b,Yn1,L,C);
+    }
+    else if (tipo=='G') {
+      transcondutancia(netlist[i].valor,netlist[i].a,netlist[i].b,netlist[i].c,netlist[i].d,Yn1,L,C);
+    }
     else if (tipo=='K');
-    else if (tipo=='I') corrente(netlist[i].valor,netlist[i].a,netlist[i].b,Yn1,L,C);
+    else if (tipo=='I') {
+      corrente(netlist[i].valor,netlist[i].a,netlist[i].b,Yn1,L,C);
+    }
     else if (tipo=='V') {
       transcondutancia(1,0,netlist[i].x,netlist[i].a,netlist[i].b,Yn1,L,C);
       corrente(netlist[i].valor,netlist[i].x,0,Yn1,L,C);
@@ -109,7 +131,7 @@ void mnaPO(elemento netlist[MAX_ELEM],double  Yn[MAX_NOS+1][MAX_NOS+2], double Y
       transcondutancia(1,netlist[i].c,netlist[i].d,netlist[i].x,0,Yn1,L,C);
     }
     else if (tipo=='O');
-    }
+  }
 }
 
 void mnaPS(elemento netlist[MAX_ELEM], double _Complex Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, double f,int ne){
@@ -119,15 +141,24 @@ void mnaPS(elemento netlist[MAX_ELEM], double _Complex Yn[MAX_NOS+1][MAX_NOS+2],
    
   for (i=1; i<=ne; i++) {
     tipo=netlist[i].nome[0];
-    if (tipo=='R') admitancia(1/netlist[i].valor,netlist[i].a,netlist[i].b,Yn,L,C);
+
+    if (tipo=='R') {
+      admitancia(1/netlist[i].valor,netlist[i].a,netlist[i].b,Yn,L,C);
+    }
     else if (tipo=='L') {
       transadmitancia(1,0,netlist[i].x,netlist[i].a,netlist[i].b,Yn,L,C);
       admitancia((netlist[i].valor*jw),netlist[i].x,0,Yn,L,C);
     }
-    else if (tipo=='C') admitancia((netlist[i].valor*jw),netlist[i].a,netlist[i].b,Yn,L,C);
-    else if (tipo=='G') transadmitancia(netlist[i].valor,netlist[i].a,netlist[i].b,netlist[i].c,netlist[i].d,Yn,L,C);
-    else if (tipo=='K') ;
-    else if (tipo=='I') fasorcorrente(netlist[i].modulo,netlist[i].fase,netlist[i].a,netlist[i].b,Yn,L,C);
+    else if (tipo=='C') {
+      admitancia((netlist[i].valor*jw),netlist[i].a,netlist[i].b,Yn,L,C);
+    }
+    else if (tipo=='G') {
+      transadmitancia(netlist[i].valor,netlist[i].a,netlist[i].b,netlist[i].c,netlist[i].d,Yn,L,C);
+    }
+    else if (tipo=='K');
+    else if (tipo=='I') {
+      fasorcorrente(netlist[i].modulo,netlist[i].fase,netlist[i].a,netlist[i].b,Yn,L,C);
+    }
     else if (tipo=='V') {
       transadmitancia(1,0,netlist[i].x,netlist[i].a,netlist[i].b,Yn,L,C);
       fasorcorrente(netlist[i].modulo,netlist[i].fase,netlist[i].x,0,Yn,L,C);
@@ -146,5 +177,5 @@ void mnaPS(elemento netlist[MAX_ELEM], double _Complex Yn[MAX_NOS+1][MAX_NOS+2],
       transadmitancia(1,netlist[i].c,netlist[i].d,netlist[i].x,0,Yn,L,C);
     }
     else if (tipo=='O');
-    }
+  }
 }
