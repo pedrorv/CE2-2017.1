@@ -18,9 +18,6 @@ Pedro Reis
 elemento netlist[MAX_ELEM]; /* Netlist */
 
 int
-  ne, /* Elementos */
-  nv, /* Variaveis */
-  nn, /* Nos */
   falhaLeitura, /* Status da leitura do netlist */
   falhaVariaveis, /* Status das variaveis de corrente */
   i,j,k;
@@ -41,9 +38,9 @@ double
   g,
   Yn[MAX_NOS+1][MAX_NOS+2];
 
+contagem cont;
 
-int main (int argc, char *argv[]) {
-  
+int main (int argc, char *argv[]) {  
   do {
     printf("Entre nome do arquivo com o netlist (ex: mna.net): ");
     scanf("%50s", nomearquivo);
@@ -51,18 +48,23 @@ int main (int argc, char *argv[]) {
     arquivo = fopen(nomearquivo, "r");
   } while (arquivo == 0);
 
-  falhaLeitura = lerNetlist(arquivo, netlist, txt, p, lista, nv);
+  cont.nv = 0;
+  cont.ne = 0;
+
+  falhaLeitura = lerNetlist(arquivo, netlist, txt, p, lista, &cont);
   fclose(arquivo);
   
   if (falhaLeitura) {
     exit(1);
   }
 
-  falhaVariaveis = variaveisCorrente(ne, nn, nv, lista, netlist);
+  falhaVariaveis = variaveisCorrente(&cont, lista, netlist);
 
   if (falhaVariaveis) {
     exit(1);
   }
+
+  imprimirNetlist(&cont, lista, netlist);
 
   return OK;
 }

@@ -8,39 +8,38 @@
 #include "tipos.h"
 
 /* Rotina que conta os nos e atribui numeros a eles */
-int numero(char *nome, char lista[MAX_NOS+1][MAX_NOME+2], int nv) {
+int numero(char *nome, char lista[MAX_NOS+1][MAX_NOME+2], contagem *cont) {
   int i,achou;
 
   i=0; achou=0;
   
-  while (!achou && i<=nv)
+  while (!achou && i<=cont->nv)
     if (!(achou=!strcmp(nome,lista[i]))) i++;
   
   if (!achou) {
-    if (nv==MAX_NOS) {
-      printf("O programa so aceita ate %d nos\n",nv);
+    if (cont->nv==MAX_NOS) {
+      printf("O programa so aceita ate %d nos\n",cont->nv);
       exit(1);
     }
-    nv++;
-    strcpy(lista[nv],nome);
-    return nv; /* novo no */
+    cont->nv++;
+    strcpy(lista[cont->nv],nome);
+    return cont->nv; /* novo no */
   }
   else {
     return i; /* no ja conhecido */
   }
 }
 
-int lerNetlist(FILE *arquivo, elemento netlist[MAX_ELEM], char txt[MAX_LINHA+1], char *p, char lista[MAX_NOS+1][MAX_NOME+2], int nv) {
+int lerNetlist(FILE *arquivo, elemento netlist[MAX_ELEM], char txt[MAX_LINHA+1], char *p, char lista[MAX_NOS+1][MAX_NOME+2], contagem *cont) {
     char tipo, na[MAX_NOME],nb[MAX_NOME],nc[MAX_NOME],nd[MAX_NOME];
-    int ne = 0;
 
     printf("Lendo netlist:\n");
     fgets(txt, MAX_LINHA, arquivo);
     printf("Título: %s", txt);
 
     while (fgets(txt, MAX_LINHA, arquivo)) {
-        ne++; /* Não usa o netlist[0] */
-        if (ne > MAX_ELEM) {
+        cont->ne++; /* Não usa o netlist[0] */
+        if (cont->ne > MAX_ELEM) {
             printf("O programa só aceita até %d elementos.\n", MAX_ELEM);
             return 1;
         }
@@ -48,35 +47,35 @@ int lerNetlist(FILE *arquivo, elemento netlist[MAX_ELEM], char txt[MAX_LINHA+1],
         txt[0] = toupper(txt[0]);
         tipo = txt[0];
 
-        sscanf(txt, "%10s", netlist[ne].nome);
-        p = txt + strlen(netlist[ne].nome);
+        sscanf(txt, "%10s", netlist[cont->ne].nome);
+        p = txt + strlen(netlist[cont->ne].nome);
 
         if (tipo == 'R' || tipo == 'I' || tipo == 'V') {
-            sscanf(p,"%10s%10s%lg",na,nb,&netlist[ne].valor);
-            printf("%s %s %s %g\n",netlist[ne].nome,na,nb,netlist[ne].valor);
-            netlist[ne].a=numero(na, lista, nv);
-            netlist[ne].b=numero(nb, lista, nv);
+            sscanf(p,"%10s%10s%lg",na,nb,&netlist[cont->ne].valor);
+            printf("%s %s %s %g\n",netlist[cont->ne].nome,na,nb,netlist[cont->ne].valor);
+            netlist[cont->ne].a=numero(na, lista, cont);
+            netlist[cont->ne].b=numero(nb, lista, cont);
         }
 
         else if (tipo=='G' || tipo=='E' || tipo=='F' || tipo=='H') {
-            sscanf(p,"%10s%10s%10s%10s%lg",na,nb,nc,nd,&netlist[ne].valor);
-            printf("%s %s %s %s %s %g\n",netlist[ne].nome,na,nb,nc,nd,netlist[ne].valor);
-            netlist[ne].a=numero(na, lista, nv);
-            netlist[ne].b=numero(nb, lista, nv);
-            netlist[ne].c=numero(nc, lista, nv);
-            netlist[ne].d=numero(nd, lista, nv);
+            sscanf(p,"%10s%10s%10s%10s%lg",na,nb,nc,nd,&netlist[cont->ne].valor);
+            printf("%s %s %s %s %s %g\n",netlist[cont->ne].nome,na,nb,nc,nd,netlist[cont->ne].valor);
+            netlist[cont->ne].a=numero(na, lista, cont);
+            netlist[cont->ne].b=numero(nb, lista, cont);
+            netlist[cont->ne].c=numero(nc, lista, cont);
+            netlist[cont->ne].d=numero(nd, lista, cont);
         }
         else if (tipo=='O') {
             sscanf(p,"%10s%10s%10s%10s",na,nb,nc,nd);
-            printf("%s %s %s %s %s\n",netlist[ne].nome,na,nb,nc,nd);
-            netlist[ne].a=numero(na, lista, nv);
-            netlist[ne].b=numero(nb, lista, nv);
-            netlist[ne].c=numero(nc, lista, nv);
-            netlist[ne].d=numero(nd, lista, nv);
+            printf("%s %s %s %s %s\n",netlist[cont->ne].nome,na,nb,nc,nd);
+            netlist[cont->ne].a=numero(na, lista, cont);
+            netlist[cont->ne].b=numero(nb, lista, cont);
+            netlist[cont->ne].c=numero(nc, lista, cont);
+            netlist[cont->ne].d=numero(nd, lista, cont);
         }
         else if (tipo=='*') { /* Comentario comeca com "*" */
             printf("Comentario: %s", txt);
-            ne--;
+            cont->ne--;
         }
         else {
             printf("Elemento desconhecido: %s\n", txt);
@@ -87,37 +86,71 @@ int lerNetlist(FILE *arquivo, elemento netlist[MAX_ELEM], char txt[MAX_LINHA+1],
     return OK;
 }
 
-int variaveisCorrente(int ne, int nn, int nv, char lista[MAX_NOS+1][MAX_NOME+2], elemento netlist[MAX_ELEM]) {
+int variaveisCorrente(contagem *cont, char lista[MAX_NOS+1][MAX_NOME+2], elemento netlist[MAX_ELEM]) {
     /* Acrescenta variaveis de corrente acima dos nos, anotando no netlist */
     char tipo;
     int i;
-    nn=nv;
+    cont->nn=cont->nv;
 
-    for (i=1; i<=ne; i++) {
+    for (i=1; i<=cont->ne; i++) {
         tipo=netlist[i].nome[0];
 
         if (tipo=='V' || tipo=='E' || tipo=='F' || tipo=='O') {
-            nv++;
-            if (nv>MAX_NOS) {
+            cont->nv++;
+            if (cont->nv>MAX_NOS) {
                 printf("As correntes extra excederam o numero de variaveis permitido (%d)\n", MAX_NOS);
                 return 1;
             }
-            strcpy(lista[nv],"j"); /* Tem espaco para mais dois caracteres */
-            strcat(lista[nv],netlist[i].nome);
-            netlist[i].x=nv;
+            strcpy(lista[cont->nv],"j"); /* Tem espaco para mais dois caracteres */
+            strcat(lista[cont->nv],netlist[i].nome);
+            netlist[i].x=cont->nv;
         }
         else if (tipo=='H') {
-            nv=nv+2;
-            if (nv>MAX_NOS) {
+            cont->nv=cont->nv+2;
+            if (cont->nv>MAX_NOS) {
                 printf("As correntes extra excederam o numero de variaveis permitido (%d)\n", MAX_NOS);
                 return 1;
             }
-            strcpy(lista[nv-1],"jx"); strcat(lista[nv-1],netlist[i].nome);
-            netlist[i].x=nv-1;
-            strcpy(lista[nv],"jy"); strcat(lista[nv],netlist[i].nome);
-            netlist[i].y=nv;
+            strcpy(lista[cont->nv-1],"jx"); strcat(lista[cont->nv-1],netlist[i].nome);
+            netlist[i].x=cont->nv-1;
+            strcpy(lista[cont->nv],"jy"); strcat(lista[cont->nv],netlist[i].nome);
+            netlist[i].y=cont->nv;
         }
     }
 
     return OK;
+}
+
+void imprimirNetlist(contagem *cont, char lista[MAX_NOS+1][MAX_NOME+2], elemento netlist[MAX_ELEM]) {
+    char tipo;
+    int i;
+    
+    printf("Variaveis internas: \n");
+    for (i=0; i<=cont->nv; i++) {
+        printf("%d -> %s\n",i,lista[i]);
+    }
+
+    printf("Netlist interno final\n");
+    for (i=1; i<=cont->ne; i++) {
+        tipo=netlist[i].nome[0];
+
+        if (tipo=='R' || tipo=='I' || tipo=='V') {
+            printf("%s %d %d %g\n",netlist[i].nome,netlist[i].a,netlist[i].b,netlist[i].valor);
+        }
+        else if (tipo=='G' || tipo=='E' || tipo=='F' || tipo=='H') {
+            printf("%s %d %d %d %d %g\n",netlist[i].nome,netlist[i].a,netlist[i].b,netlist[i].c,netlist[i].d,netlist[i].valor);
+        }
+        else if (tipo=='O') {
+            printf("%s %d %d %d %d\n",netlist[i].nome,netlist[i].a,netlist[i].b,netlist[i].c,netlist[i].d);
+        }
+
+        if (tipo=='V' || tipo=='E' || tipo=='F' || tipo=='O') {
+            printf("Corrente jx: %d\n",netlist[i].x);
+        }
+        else if (tipo=='H') {
+            printf("Correntes jx e jy: %d, %d\n",netlist[i].x,netlist[i].y);
+        }   
+    }
+
+    printf("O circuito tem %d nos, %d variaveis e %d elementos\n",cont->nn,cont->nv,cont->ne);
 }
