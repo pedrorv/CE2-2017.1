@@ -17,8 +17,8 @@ void corrente(double i, int a, int b,double  Yn[MAX_NOS+1][MAX_NOS+2], tabela L,
 
 void fasorcorrente(double modulo, double fase, int a, int b, double _Complex Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C);
 
-void acoplamento(double k,char la[],char lb[],elemento netlist[MAX_ELEM],double  Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, double f,int ne);
+void acoplamento(double k,char la[],char lb[],elemento netlist[MAX_ELEM],double  Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, double f, contagem *cont);
 
-void mnaPO(elemento netlist[MAX_ELEM],double  Yn[MAX_NOS+1][MAX_NOS+2], double Yn1[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, int ne);
+void mnaPO(elemento netlist[MAX_ELEM],double  Yn[MAX_NOS+1][MAX_NOS+2], double Yn1[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, contagem *cont);
 
-void mnaPS(elemento netlist[MAX_ELEM], double _Complex Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, double f,int ne);
+void mnaPS(elemento netlist[MAX_ELEM], double _Complex Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, double f, contagem *cont);

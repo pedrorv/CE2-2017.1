@@ -1,6 +1,7 @@
 #include <complex.h>
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "macros.h"
 #include "mna.h"
@@ -68,12 +69,12 @@ void fasorcorrente(double modulo, double fase, int a, int b, double _Complex Yn[
   Yn[L[b]][neq+1]+=modulo*(cos(fase)+sin(fase)*I);
 }
 
-void acoplamento(double k,char la[],char lb[],elemento netlist[MAX_ELEM],double  Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, double f,int ne){
+void acoplamento(double k,char la[],char lb[],elemento netlist[MAX_ELEM],double  Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, double f, contagem *cont){
   int i,a,b;
   double l1,l2,m;
-  double _Complex jw=2*PI*f*I;
+  double _Complex jw=2*M_PI*f*I;
   
-  for (i=1; i<=ne; i++) {
+  for (i=1; i<=cont->ne; i++) {
     if(netlist[i].nome==la){
       l1=netlist[i].valor;
       a=i;
@@ -89,11 +90,11 @@ void acoplamento(double k,char la[],char lb[],elemento netlist[MAX_ELEM],double 
   transadmitancia(m*jw,netlist[b].x,0,netlist[a].x,0,Yn,L,C);
 }
 
-void mnaPO(elemento netlist[MAX_ELEM],double  Yn[MAX_NOS+1][MAX_NOS+2], double Yn1[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, int ne){
+void mnaPO(elemento netlist[MAX_ELEM],double  Yn[MAX_NOS+1][MAX_NOS+2], double Yn1[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, contagem *cont){
   char tipo;
   int i;
 
-  for (i=1; i<=ne; i++) {
+  for (i=1; i<=cont->ne; i++) {
     tipo=netlist[i].nome[0];
 
     if (tipo=='R') {
@@ -134,12 +135,12 @@ void mnaPO(elemento netlist[MAX_ELEM],double  Yn[MAX_NOS+1][MAX_NOS+2], double Y
   }
 }
 
-void mnaPS(elemento netlist[MAX_ELEM], double _Complex Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, double f,int ne){
+void mnaPS(elemento netlist[MAX_ELEM], double _Complex Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, double f, contagem *cont){
   char tipo;
-  int i,j;
-  double _Complex jw=2*PI*f*I;
+  int i;
+  double _Complex jw=2*M_PI*f*I;
    
-  for (i=1; i<=ne; i++) {
+  for (i=1; i<=cont->ne; i++) {
     tipo=netlist[i].nome[0];
 
     if (tipo=='R') {
