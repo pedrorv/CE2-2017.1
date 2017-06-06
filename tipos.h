@@ -9,4 +9,11 @@ typedef struct elemento { /* Elemento do netlist */
 
 typedef int tabela[MAX_NOS+1];
 
+typedef struct contagem {
+  int
+    ne, /* Elementos */
+    nv, /* Variaveis */
+    nn; /* Nos */
+} contagem;
+
 #endif
