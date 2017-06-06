@@ -22,6 +22,7 @@ int
   nv, /* Variaveis */
   nn, /* Nos */
   falhaLeitura, /* Status da leitura do netlist */
+  falhaVariaveis, /* Status das variaveis de corrente */
   i,j,k;
 
 char
@@ -50,9 +51,16 @@ int main (int argc, char *argv[]) {
     arquivo = fopen(nomearquivo, "r");
   } while (arquivo == 0);
 
-  falhaLeitura = lerNetlist(arquivo, netlist, txt, p, lista);
+  falhaLeitura = lerNetlist(arquivo, netlist, txt, p, lista, nv);
+  fclose(arquivo);
   
   if (falhaLeitura) {
+    exit(1);
+  }
+
+  falhaVariaveis = variaveisCorrente(ne, nn, nv, lista, netlist);
+
+  if (falhaVariaveis) {
     exit(1);
   }
 
