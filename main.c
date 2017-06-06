@@ -1,34 +1,60 @@
 /* 
-
 Trabalho Final de Circuitos Elétricos 2 - 2017.1
 
 Emerson Santos
 Juan Vazquez
 Pedro Reis
-
-Elementos aceitos:
-
-Resistor: R<nome> <nó1> <nó2> <Resistência>
-Indutor: L<nome> <nó1> <nó2> <Indutância>
-Acoplamento entre indutores: K<nome> <La> <Lb> <k> (La e Lb nomes de indutores já declarados.)
-Capacitor: C<nome> <nó1> <nó2> <Capacitância>
-Fonte de tensão controlada a tensão: E<nome> <nóV+> <nóV-> <nóv+> <nóv-> <Av>
-Fonte de corrente controlada a corrente: F<nome> <nóI+> <nóI-> <nói+> <nói-> <Ai>
-Fonte de corrente controlada a tensão: G<nome> <nóI+> <nóI-> <nóv+> <nóv-> <Gm>
-Fonte de tensão controlada a corrente: H<nome> <nóV+> <nóV-> <nói+> <nói-> <Rm>
-Fonte de corrente: I<nome> <nó+> <nó-> <módulo> <fase (graus)> <valor contínuo>
-Fonte de tensão: V<nome> <nó+> <nó-> <módulo> <fase (graus)> <valor contínuo>
-Amplificador operacional ideal: O<nome> <nó saída+> <nó saída-> <nó entrada+> <nó entrada->
-Transistor bipolar: Q<nome> <nóc> <nób> <nóe> <tipo> <α> <αr> <Isbe> <VTbe> <Isbc> <VTbc> <VA>
-<C0be> <C1be> <C0bc> <C1bc>
-
 */
 
-#define OK 0
 #include <stdio.h>
+#include <stdlib.h>
 
-int main (void) {
-  printf("Ok\n");
+#include "macros.h"
+#include "mna.h"
+#include "netlist.h"
+#include "resolver.h"
+#include "tipos.h"
+
+elemento netlist[MAX_ELEM]; /* Netlist */
+
+int
+  ne, /* Elementos */
+  nv, /* Variaveis */
+  nn, /* Nos */
+  falhaLeitura, /* Status da leitura do netlist */
+  i,j,k;
+
+char
+/* Foram colocados limites nos formatos de leitura para alguma protecao
+   contra excesso de caracteres nestas variaveis */
+  nomearquivo[MAX_LINHA+1],
+  tipo,
+  na[MAX_NOME],nb[MAX_NOME],nc[MAX_NOME],nd[MAX_NOME],
+  lista[MAX_NOS+1][MAX_NOME+2], /*Tem que caber jx antes do nome */
+  txt[MAX_LINHA+1],
+  *p;
+
+FILE *arquivo;
+
+double
+  g,
+  Yn[MAX_NOS+1][MAX_NOS+2];
+
+
+int main (int argc, char *argv[]) {
+  
+  do {
+    printf("Entre nome do arquivo com o netlist (ex: mna.net): ");
+    scanf("%50s", nomearquivo);
+
+    arquivo = fopen(nomearquivo, "r");
+  } while (arquivo == 0);
+
+  falhaLeitura = lerNetlist(arquivo, netlist, txt, p, lista);
+  
+  if (falhaLeitura) {
+    exit(1);
+  }
 
   return OK;
 }
