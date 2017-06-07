@@ -102,10 +102,10 @@ void mnaPO(elemento netlist[MAX_ELEM],double  Yn[MAX_NOS+1][MAX_NOS+2], double Y
     }
     else if (tipo=='L') {
       transcondutancia(1,0,netlist[i].x,netlist[i].a,netlist[i].b,Yn1,L,C);
-      condutancia(0,netlist[i].x,0,Yn1,L,C);
+      condutancia(GMIN,netlist[i].x,0,Yn1,L,C);
     }
     else if (tipo=='C') {
-      condutancia(0,netlist[i].a,netlist[i].b,Yn1,L,C);
+      condutancia(GMIN,netlist[i].a,netlist[i].b,Yn1,L,C);
     }
     else if (tipo=='G') {
       transcondutancia(netlist[i].valor,netlist[i].a,netlist[i].b,netlist[i].c,netlist[i].d,Yn1,L,C);
