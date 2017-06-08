@@ -69,7 +69,7 @@ void fasorcorrente(double modulo, double fase, int a, int b, double _Complex Yn[
   Yn[L[b]][neq+1]+=modulo*(cos(fase)+sin(fase)*I);
 }
 
-void acoplamento(double k,char la[],char lb[],elemento netlist[MAX_ELEM],double  Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, double f, contagem *cont){
+void acoplamento(double k,char la[],char lb[],elemento netlist[MAX_ELEM],double _Complex Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, double f, contagem *cont){
   int i,a,b;
   double l1,l2,m;
   double _Complex jw=2*M_PI*f*I;
