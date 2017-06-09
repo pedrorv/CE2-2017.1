@@ -13,6 +13,7 @@ typedef struct contagem {
   int
     ne, /* Elementos */
     nv, /* Variaveis */
+    neq,/* Equacoes */
     nn; /* Nos */
 } contagem;
 
