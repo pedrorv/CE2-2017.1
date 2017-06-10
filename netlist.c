@@ -50,9 +50,16 @@ int lerNetlist(FILE *arquivo, elemento netlist[MAX_ELEM], char txt[MAX_LINHA+1],
         sscanf(txt, "%10s", netlist[cont->ne].nome);
         p = txt + strlen(netlist[cont->ne].nome);
 
-        if (tipo == 'R' || tipo == 'I' || tipo == 'V') {
+        if (tipo == 'R' || tipo == 'L' || tipo == 'C') {
             sscanf(p,"%10s%10s%lg",na,nb,&netlist[cont->ne].valor);
             printf("%s %s %s %g\n",netlist[cont->ne].nome,na,nb,netlist[cont->ne].valor);
+            netlist[cont->ne].a=numero(na, lista, cont);
+            netlist[cont->ne].b=numero(nb, lista, cont);
+        }
+
+        else if (tipo == 'I' || tipo == 'V') {
+            sscanf(p,"%10s%10s%lg%lg%lg",na,nb,&netlist[cont->ne].modulo,&netlist[cont->ne].fase,&netlist[cont->ne].valor);
+            printf("%s %s %s %g %g %g\n",netlist[cont->ne].nome,na,nb,netlist[cont->ne].modulo,netlist[cont->ne].fase,netlist[cont->ne].valor);
             netlist[cont->ne].a=numero(na, lista, cont);
             netlist[cont->ne].b=numero(nb, lista, cont);
         }
