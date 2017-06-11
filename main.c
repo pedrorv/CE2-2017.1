@@ -37,6 +37,8 @@ FILE *arquivo;
 double
   g,
   Yn[MAX_NOS+1][MAX_NOS+2];
+double _Complex
+  Ynps[MAX_PONTOS+1][MAX_NOS+1][MAX_NOS+2];
 
 contagem cont;
 
