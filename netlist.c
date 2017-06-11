@@ -113,7 +113,7 @@ int variaveisCorrente(contagem *cont, char lista[MAX_NOS+1][MAX_NOME+2], element
 
         if (tipo=='V') {
             cont->nv++;
-            if (testarnos()) return 1;
+            if (testarnos(cont)) return 1;
             strcpy(lista[cont->nv],"j"); /* Tem espaco para mais dois caracteres */
             strcat(lista[cont->nv],netlist[i].nome);
             netlist[i].x=cont->nv;
@@ -121,7 +121,7 @@ int variaveisCorrente(contagem *cont, char lista[MAX_NOS+1][MAX_NOME+2], element
         }
         else if (tipo == 'L') {
             cont->nv++;
-            if (testarnos()) return 1;
+            if (testarnos(cont)) return 1;
             strcpy(lista[cont->nv],"j"); /* Tem espaco para mais dois caracteres */
             strcat(lista[cont->nv],netlist[i].nome);
             netlist[i].x=cont->nv;
@@ -133,7 +133,7 @@ int variaveisCorrente(contagem *cont, char lista[MAX_NOS+1][MAX_NOME+2], element
         }
         else if (tipo=='E') {
             cont->nv++;
-            if (testarnos()) return 1;
+            if (testarnos(cont)) return 1;
             strcpy(lista[cont->nv],"j"); /* Tem espaco para mais dois caracteres */
             strcat(lista[cont->nv],netlist[i].nome);
             netlist[i].x=cont->nv;
@@ -141,7 +141,7 @@ int variaveisCorrente(contagem *cont, char lista[MAX_NOS+1][MAX_NOME+2], element
         }
         else if (tipo=='F') {
             cont->nv++;
-            if (testarnos()) return 1;
+            if (testarnos(cont)) return 1;
             strcpy(lista[cont->nv],"j"); /* Tem espaco para mais dois caracteres */
             strcat(lista[cont->nv],netlist[i].nome);
             netlist[i].x=cont->nv;
@@ -149,7 +149,7 @@ int variaveisCorrente(contagem *cont, char lista[MAX_NOS+1][MAX_NOME+2], element
         }
         else if (tipo=='H') {
             cont->nv=cont->nv+2;
-            if (testarnos()) return 1;
+            if (testarnos(cont)) return 1;
             strcpy(lista[cont->nv-1],"jx"); strcat(lista[cont->nv-1],netlist[i].nome);
             netlist[i].x=cont->nv-1;
             strcpy(lista[cont->nv],"jy"); strcat(lista[cont->nv],netlist[i].nome);
