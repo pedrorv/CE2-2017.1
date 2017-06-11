@@ -4,9 +4,10 @@
 
 #include "resolver.h"
 #include "tipos.h"
+#include "macros.h"
 
 
-void resolversistemaPO(double  Yn[MAX_NOS+1][MAX_NOS+2],contagem *cont) {
+int resolversistemaPO(double  Yn[MAX_NOS+1][MAX_NOS+2],contagem *cont) {
   int i,j,l, a;
   double  t, p;
 
@@ -45,6 +46,8 @@ void resolversistemaPO(double  Yn[MAX_NOS+1][MAX_NOS+2],contagem *cont) {
       }        
     }
   }
+
+  return OK;
 }
 
 int testeconvergenciaPO(double  Yn[MAX_NOS+1][MAX_NOS+2], double  Yn1[MAX_NOS+1][MAX_NOS+2], contagem *cont) {
@@ -57,10 +60,11 @@ int testeconvergenciaPO(double  Yn[MAX_NOS+1][MAX_NOS+2], double  Yn1[MAX_NOS+1]
        if (fabs(d)>CONST_CONV) return 1;
      }     
    }
-   return 0;
+
+   return OK;
 }
 
-void resolversistemaPS(double _Complex Yn[MAX_NOS+1][MAX_NOS+2], contagem *cont) {
+int resolversistemaPS(double _Complex Yn[MAX_NOS+1][MAX_NOS+2], contagem *cont) {
   int i,j,l, a;
   double _Complex  t, p;
 
@@ -99,4 +103,6 @@ void resolversistemaPS(double _Complex Yn[MAX_NOS+1][MAX_NOS+2], contagem *cont)
       }
     }
   }
+
+  return OK;
 }
