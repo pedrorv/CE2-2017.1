@@ -24,6 +24,6 @@ typedef struct frequencia {
   double
     fi, /* Frequencia de corte inferior */
     fs; /* Frequencia de corte superior */
-} frequecia;
+} frequencia;
 
 #endif
