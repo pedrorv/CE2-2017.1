@@ -65,7 +65,7 @@ int main (int argc, char *argv[]) {
     exit(1);
   }
 
-  falhaVariaveis = variaveisCorrente(&cont, lista, netlist);
+  falhaVariaveis = variaveisCorrente(&cont, lista, netlist, L, C);
 
   if (falhaVariaveis) {
     exit(1);
