@@ -67,8 +67,8 @@ int lerNetlist(FILE *arquivo, elemento netlist[MAX_ELEM], char txt[MAX_LINHA+1],
             netlist[cont->ne].b=numero(nb, lista, cont);
         }
         else if (tipo=='K') {
-          sscanf(p,"%10s%10s%lg",&netlist[ne].la,&netlist[ne].lb,&netlist[ne].valor);
-          printf("%s %s %s %g\n",netlist[ne].nome,netlist[ne].la,netlist[ne].lb,netlist[ne].valor);
+          sscanf(p,"%10s%10s%lg",netlist[cont->ne].la,netlist[cont->ne].lb,&netlist[cont->ne].valor);
+          printf("%s %s %s %g\n",netlist[cont->ne].nome,netlist[cont->ne].la,netlist[cont->ne].lb,netlist[cont->ne].valor);
         }
         else if (tipo == 'I' || tipo == 'V') {
             sscanf(p,"%10s%10s%lg%lg%lg",na,nb,&netlist[cont->ne].modulo,&netlist[cont->ne].fase,&netlist[cont->ne].valor);
@@ -94,10 +94,10 @@ int lerNetlist(FILE *arquivo, elemento netlist[MAX_ELEM], char txt[MAX_LINHA+1],
             netlist[cont->ne].d=numero(nd, lista, cont);
         }
          else if (tipo=='.') {
-            sscanf(p,"%10s%d%d%lg",ptspor,freq->npts,freq->fi,freq->fs);
-            if (ptspor="DEC")
+            sscanf(p,"%10s%d%lg%lg",ptspor,&freq->npts,&freq->fi,&freq->fs);
+            if (strcmp(ptspor,"DEC")==0)
               freq->ptspor=1;
-            else if (ptspor="OCT")
+            else if (strcmp(ptspor,"OCT")==0)
               freq->ptspor=2;
             else 
               freq->ptspor=0;
