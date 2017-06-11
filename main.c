@@ -36,9 +36,11 @@ FILE *arquivo;
 
 double
   g,
-  Yn[MAX_NOS+1][MAX_NOS+2];
+  Yn[MAX_NOS+1][MAX_NOS+2],
+  Yn1[MAX_NOS+1][MAX_NOS+2];
+
 double _Complex
-  Ynps[MAX_PONTOS+1][MAX_NOS+1][MAX_NOS+2];
+  YnPS[MAX_PONTOS+1][MAX_NOS+1][MAX_NOS+2];
 
 contagem cont;
 
@@ -67,6 +69,29 @@ int main (int argc, char *argv[]) {
   }
 
   imprimirNetlist(&cont, lista, netlist);
-
+  
+ /* Zera sistema */
+  for (i=0; i<=neq; i++) {
+    for (j=0; j<=neq+1; j++)
+    {
+      Yn[i][j]=0;
+      Yn1[i][j]=0;
+      for (k=0; k<=npts; k++)
+       Ynps[k][i][j]=0;
+    }
+  }
+  /*loop com teste de convergencia*/
+  mnaPO(netlist,Yn,Yn1,L,C,&cont);
+  resolversistemaPO(Yn,int neq);
+  /*fim do loop*/
+  
+  /*imprimirsistemaPO*/
+  
+  for (i=0; i<=npts; i++) {
+  mnaPS(netlist,Yn,YnPS[i],L,C,f,&cont);
+  resolversistemaPS(YnPS[i],neq);
+  }
+  
+  /*imprimirsistemaPS*/
   return OK;
 }
