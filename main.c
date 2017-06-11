@@ -8,6 +8,7 @@ Pedro Reis
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 #include "macros.h"
 #include "mna.h"
@@ -91,31 +92,31 @@ int main (int argc, char *argv[]) {
   /*imprimirsistemaPO*/
   
   if (freq.ptspor==1){ /*Decada*/
-    f=freq.fi;
+    double f=freq.fi;
     do
       for (i=0; i<=(freq.npts-1); i++) {
         mnaPS(netlist,Yn,YnPS[i],L,C,f,&cont);
         resolversistemaPS(YnPS[i],&cont);
-        f*=root(10,freq.npts);
+        f*=pow(1/10,freq.npts);
       }
     while(f<freq.fs);
     mnaPS(netlist,Yn,YnPS[i],L,C,freq.fs,&cont);
     resolversistemaPS(YnPS[i],&cont);
   }
   else if (freq.ptspor==2){ /*Oitava*/
-    f=freq.fi;
+    double f=freq.fi;
     do
       for (i=0; i<=(freq.npts-1); i++) {
         mnaPS(netlist,Yn,YnPS[i],L,C,f,&cont);
         resolversistemaPS(YnPS[i],&cont);
-        f*=root(2,freq.npts);
+        f*=pow(1/2,freq.npts);
       }
     while(f<freq.fs);
     mnaPS(netlist,Yn,YnPS[i],L,C,freq.fs,&cont);
     resolversistemaPS(YnPS[i],&cont);
   }
   else { /*Linear*/
-    f=freq.fi;
+    double f=freq.fi;
     for (i=0; i<(freq.npts-1); i++) {
       mnaPS(netlist,Yn,YnPS[i],L,C,f,&cont);
       resolversistemaPS(YnPS[i],&cont);
