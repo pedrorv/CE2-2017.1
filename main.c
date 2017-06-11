@@ -9,6 +9,7 @@ Pedro Reis
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 
 #include "macros.h"
 #include "mna.h"
@@ -60,6 +61,7 @@ int main (int argc, char *argv[]) {
 
   cont.nv = 0;
   cont.ne = 0;
+  strcpy(lista[0],"0");
 
   falhaLeitura = lerNetlist(arquivo, netlist, txt, p, lista, &cont, &freq);
   fclose(arquivo);
