@@ -48,7 +48,9 @@ contagem cont;
 frequencia freq;
 tabela C,L;
 
-int main (int argc, char *argv[]) {  
+int main (int argc, char *argv[]) {
+  for(i=0; i<=MAX_NOS; i++) {C[i]=i; L[i]=i;} /* Inicializa tabelas */
+
   do {
     printf("Entre nome do arquivo com o netlist (ex: mna.net): ");
     scanf("%50s", nomearquivo);
@@ -65,6 +67,8 @@ int main (int argc, char *argv[]) {
   if (falhaLeitura) {
     exit(1);
   }
+
+  imprimirNetlist(&cont, lista, netlist);
 
   falhaVariaveis = variaveisCorrente(&cont, lista, netlist, L, C);
 
