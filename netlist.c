@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "macros.h"
+#include "mna.h"
 #include "netlist.h"
 #include "tipos.h"
 
@@ -28,6 +29,13 @@ int numero(char *nome, char lista[MAX_NOS+1][MAX_NOME+2], contagem *cont) {
   else {
     return i; /* no ja conhecido */
   }
+}
+
+int testarnos(contagem *cont) {
+ if (cont->nv>MAX_NOS) {
+   printf("As variaveis extra excederam o numero de variaveis permitido (%d)\n",MAX_NOS);
+   return 1;
+ }
 }
 
 int lerNetlist(FILE *arquivo, elemento netlist[MAX_ELEM], char txt[MAX_LINHA+1], char *p, char lista[MAX_NOS+1][MAX_NOME+2], contagem *cont) {
@@ -98,30 +106,56 @@ int variaveisCorrente(contagem *cont, char lista[MAX_NOS+1][MAX_NOME+2], element
     char tipo;
     int i;
     cont->nn=cont->nv;
+    cont->neq=cont->nn;
 
     for (i=1; i<=cont->ne; i++) {
         tipo=netlist[i].nome[0];
 
-        if (tipo=='V' || tipo=='E' || tipo=='F' || tipo=='O') {
+        if (tipo=='V') {
             cont->nv++;
-            if (cont->nv>MAX_NOS) {
-                printf("As correntes extra excederam o numero de variaveis permitido (%d)\n", MAX_NOS);
-                return 1;
-            }
+            if (testarnos()) return 1;
             strcpy(lista[cont->nv],"j"); /* Tem espaco para mais dois caracteres */
             strcat(lista[cont->nv],netlist[i].nome);
             netlist[i].x=cont->nv;
+            operacional(netlist[i].a,netlist[i].b,0,netlist[i].x);
+        }
+        else if (tipo == 'L') {
+            cont->nv++;
+            if (testarnos()) return 1;
+            strcpy(lista[cont->nv],"j"); /* Tem espaco para mais dois caracteres */
+            strcat(lista[cont->nv],netlist[i].nome);
+            netlist[i].x=cont->nv;
+            operacional(netlist[i].a,netlist[i].b,0,netlist[i].x);
+        }
+        else if (tipo=='O') {
+            operacional(netlist[i].a,netlist[i].b,netlist[i].c,netlist[i].d);
+            cont->neq--;
+        }
+        else if (tipo=='E') {
+            cont->nv++;
+            if (testarnos()) return 1;
+            strcpy(lista[cont->nv],"j"); /* Tem espaco para mais dois caracteres */
+            strcat(lista[cont->nv],netlist[i].nome);
+            netlist[i].x=cont->nv;
+            operacional(netlist[i].a,netlist[i].b,0,netlist[i].x);
+        }
+        else if (tipo=='F') {
+            cont->nv++;
+            if (testarnos()) return 1;
+            strcpy(lista[cont->nv],"j"); /* Tem espaco para mais dois caracteres */
+            strcat(lista[cont->nv],netlist[i].nome);
+            netlist[i].x=cont->nv;
+            operacional(netlist[i].x,0,netlist[i].c,netlist[i].d);
         }
         else if (tipo=='H') {
             cont->nv=cont->nv+2;
-            if (cont->nv>MAX_NOS) {
-                printf("As correntes extra excederam o numero de variaveis permitido (%d)\n", MAX_NOS);
-                return 1;
-            }
+            if (testarnos()) return 1;
             strcpy(lista[cont->nv-1],"jx"); strcat(lista[cont->nv-1],netlist[i].nome);
             netlist[i].x=cont->nv-1;
             strcpy(lista[cont->nv],"jy"); strcat(lista[cont->nv],netlist[i].nome);
             netlist[i].y=cont->nv;
+            operacional(netlist[i].a,netlist[i].b,0,netlist[i].y);
+            operacional(netlist[i].x,0,netlist[i].c,netlist[i].d);
         }
     }
 
