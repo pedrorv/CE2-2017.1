@@ -45,6 +45,7 @@ double _Complex
 contagem cont;
 
 frequencia freq;
+tabela C,L;
 
 int main (int argc, char *argv[]) {  
   do {
@@ -57,7 +58,7 @@ int main (int argc, char *argv[]) {
   cont.nv = 0;
   cont.ne = 0;
 
-  falhaLeitura = lerNetlist(arquivo, netlist, txt, p, lista, &cont);
+  falhaLeitura = lerNetlist(arquivo, netlist, txt, p, lista, &cont, &freq);
   fclose(arquivo);
   
   if (falhaLeitura) {
@@ -73,18 +74,18 @@ int main (int argc, char *argv[]) {
   imprimirNetlist(&cont, lista, netlist);
   
  /* Zera sistema */
-  for (i=0; i<=neq; i++) {
-    for (j=0; j<=neq+1; j++)
+  for (i=0; i<=cont.neq; i++) {
+    for (j=0; j<=cont.neq+1; j++)
     {
       Yn[i][j]=0;
       Yn1[i][j]=0;
-      for (k=0; k<=npts; k++)
-       Ynps[k][i][j]=0;
+      for (k=0; k<=freq.npts; k++)
+       YnPS[k][i][j]=0;
     }
   }
   /*loop com teste de convergencia*/
   mnaPO(netlist,Yn,Yn1,L,C,&cont);
-  resolversistemaPO(Yn,&cont;
+  resolversistemaPO(Yn,&cont);
   /*fim do loop*/
   
   /*imprimirsistemaPO*/
