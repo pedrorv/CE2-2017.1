@@ -41,7 +41,7 @@ int testarnos(contagem *cont) {
 }
 
 int lerNetlist(FILE *arquivo, elemento netlist[MAX_ELEM], char txt[MAX_LINHA+1], char *p, char lista[MAX_NOS+1][MAX_NOME+2], contagem *cont, frequencia *freq) {
-    char tipo, na[MAX_NOME],nb[MAX_NOME],nc[MAX_NOME],nd[MAX_NOME];
+    char tipo, na[MAX_NOME],nb[MAX_NOME],nc[MAX_NOME],nd[MAX_NOME],ptspor[MAX_NOME];
 
     printf("Lendo netlist:\n");
     fgets(txt, MAX_LINHA, arquivo);
@@ -66,7 +66,10 @@ int lerNetlist(FILE *arquivo, elemento netlist[MAX_ELEM], char txt[MAX_LINHA+1],
             netlist[cont->ne].a=numero(na, lista, cont);
             netlist[cont->ne].b=numero(nb, lista, cont);
         }
-
+        else if (tipo=='K') {
+          sscanf(p,"%10s%10s%lg",&netlist[ne].la,&netlist[ne].lb,&netlist[ne].valor);
+          printf("%s %s %s %g\n",netlist[ne].nome,netlist[ne].la,netlist[ne].lb,netlist[ne].valor);
+        }
         else if (tipo == 'I' || tipo == 'V') {
             sscanf(p,"%10s%10s%lg%lg%lg",na,nb,&netlist[cont->ne].modulo,&netlist[cont->ne].fase,&netlist[cont->ne].valor);
             printf("%s %s %s %g %g %g\n",netlist[cont->ne].nome,na,nb,netlist[cont->ne].modulo,netlist[cont->ne].fase,netlist[cont->ne].valor);
@@ -89,6 +92,16 @@ int lerNetlist(FILE *arquivo, elemento netlist[MAX_ELEM], char txt[MAX_LINHA+1],
             netlist[cont->ne].b=numero(nb, lista, cont);
             netlist[cont->ne].c=numero(nc, lista, cont);
             netlist[cont->ne].d=numero(nd, lista, cont);
+        }
+         else if (tipo=='.') {
+            sscanf(p,"%10s%d%d%lg",ptspor,freq->npts,freq->fi,freq->fs);
+            if (ptspor="DEC")
+              freq->ptspor=1;
+            else if (ptspor="OCT")
+              freq->ptspor=2;
+            else 
+              freq->ptspor=0;
+            cont->ne--;
         }
         else if (tipo=='*') { /* Comentario comeca com "*" */
             printf("Comentario: %s", txt);
