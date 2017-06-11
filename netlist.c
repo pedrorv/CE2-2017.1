@@ -36,6 +36,8 @@ int testarnos(contagem *cont) {
    printf("As variaveis extra excederam o numero de variaveis permitido (%d)\n",MAX_NOS);
    return 1;
  }
+
+ return OK;
 }
 
 int lerNetlist(FILE *arquivo, elemento netlist[MAX_ELEM], char txt[MAX_LINHA+1], char *p, char lista[MAX_NOS+1][MAX_NOME+2], contagem *cont, frequencia *freq) {
