@@ -76,7 +76,6 @@ int lerNetlist(FILE *arquivo, elemento netlist[MAX_ELEM], char txt[MAX_LINHA+1],
             netlist[cont->ne].a=numero(na, lista, cont);
             netlist[cont->ne].b=numero(nb, lista, cont);
         }
-
         else if (tipo=='G' || tipo=='E' || tipo=='F' || tipo=='H') {
             sscanf(p,"%10s%10s%10s%10s%lg",na,nb,nc,nd,&netlist[cont->ne].valor);
             printf("%s %s %s %s %s %g\n",netlist[cont->ne].nome,na,nb,nc,nd,netlist[cont->ne].valor);
@@ -177,13 +176,13 @@ int variaveisCorrente(contagem *cont, char lista[MAX_NOS+1][MAX_NOME+2], element
     return OK;
 }
 
-void imprimirNetlist(contagem *cont, char lista[MAX_NOS+1][MAX_NOME+2], elemento netlist[MAX_ELEM]) {
+void imprimirNetlist(contagem *cont, char lista[MAX_NOS+1][MAX_NOME+2], elemento netlist[MAX_ELEM], tabela C) {
     char tipo;
     int i;
     
     printf("Variaveis internas: \n");
     for (i=0; i<=cont->nv; i++) {
-        printf("%d -> %s\n",i,lista[i]);
+        printf("%d -> %s (%d)\n",i,lista[i],C[i]);
     }
 
     printf("Netlist interno final\n");

@@ -74,7 +74,7 @@ int main (int argc, char *argv[]) {
     exit(1);
   }
 
-  imprimirNetlist(&cont, lista, netlist);
+  imprimirNetlist(&cont, lista, netlist, C);
   
  /* Zera sistema */
   for (i=0; i<=cont.neq; i++) {
