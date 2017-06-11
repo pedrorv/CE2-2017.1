@@ -14,7 +14,21 @@ typedef struct contagem {
     ne, /* Elementos */
     nv, /* Variaveis */
     neq,/* Equacoes */
+    npts, /* Pontos */
+    ptspor, /* 1:por decada, 2:por oitava, 0 ou outros: linear*/
     nn; /* Nos */
+  double
+    fi, /* Frequencia de corte inferior */
+    fs; /* Frequencia de corte superior */
 } contagem;
+
+typedef struct frequencia {
+  int
+    npts, /* Pontos */
+    ptspor; /* 1:por decada, 2:por oitava, 0 ou outros: linear*/
+  double
+    fi, /* Frequencia de corte inferior */
+    fs; /* Frequencia de corte superior */
+} frequecia;
 
 #endif
