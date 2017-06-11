@@ -2,9 +2,10 @@
 #define TIPOS_H
 
 typedef struct elemento { /* Elemento do netlist */
-  char nome[MAX_NOME],la[MAX_NOME],lb[MAX_NOME];
+  char nome[MAX_NOME],la[MAX_NOME],lb[MAX_NOME],modelo[MAX_NOME];
   double valor, modulo, fase;
   int a,b,c,d,x,y;
+  double alfa, alfar, isbe, vtbe, isbc, vtbc, va, c0be, c1be, c0bc, c1bc;
 } elemento;
 
 typedef int tabela[MAX_NOS+1];

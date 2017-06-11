@@ -102,6 +102,28 @@ int lerNetlist(FILE *arquivo, elemento netlist[MAX_ELEM], char txt[MAX_LINHA+1],
               freq->ptspor=0;
             cont->ne--;
         }
+        else if (tipo == 'Q') {
+            sscanf(p,"%10s%10s%10s%10s%lg%lg%lg%lg%lg%lg%lg%lg%lg%lg%lg",
+                nc, nb, na,
+                netlist[cont->ne].modelo, &netlist[cont->ne].alfa, &netlist[cont->ne].alfar,
+                &netlist[cont->ne].isbe,  &netlist[cont->ne].vtbe,  &netlist[cont->ne].isbc, 
+                &netlist[cont->ne].vtbc,  &netlist[cont->ne].va,    &netlist[cont->ne].c0be,
+                &netlist[cont->ne].c1be,  &netlist[cont->ne].c0bc,  &netlist[cont->ne].c1bc
+            );
+            // Transistor bipolar: Q<nome> <nóc> <nób> <nóe> <tipo> <α> <αr> <I s be> <V T be> <I s bc> <V T bc> <VA> <C 0 be> <C 1 be> <C 0 bc> <C 1 bc>
+            // Q1 1 2 3 NPN 0.995 0.5 1e-9 43.43e-3 1e-9 43.43e-3 100 5e-12 100e-18 5e-12 100e-18
+            printf(
+                "%s %s %s %s %s %g %g %g %g %g %g %g %g %g %g %g\n",
+                netlist[cont->ne].nome, nc, nb, na, 
+                netlist[cont->ne].modelo, netlist[cont->ne].alfa, netlist[cont->ne].alfar,
+                netlist[cont->ne].isbe,  netlist[cont->ne].vtbe,  netlist[cont->ne].isbc, 
+                netlist[cont->ne].vtbc,  netlist[cont->ne].va,    netlist[cont->ne].c0be,
+                netlist[cont->ne].c1be,  netlist[cont->ne].c0bc,  netlist[cont->ne].c1bc
+            );
+            netlist[cont->ne].a=numero(na, lista, cont);
+            netlist[cont->ne].b=numero(nb, lista, cont);
+            netlist[cont->ne].c=numero(nc, lista, cont);
+        }
         else if (tipo=='*') { /* Comentario comeca com "*" */
             printf("Comentario: %s", txt);
             cont->ne--;
