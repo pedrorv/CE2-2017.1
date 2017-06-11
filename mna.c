@@ -90,7 +90,7 @@ void acoplamento(double k,char la[],char lb[],elemento netlist[MAX_ELEM],double 
   transadmitancia(m*jw,netlist[b].x,0,netlist[a].x,0,Yn,L,C);
 }
 
-void mnaPO(elemento netlist[MAX_ELEM],double  Yn[MAX_NOS+1][MAX_NOS+2], double Yn1[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, contagem *cont){
+void mnaPO(elemento netlist[MAX_ELEM], double Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, contagem *cont){
   char tipo;
   int i;
 
@@ -98,44 +98,44 @@ void mnaPO(elemento netlist[MAX_ELEM],double  Yn[MAX_NOS+1][MAX_NOS+2], double Y
     tipo=netlist[i].nome[0];
 
     if (tipo=='R') {
-      condutancia(1/netlist[i].valor,netlist[i].a,netlist[i].b,Yn1,L,C);
+      condutancia(1/netlist[i].valor,netlist[i].a,netlist[i].b,Yn,L,C);
     }
     else if (tipo=='L') {
-      transcondutancia(1,0,netlist[i].x,netlist[i].a,netlist[i].b,Yn1,L,C);
-      condutancia(GMIN,netlist[i].x,0,Yn1,L,C);
+      transcondutancia(1,0,netlist[i].x,netlist[i].a,netlist[i].b,Yn,L,C);
+      condutancia(GMIN,netlist[i].x,0,Yn,L,C);
     }
     else if (tipo=='C') {
-      condutancia(GMIN,netlist[i].a,netlist[i].b,Yn1,L,C);
+      condutancia(GMIN,netlist[i].a,netlist[i].b,Yn,L,C);
     }
     else if (tipo=='G') {
-      transcondutancia(netlist[i].valor,netlist[i].a,netlist[i].b,netlist[i].c,netlist[i].d,Yn1,L,C);
+      transcondutancia(netlist[i].valor,netlist[i].a,netlist[i].b,netlist[i].c,netlist[i].d,Yn,L,C);
     }
     else if (tipo=='K');
     else if (tipo=='I') {
-      corrente(netlist[i].valor,netlist[i].a,netlist[i].b,Yn1,L,C,cont);
+      corrente(netlist[i].valor,netlist[i].a,netlist[i].b,Yn,L,C,cont);
     }
     else if (tipo=='V') {
-      transcondutancia(1,0,netlist[i].x,netlist[i].a,netlist[i].b,Yn1,L,C);
-      corrente(netlist[i].valor,netlist[i].x,0,Yn1,L,C,cont);
+      transcondutancia(1,0,netlist[i].x,netlist[i].a,netlist[i].b,Yn,L,C);
+      corrente(netlist[i].valor,netlist[i].x,0,Yn,L,C,cont);
     }
     else if (tipo=='E') {
-      transcondutancia(1,0,netlist[i].x,netlist[i].a,netlist[i].b,Yn1,L,C);
-      transcondutancia(netlist[i].valor,netlist[i].x,0,netlist[i].c,netlist[i].d,Yn1,L,C);
+      transcondutancia(1,0,netlist[i].x,netlist[i].a,netlist[i].b,Yn,L,C);
+      transcondutancia(netlist[i].valor,netlist[i].x,0,netlist[i].c,netlist[i].d,Yn,L,C);
     }
     else if (tipo=='F') {
-      transcondutancia(netlist[i].valor,netlist[i].a,netlist[i].b,netlist[i].x,0,Yn1,L,C);
-      transcondutancia(1,netlist[i].c,netlist[i].d,netlist[i].x,0,Yn1,L,C);
+      transcondutancia(netlist[i].valor,netlist[i].a,netlist[i].b,netlist[i].x,0,Yn,L,C);
+      transcondutancia(1,netlist[i].c,netlist[i].d,netlist[i].x,0,Yn,L,C);
     }
     else if (tipo=='H') {
-      transcondutancia(1,0,netlist[i].y,netlist[i].a,netlist[i].b,Yn1,L,C);
-      transcondutancia(netlist[i].valor,netlist[i].y,0,netlist[i].x,0,Yn1,L,C);
-      transcondutancia(1,netlist[i].c,netlist[i].d,netlist[i].x,0,Yn1,L,C);
+      transcondutancia(1,0,netlist[i].y,netlist[i].a,netlist[i].b,Yn,L,C);
+      transcondutancia(netlist[i].valor,netlist[i].y,0,netlist[i].x,0,Yn,L,C);
+      transcondutancia(1,netlist[i].c,netlist[i].d,netlist[i].x,0,Yn,L,C);
     }
     else if (tipo=='O');
   }
 }
 
-void mnaPS(elemento netlist[MAX_ELEM], double  YnPO[MAX_NOS+1][MAX_NOS+2], double _Complex Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, double f, contagem *cont){
+void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double _Complex Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, double f, contagem *cont) {
   char tipo;
   int i;
   double _Complex jw=2*M_PI*f*I;
