@@ -175,20 +175,23 @@ void imprimirNetlist(contagem *cont, char lista[MAX_NOS+1][MAX_NOME+2], elemento
     for (i=1; i<=cont->ne; i++) {
         tipo=netlist[i].nome[0];
 
-        if (tipo=='R' || tipo=='I' || tipo=='V') {
+        if (tipo == 'R' || tipo == 'L' || tipo == 'C') {
             printf("%s %d %d %g\n",netlist[i].nome,netlist[i].a,netlist[i].b,netlist[i].valor);
         }
-        else if (tipo=='G' || tipo=='E' || tipo=='F' || tipo=='H') {
+        else if (tipo == 'I' || tipo == 'V') {
+            printf("%s %d %d %g %g %g\n",netlist[i].nome,netlist[i].a,netlist[i].b,netlist[i].modulo,netlist[i].fase,netlist[i].valor);
+        }
+        else if (tipo == 'G' || tipo == 'E' || tipo == 'F' || tipo == 'H') {
             printf("%s %d %d %d %d %g\n",netlist[i].nome,netlist[i].a,netlist[i].b,netlist[i].c,netlist[i].d,netlist[i].valor);
         }
-        else if (tipo=='O') {
+        else if (tipo == 'O') {
             printf("%s %d %d %d %d\n",netlist[i].nome,netlist[i].a,netlist[i].b,netlist[i].c,netlist[i].d);
         }
 
-        if (tipo=='V' || tipo=='E' || tipo=='F' || tipo=='O') {
+        if (tipo == 'V' || tipo == 'E' || tipo == 'F' || tipo == 'O') {
             printf("Corrente jx: %d\n",netlist[i].x);
         }
-        else if (tipo=='H') {
+        else if (tipo == 'H') {
             printf("Correntes jx e jy: %d, %d\n",netlist[i].x,netlist[i].y);
         }   
     }
