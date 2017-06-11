@@ -135,7 +135,7 @@ void mnaPO(elemento netlist[MAX_ELEM],double  Yn[MAX_NOS+1][MAX_NOS+2], double Y
   }
 }
 
-void mnaPS(elemento netlist[MAX_ELEM], double _Complex Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, double f, contagem *cont){
+void mnaPS(elemento netlist[MAX_ELEM], double  YnPO[MAX_NOS+1][MAX_NOS+2], double _Complex Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, double f, contagem *cont){
   char tipo;
   int i;
   double _Complex jw=2*M_PI*f*I;
