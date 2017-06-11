@@ -44,6 +44,8 @@ double _Complex
 
 contagem cont;
 
+frequencia freq;
+
 int main (int argc, char *argv[]) {  
   do {
     printf("Entre nome do arquivo com o netlist (ex: mna.net): ");
@@ -82,14 +84,44 @@ int main (int argc, char *argv[]) {
   }
   /*loop com teste de convergencia*/
   mnaPO(netlist,Yn,Yn1,L,C,&cont);
-  resolversistemaPO(Yn,int neq);
+  resolversistemaPO(Yn,&cont;
   /*fim do loop*/
   
   /*imprimirsistemaPO*/
   
-  for (i=0; i<=npts; i++) {
-  mnaPS(netlist,Yn,YnPS[i],L,C,f,&cont);
-  resolversistemaPS(YnPS[i],neq);
+  if (freq.ptspor==1){ /*Decada*/
+    f=freq.fi;
+    do
+      for (i=0; i<=(freq.npts-1); i++) {
+        mnaPS(netlist,Yn,YnPS[i],L,C,f,&cont);
+        resolversistemaPS(YnPS[i],&cont);
+        f*=root(10,freq.npts);
+      }
+    while(f<freq.fs);
+    mnaPS(netlist,Yn,YnPS[i],L,C,freq.fs,&cont);
+    resolversistemaPS(YnPS[i],&cont);
+  }
+  else if (freq.ptspor==2){ /*Oitava*/
+    f=freq.fi;
+    do
+      for (i=0; i<=(freq.npts-1); i++) {
+        mnaPS(netlist,Yn,YnPS[i],L,C,f,&cont);
+        resolversistemaPS(YnPS[i],&cont);
+        f*=root(2,freq.npts);
+      }
+    while(f<freq.fs);
+    mnaPS(netlist,Yn,YnPS[i],L,C,freq.fs,&cont);
+    resolversistemaPS(YnPS[i],&cont);
+  }
+  else { /*Linear*/
+    f=freq.fi;
+    for (i=0; i<(freq.npts-1); i++) {
+      mnaPS(netlist,Yn,YnPS[i],L,C,f,&cont);
+      resolversistemaPS(YnPS[i],&cont);
+      f+=(freq.fs-freq.fi)/(freq.npts-1);
+    }
+    mnaPS(netlist,Yn,YnPS[i],L,C,f,&cont);
+    resolversistemaPS(YnPS[i],&cont);
   }
   
   /*imprimirsistemaPS*/
