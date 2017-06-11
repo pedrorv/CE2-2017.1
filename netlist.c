@@ -211,5 +211,5 @@ void imprimirNetlist(contagem *cont, char lista[MAX_NOS+1][MAX_NOME+2], elemento
         }   
     }
 
-    printf("O circuito tem %d nos, %d variaveis e %d elementos\n",cont->nn,cont->nv,cont->ne);
+    printf("O circuito tem %d nos, %d variaveis, %d equacoes e %d elementos\n",cont->nn,cont->nv,cont->neq,cont->ne);
 }

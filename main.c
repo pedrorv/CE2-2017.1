@@ -68,8 +68,6 @@ int main (int argc, char *argv[]) {
     exit(1);
   }
 
-  imprimirNetlist(&cont, lista, netlist);
-
   falhaVariaveis = variaveisCorrente(&cont, lista, netlist, L, C);
 
   if (falhaVariaveis) {
