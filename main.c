@@ -89,12 +89,15 @@ int main (int argc, char *argv[]) {
     }
   }
   /*loop com teste de convergencia*/
-  mnaPO(netlist,Yn,Yn1,L,C,&cont);
+  mnaPO(netlist,Yn,L,C,&cont);
   resolversistemaPO(Yn,&cont);
   /*fim do loop*/
+
+  imprimeSistemaDouble(Yn, &cont);
   
   /*imprimirsistemaPO*/
   
+
   if (freq.ptspor==1){ /*Decada*/
     double f=freq.fi;
     do
