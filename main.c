@@ -4,6 +4,10 @@ Trabalho Final de Circuitos Elétricos 2 - 2017.1
 Emerson Santos
 Juan Vazquez
 Pedro Reis
+
+Baseado no programa mna1amp
+Por Antonio Carlos M. de Queiroz - acmq@coe.ufrj.br
+http://www.coe.ufrj.br/~acmq/cursos/mna1amp.zip
 */
 
 #include <stdio.h>
