@@ -193,6 +193,16 @@ int variaveisCorrente(contagem *cont, char lista[MAX_NOS+1][MAX_NOME+2], element
             operacional(netlist[i].a,netlist[i].b,0,netlist[i].y, L, C);
             operacional(netlist[i].x,0,netlist[i].c,netlist[i].d, L, C);
         }
+        else if (tipo=='Q') {
+            cont->nv=cont->nv+2;
+            if (testarnos(cont)) return 1;
+            strcpy(lista[cont->nv-1],"jx"); strcat(lista[cont->nv-1],netlist[i].nome);
+            netlist[i].x=cont->nv-1;
+            strcpy(lista[cont->nv],"jy"); strcat(lista[cont->nv],netlist[i].nome);
+            netlist[i].y=cont->nv;
+            operacional(netlist[i].b,netlist[i].a,0,netlist[i].x, L, C); /*Jbe*/
+            operacional(netlist[i].b,netlist[i].c,0,netlist[i].y, L, C); /*Jbc*/
+        }
     }
 
     return OK;
@@ -223,13 +233,19 @@ void imprimirNetlist(contagem *cont, char lista[MAX_NOS+1][MAX_NOME+2], elemento
         else if (tipo == 'O') {
             printf("%s %d %d %d %d\n",netlist[i].nome,netlist[i].a,netlist[i].b,netlist[i].c,netlist[i].d);
         }
+        else if (tipo == 'Q') {
+            printf("%s %d %d %d\n",netlist[i].nome,netlist[i].c,netlist[i].b,netlist[i].a);
+        }
 
         if (tipo == 'V' || tipo == 'E' || tipo == 'F' || tipo == 'O') {
             printf("Corrente jx: %d\n",netlist[i].x);
         }
         else if (tipo == 'H') {
             printf("Correntes jx e jy: %d, %d\n",netlist[i].x,netlist[i].y);
-        }   
+        }  
+        else if (tipo == 'Q') {
+            printf("Correntes jbe e jbc: %d, %d\n",netlist[i].x,netlist[i].y);
+        }  
     }
 
     printf("O circuito tem %d nos, %d variaveis, %d equacoes e %d elementos\n",cont->nn,cont->nv,cont->neq,cont->ne);
