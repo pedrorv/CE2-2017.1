@@ -134,10 +134,10 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
     }
     else if (tipo=='O');
     else if (tipo=='Q') {
-      VBE=YnPO[L[nb]][C[cont->neq+1]]-YnPO[L[na]][C[cont->neq+1]];
+      VBE=YnPO[L[netlist[i].b]][C[cont->neq+1]]-YnPO[L[netlist[i].a]][C[cont->neq+1]];
       GBE=netlist[i].isbe*exp(VBE/netlist[cont->ne].vtbe)/netlist[cont->ne].vtbe;
       IBE=netlist[i].isbe*(exp(VBE/netlist[cont->ne].vtbe)-1) - GBE*VBE;
-      VBC=YnPO[L[nb]][C[cont->neq+1]]-YnPO[L[nc]][C[cont->neq+1]];
+      VBC=YnPO[L[netlist[i].b]][C[cont->neq+1]]-YnPO[L[netlist[i].c]][C[cont->neq+1]];
       GBC=netlist[i].isbc*exp(VBC/netlist[cont->ne].vtbc)/netlist[cont->ne].vtbc;
       IBC=netlist[i].isbc*(exp(VBC/netlist[cont->ne].vtbc)-1) - GBE*VBC;
 
