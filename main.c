@@ -103,7 +103,7 @@ int main (int argc, char *argv[]) {
   mnaPO(netlist,Yn,Yn1,L,C,&cont);
   resolversistemaPO(Yn1,&cont);
   k++;
- } while((testeconvergenciaPO(Yn, Yn1,&cont)and(k<10));
+ } while(testeconvergenciaPO(Yn, Yn1,&cont) && (k<10));
 
 
   imprimeSistemaDouble(Yn1, &cont);
@@ -147,7 +147,7 @@ int main (int argc, char *argv[]) {
       resolversistemaPS(YnPS[i],&cont);
       f+=(freq.fs-freq.fi)/(freq.npts-1);
     }
-    mnaPS(netlist1,Yn,YnPS[i],L,C,f,&cont);
+    mnaPS(netlist,Yn,YnPS[i],L,C,f,&cont);
     resolversistemaPS(YnPS[i],&cont);
   }
   
