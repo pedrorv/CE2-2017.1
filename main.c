@@ -82,58 +82,72 @@ int main (int argc, char *argv[]) {
 
   imprimirNetlist(&cont, lista, netlist, C);
   
- /* Zera sistema */
-  for (i=0; i<=cont.neq; i++) {
+ 
+ for (i=0; i<=cont.neq; i++) {
     for (j=0; j<=cont.neq+1; j++)
     {
       Yn[i][j]=0;
       Yn1[i][j]=0;
-      for (k=0; k<=freq.npts; k++)
-       YnPS[k][i][j]=0;
     }
-  }
-  /*loop com teste de convergencia*/
+ }
+  
+ k=0;
+ do {
+   for (i=0; i<=cont.neq; i++) {
+     for (j=0; j<=cont.neq+1; j++)
+     {
+       Yn[i][j]=Yn1[i][j];
+       Yn1[i][j]=0;
+     }
+   }
   mnaPO(netlist,Yn,Yn1,L,C,&cont);
   resolversistemaPO(Yn1,&cont);
-  /*fim do loop*/
+  k++;
+ } while((testeconvergenciaPO(Yn, Yn1,&cont)and(k<10));
+
 
   imprimeSistemaDouble(Yn1, &cont);
-  
-  /*imprimirsistemaPO*/
-  
-
+ 
+  for (i=0; i<=cont.neq; i++) {
+    for (j=0; j<=cont.neq+1; j++){
+      for (k=0; k<=freq.npts; k++){
+        YnPS[k][i][j]=0;
+      }
+    }
+  }
+         
   if (freq.ptspor==1){ /*Decada*/
     double f=freq.fi;
     do
       for (i=0; i<=(freq.npts-1); i++) {
-        mnaPS(netlist,Yn,YnPS[i],L,C,f,&cont);
+        mnaPS(netlist,Yn1,YnPS[i],L,C,f,&cont);
         resolversistemaPS(YnPS[i],&cont);
         f*=pow(1/10,freq.npts);
       }
     while(f<freq.fs);
-    mnaPS(netlist,Yn,YnPS[i],L,C,freq.fs,&cont);
+    mnaPS(netlist,Yn1,YnPS[i],L,C,freq.fs,&cont);
     resolversistemaPS(YnPS[i],&cont);
   }
   else if (freq.ptspor==2){ /*Oitava*/
     double f=freq.fi;
     do
       for (i=0; i<=(freq.npts-1); i++) {
-        mnaPS(netlist,Yn,YnPS[i],L,C,f,&cont);
+        mnaPS(netlist,Yn1,YnPS[i],L,C,f,&cont);
         resolversistemaPS(YnPS[i],&cont);
         f*=pow(1/2,freq.npts);
       }
     while(f<freq.fs);
-    mnaPS(netlist,Yn,YnPS[i],L,C,freq.fs,&cont);
+    mnaPS(netlist,Yn1,YnPS[i],L,C,freq.fs,&cont);
     resolversistemaPS(YnPS[i],&cont);
   }
   else { /*Linear*/
     double f=freq.fi;
     for (i=0; i<(freq.npts-1); i++) {
-      mnaPS(netlist,Yn,YnPS[i],L,C,f,&cont);
+      mnaPS(netlist,Yn1,YnPS[i],L,C,f,&cont);
       resolversistemaPS(YnPS[i],&cont);
       f+=(freq.fs-freq.fi)/(freq.npts-1);
     }
-    mnaPS(netlist,Yn,YnPS[i],L,C,f,&cont);
+    mnaPS(netlist1,Yn,YnPS[i],L,C,f,&cont);
     resolversistemaPS(YnPS[i],&cont);
   }
   
