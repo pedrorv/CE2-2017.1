@@ -117,3 +117,14 @@ void imprimeSistemaDouble(double Yn[MAX_NOS+1][MAX_NOS+2], contagem *cont) {
     printf("\n");
   }
 }
+
+void zerarMatrizesDouble(double Yn[MAX_NOS+1][MAX_NOS+2], double Yn1[MAX_NOS+1][MAX_NOS+2], contagem *cont) {
+  int i, j;
+
+  for (i=0; i<=cont->neq; i++) {
+    for (j=0; j<=cont->neq+1; j++) {
+      Yn[i][j]=0;
+      Yn1[i][j]=0;
+    }
+  }
+}

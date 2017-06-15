@@ -82,13 +82,7 @@ int main (int argc, char *argv[]) {
 
   imprimirNetlist(&cont, lista, netlist, C);
   
- 
-  for (i=0; i<=cont.neq; i++) {
-    for (j=0; j<=cont.neq+1; j++) {
-      Yn[i][j]=0;
-      Yn1[i][j]=0;
-    }
-  }
+  zerarMatrizesDouble(Yn, Yn1, &cont);
   
   k=0;
   do {
