@@ -90,7 +90,7 @@ void acoplamento(double k,char la[],char lb[],elemento netlist[MAX_ELEM],double 
   transadmitancia(m*jw,netlist[b].x,0,netlist[a].x,0,Yn,L,C);
 }
 
-void mnaPO(elemento netlist[MAX_ELEM], double Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, contagem *cont){
+void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, contagem *cont){
   char tipo;
   int i;
 
@@ -132,6 +132,34 @@ void mnaPO(elemento netlist[MAX_ELEM], double Yn[MAX_NOS+1][MAX_NOS+2], tabela L
       transcondutancia(1,netlist[i].c,netlist[i].d,netlist[i].x,0,Yn,L,C);
     }
     else if (tipo=='O');
+    else if (tipo=='Q') {
+      VBE=YnPO[L[nb]][C[cont->neq+1]]-YnPO[L[na]][C[cont->neq+1]];
+      GBE=netlist[i].isbe*exp(VBE/netlist[cont->ne].vtbe)/netlist[cont->ne].vtbe;
+      IBE=netlist[i].isbe*(exp(VBE/netlist[cont->ne].vtbe)-1) - GBE*VBE;
+      VBC=YnPO[L[nb]][C[cont->neq+1]]-YnPO[L[nc]][C[cont->neq+1]];
+      GBC=netlist[i].isbc*exp(VBC/netlist[cont->ne].vtbc)/netlist[cont->ne].vtbc;
+      IBC=netlist[i].isbc*(exp(VBC/netlist[cont->ne].vtbc)-1) - GBE*VBC;
+      if (netlist[i].modelo="N") {
+        condutancia(GBE,netlist[i].b,netlist[i].a,Yn,L,C);
+        corrente(IBE,netlist[i].b,netlist[i].a,Yn,L,C,cont);
+        corrente(netlist[i].alfar*IBC,netlist[i].a,netlist[i].b,Yn,L,C,cont);
+        transcondutancia(netlist[i].alfar*GBC,netlist[i].a,netlist[i].b,netlist[i].b,netlist[i].c,Yn,L,C);
+        condutancia(GBC,netlist[i].b,netlist[i].c,Yn,L,C);
+        corrente(IBC,netlist[i].b,netlist[i].c,Yn,L,C,cont);
+        corrente(netlist[i].alfa*IBE,netlist[i].c,netlist[i].b,Yn,L,C,cont);
+        transcondutancia(netlist[i].alfa*GBE,netlist[i].c,netlist[i].b,netlist[i].b,netlist[i].a,Yn,L,C);
+      }
+      else if (netlist[i].modelo="P") {
+        condutancia(GBE,netlist[i].b,netlist[i].a,Yn,L,C);
+        corrente(-IBE,netlist[i].b,netlist[i].a,Yn,L,C,cont);
+        corrente(-netlist[i].alfar*IBC,netlist[i].a,netlist[i].b,Yn,L,C,cont);
+        transcondutancia(-netlist[i].alfar*GBC,netlist[i].a,netlist[i].b,netlist[i].b,netlist[i].c,Yn,L,C);
+        condutancia(GBC,netlist[i].b,netlist[i].c,Yn,L,C);
+        corrente(-IBC,netlist[i].b,netlist[i].c,Yn,L,C,cont);
+        corrente(-netlist[i].alfa*IBE,netlist[i].c,netlist[i].b,Yn,L,C,cont);
+        transcondutancia(-netlist[i].alfa*GBE,netlist[i].c,netlist[i].b,netlist[i].b,netlist[i].a,Yn,L,C);
+      }
+    }
   }
 }
 
@@ -156,7 +184,9 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
     else if (tipo=='G') {
       transadmitancia(netlist[i].valor,netlist[i].a,netlist[i].b,netlist[i].c,netlist[i].d,Yn,L,C);
     }
-    else if (tipo=='K');
+    else if (tipo=='K') {
+      acoplamento(netlist[i].valor,netlist[i].la,netlist[i].lb,netlist,Yn,L,C,f,cont);
+    }
     else if (tipo=='I') {
       fasorcorrente(netlist[i].modulo,netlist[i].fase,netlist[i].a,netlist[i].b,Yn,L,C,cont);
     }
