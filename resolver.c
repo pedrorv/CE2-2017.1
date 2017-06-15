@@ -51,12 +51,13 @@ int resolversistemaPO(double  Yn[MAX_NOS+1][MAX_NOS+2],contagem *cont) {
 }
 
 int testeconvergenciaPO(double  Yn[MAX_NOS+1][MAX_NOS+2], double  Yn1[MAX_NOS+1][MAX_NOS+2], contagem *cont) {
-   int i,j,l, a;
-   double  t, p;
+   int i,j;
+   double d;
    
    for (i=1; i<=cont->neq; i++) {
      for (j=cont->neq+1; j>0; j--) { 
-       double d=Yn[i][j]-Yn1[i][j];
+       d=Yn[i][j]-Yn1[i][j];
+       if (fabs(d)>1) d=d/fabs(Yn[i][j]);
        if (fabs(d)>CONST_CONV) return 1;
      }     
    }
