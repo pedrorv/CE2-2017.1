@@ -200,8 +200,8 @@ int variaveisCorrente(contagem *cont, char lista[MAX_NOS+1][MAX_NOME+2], element
             netlist[i].x=cont->nv-1;
             strcpy(lista[cont->nv],"jy"); strcat(lista[cont->nv],netlist[i].nome);
             netlist[i].y=cont->nv;
-            operacional(netlist[i].b,netlist[i].a,0,netlist[i].x, L, C); /*Jbe*/
-            operacional(netlist[i].b,netlist[i].c,0,netlist[i].y, L, C); /*Jbc*/
+            operacional(netlist[i].b,netlist[i].a,0,netlist[i].x, L, C); /*Je*/
+            operacional(netlist[i].c,netlist[i].b,0,netlist[i].y, L, C); /*Jc*/
         }
     }
 
@@ -244,7 +244,7 @@ void imprimirNetlist(contagem *cont, char lista[MAX_NOS+1][MAX_NOME+2], elemento
             printf("Correntes jx e jy: %d, %d\n",netlist[i].x,netlist[i].y);
         }  
         else if (tipo == 'Q') {
-            printf("Correntes jbe e jbc: %d, %d\n",netlist[i].x,netlist[i].y);
+            printf("Correntes jc e je: %d, %d\n",netlist[i].x,netlist[i].y);
         }  
     }
 
