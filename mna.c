@@ -93,6 +93,7 @@ void acoplamento(double k,char la[],char lb[],elemento netlist[MAX_ELEM],double 
 void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, contagem *cont){
   char tipo;
   int i;
+  double VBE,GBE,IBE,VBC,GBC,IBC;
 
   for (i=1; i<=cont->ne; i++) {
     tipo=netlist[i].nome[0];
@@ -208,6 +209,15 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
       transadmitancia(netlist[i].valor,netlist[i].y,0,netlist[i].x,0,Yn,L,C);
       transadmitancia(1,netlist[i].c,netlist[i].d,netlist[i].x,0,Yn,L,C);
     }
+    else if (tipo=='Q') {
+
+      if (netlist[i].modelo[0] == 'N') {
+       
+      }
+      else if (netlist[i].modelo[0] == 'P') {
+    
+      }
+    }  
     else if (tipo=='O');
   }
 }
