@@ -1,0 +1,2 @@
+Os exemplos são arquivos de esquemático para o editor Edfil.
+O editor gera netlists que o RfNLin entende (Ctrl-Q ou pelo menu).
