@@ -139,7 +139,8 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
       VBC=YnPO[L[nb]][C[cont->neq+1]]-YnPO[L[nc]][C[cont->neq+1]];
       GBC=netlist[i].isbc*exp(VBC/netlist[cont->ne].vtbc)/netlist[cont->ne].vtbc;
       IBC=netlist[i].isbc*(exp(VBC/netlist[cont->ne].vtbc)-1) - GBE*VBC;
-      if (netlist[i].modelo="N") {
+
+      if (netlist[i].modelo[0] == 'N') {
         condutancia(GBE,netlist[i].b,netlist[i].a,Yn,L,C);
         corrente(IBE,netlist[i].b,netlist[i].a,Yn,L,C,cont);
         corrente(netlist[i].alfar*IBC,netlist[i].a,netlist[i].b,Yn,L,C,cont);
@@ -149,7 +150,7 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
         corrente(netlist[i].alfa*IBE,netlist[i].c,netlist[i].b,Yn,L,C,cont);
         transcondutancia(netlist[i].alfa*GBE,netlist[i].c,netlist[i].b,netlist[i].b,netlist[i].a,Yn,L,C);
       }
-      else if (netlist[i].modelo="P") {
+      else if (netlist[i].modelo[0] == 'P') {
         condutancia(GBE,netlist[i].b,netlist[i].a,Yn,L,C);
         corrente(-IBE,netlist[i].b,netlist[i].a,Yn,L,C,cont);
         corrente(-netlist[i].alfar*IBC,netlist[i].a,netlist[i].b,Yn,L,C,cont);
