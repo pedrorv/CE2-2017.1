@@ -135,11 +135,11 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
     else if (tipo=='O');
     else if (tipo=='Q') {
       VBE=YnPO[L[netlist[i].b]][C[cont->neq+1]]-YnPO[L[netlist[i].a]][C[cont->neq+1]];
-      GBE=netlist[i].isbe*exp(VBE/netlist[cont->ne].vtbe)/netlist[cont->ne].vtbe;
-      IBE=netlist[i].isbe*(exp(VBE/netlist[cont->ne].vtbe)-1) - GBE*VBE;
+      GBE=netlist[i].isbe*exp(VBE/netlist[i].vtbe)/netlist[i].vtbe;
+      IBE=netlist[i].isbe*(exp(VBE/netlist[i].vtbe)-1) - GBE*VBE;
       VBC=YnPO[L[netlist[i].b]][C[cont->neq+1]]-YnPO[L[netlist[i].c]][C[cont->neq+1]];
-      GBC=netlist[i].isbc*exp(VBC/netlist[cont->ne].vtbc)/netlist[cont->ne].vtbc;
-      IBC=netlist[i].isbc*(exp(VBC/netlist[cont->ne].vtbc)-1) - GBE*VBC;
+      GBC=netlist[i].isbc*exp(VBC/netlist[i].vtbc)/netlist[i].vtbc;
+      IBC=netlist[i].isbc*(exp(VBC/netlist[i].vtbc)-1) - GBE*VBC;
 
       if (netlist[i].modelo[0] == 'N') {
         condutancia(GBE,netlist[i].b,netlist[i].a,Yn,L,C);
@@ -212,7 +212,7 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
     else if (tipo=='Q') {
 
       if (netlist[i].modelo[0] == 'N') {
-       
+        
       }
       else if (netlist[i].modelo[0] == 'P') {
     
