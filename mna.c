@@ -169,6 +169,7 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
   char tipo;
   int i;
   double _Complex jw=2*M_PI*f*I;
+  double VBE,GBE,VBC,GBC;
    
   for (i=1; i<=cont->ne; i++) {
     tipo=netlist[i].nome[0];
@@ -210,12 +211,30 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
       transadmitancia(1,netlist[i].c,netlist[i].d,netlist[i].x,0,Yn,L,C);
     }
     else if (tipo=='Q') {
+      VBE = YnPO[L[netlist[i].b]][C[cont->neq+1]] - YnPO[L[netlist[i].a]][C[cont->neq+1]];
+      GBE = netlist[i].isbe * exp(VBE/netlist[i].vtbe) / netlist[i].vtbe;
+      VBC = YnPO[L[netlist[i].b]][C[cont->neq+1]] - YnPO[L[netlist[i].c]][C[cont->neq+1]];
+      GBC = netlist[i].isbc * exp(VBC/netlist[i].vtbc) / netlist[i].vtbc;
 
       if (netlist[i].modelo[0] == 'N') {
-        
+        admitancia(GBE, netlist[i].b, netlist[i].a, Yn, L, C);
+        admitancia(((netlist[i].c0be / sqrt(1 - VBE/0.6)) * jw), netlist[i].b, netlist[i].a, Yn, L, C); /* Creversa BE */
+        admitancia(((netlist[i].c1be * (exp(VBE/netlist[i].vtbe) - 1)) * jw), netlist[i].b, netlist[i].a, Yn, L, C); /* Cdireta BE */
+        transadmitancia(netlist[i].alfar*GBC, netlist[i].a, netlist[i].b, netlist[i].b, netlist[i].c, Yn, L, C);
+        admitancia(GBC, netlist[i].b, netlist[i].c, Yn, L, C);
+        admitancia(((netlist[i].c0bc / sqrt(1 - VBC/0.6)) * jw), netlist[i].b, netlist[i].c, Yn, L, C); /* Creversa BC */
+        admitancia(((netlist[i].c1bc * (exp(VBC/netlist[i].vtbc) - 1)) * jw), netlist[i].b, netlist[i].c, Yn, L, C); /* Cdireta BC */
+        transadmitancia(netlist[i].alfa*GBE, netlist[i].c, netlist[i].b, netlist[i].b, netlist[i].a, Yn, L, C);
       }
       else if (netlist[i].modelo[0] == 'P') {
-    
+        admitancia(GBE, netlist[i].b, netlist[i].a, Yn, L, C);
+        admitancia(((netlist[i].c0be / sqrt(1 - VBE/0.6)) * jw), netlist[i].b, netlist[i].a, Yn, L, C); /* Creversa BE */
+        admitancia(((netlist[i].c1be * (exp(VBE/netlist[i].vtbe) - 1)) * jw), netlist[i].b, netlist[i].a, Yn, L, C); /* Cdireta BE */
+        transadmitancia(-netlist[i].alfar*GBC, netlist[i].a, netlist[i].b, netlist[i].b, netlist[i].c, Yn, L, C);
+        admitancia(GBC, netlist[i].b, netlist[i].c, Yn, L, C);
+        admitancia(((netlist[i].c0bc / sqrt(1 - VBC/0.6)) * jw), netlist[i].b, netlist[i].c, Yn, L, C); /* Creversa BC */
+        admitancia(((netlist[i].c1bc * (exp(VBC/netlist[i].vtbc) - 1)) * jw), netlist[i].b, netlist[i].c, Yn, L, C); /* Cdireta BC */
+        transadmitancia(-netlist[i].alfa*GBE, netlist[i].c, netlist[i].b, netlist[i].b, netlist[i].a, Yn, L, C);
       }
     }  
     else if (tipo=='O');

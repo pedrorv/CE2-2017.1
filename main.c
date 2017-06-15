@@ -94,10 +94,10 @@ int main (int argc, char *argv[]) {
   }
   /*loop com teste de convergencia*/
   mnaPO(netlist,Yn,Yn1,L,C,&cont);
-  resolversistemaPO(Yn,&cont);
+  resolversistemaPO(Yn1,&cont);
   /*fim do loop*/
 
-  imprimeSistemaDouble(Yn, &cont);
+  imprimeSistemaDouble(Yn1, &cont);
   
   /*imprimirsistemaPO*/
   
