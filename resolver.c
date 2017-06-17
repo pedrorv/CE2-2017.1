@@ -128,3 +128,15 @@ void zerarMatrizesDouble(double Yn[MAX_NOS+1][MAX_NOS+2], double Yn1[MAX_NOS+1][
     }
   }
 }
+
+void zerarMatrizDoubleComplex(double _Complex YnPS[MAX_PONTOS+1][MAX_NOS+1][MAX_NOS+2], contagem *cont, frequencia *freq) {
+  int i, j, k;
+
+  for (i=0; i<=cont->neq; i++) {
+    for (j=0; j<=cont->neq+1; j++) {
+      for (k=0; k<=freq->npts; k++) {
+        YnPS[k][i][j]=0;
+      }
+    }
+  }
+}
