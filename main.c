@@ -101,13 +101,7 @@ int main (int argc, char *argv[]) {
 
   imprimeSistemaDouble(Yn1, &cont);
  
-  for (i=0; i<=cont.neq; i++) {
-    for (j=0; j<=cont.neq+1; j++) {
-      for (k=0; k<=freq.npts; k++) {
-        YnPS[k][i][j]=0;
-      }
-    }
-  }
+  zerarMatrizDoubleComplex(YnPS, &cont, &freq);
          
   if (freq.ptspor==1) { /*Decada*/
     double f = freq.fi;
