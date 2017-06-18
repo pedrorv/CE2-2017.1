@@ -94,7 +94,7 @@ void acoplamento(double k,char la[],char lb[],elemento netlist[MAX_ELEM],double 
 void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, contagem *cont){
   char tipo;
   int i;
-  double VBE,GBE,IBE,VBC,GBC,IBC;
+  double VBE,GBE,IBE,VBC,GBC,IBC,VEB,GEB,IEB,VCB,GCB,ICB;
 
   for (i=1; i<=cont->ne; i++) {
     tipo=netlist[i].nome[0];
@@ -139,6 +139,8 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
               
       VBE=YnPO[netlist[i].b][cont->neq+1]-YnPO[netlist[i].a][cont->neq+1];
       VBC=YnPO[netlist[i].b][cont->neq+1]-YnPO[netlist[i].c][cont->neq+1]; 
+      VEB=-VBE;
+      VCB=-VBC;
 
       if (netlist[i].modelo[0] == 'N') {
         printf("Transistor é NPN\n");
@@ -170,29 +172,29 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
       else if (netlist[i].modelo[0] == 'P') {
         printf("Transistor é PNP\n");        
         
-        printf("Valor de VBE antes de ajuste: %g\n", VBE);
-        if (VBE > 0) VBE = 0;
-        if (VBE < -0.65) VBE = -0.65;
-        printf("Valor de VBE: %g\n", VBE);
+        printf("Valor de VEB antes de ajuste: %g\n", VEB);
+        if (VEB < 0) VEB = 0;
+        if (VEB > 0.65) VEB = 0.65;
+        printf("Valor de VEB: %g\n", VEB);
 
-        printf("Valor de VBC antes de ajuste: %g\n", VBC);
-        if (VBC > 0) VBC = 0;
-        if (VBC < -0.45) VBC = -0.45;
-        printf("Valor de VBC: %g\n", VBC);
+        printf("Valor de VCB antes de ajuste: %g\n", VCB);
+        if (VCB < 0) VCB = 0;
+        if (VCB > 0.45) VCB = 0.45;
+        printf("Valor de VCB: %g\n", VCB);
         
-        GBE=netlist[i].isbe*exp(-VBE/netlist[i].vtbe)/netlist[i].vtbe;
-        IBE=netlist[i].isbe*(exp(-VBE/netlist[i].vtbe)-1) + GBE*VBE;
-        GBC=netlist[i].isbc*exp(-VBC/netlist[i].vtbc)/netlist[i].vtbc;
-        IBC=netlist[i].isbc*(exp(-VBC/netlist[i].vtbc)-1) + GBE*VBC;
+        GEB=netlist[i].isbe*exp(VEB/netlist[i].vtbe)/netlist[i].vtbe;
+        IEB=netlist[i].isbe*(exp(VEB/netlist[i].vtbe)-1) - GEB*VEB;
+        GCB=netlist[i].isbc*exp(VCB/netlist[i].vtbc)/netlist[i].vtbc;
+        ICB=netlist[i].isbc*(exp(VCB/netlist[i].vtbc)-1) - GCB*VCB;
        
-        condutancia(GBE,netlist[i].b,netlist[i].a,Yn,L,C);
-        corrente(-IBE,netlist[i].b,netlist[i].a,Yn,L,C,cont);
-        corrente(-netlist[i].alfar*IBC,netlist[i].a,netlist[i].b,Yn,L,C,cont);
-        transcondutancia(netlist[i].alfar*GBC,netlist[i].a,netlist[i].b,netlist[i].b,netlist[i].c,Yn,L,C);
-        condutancia(GBC,netlist[i].b,netlist[i].c,Yn,L,C);
-        corrente(-IBC,netlist[i].b,netlist[i].c,Yn,L,C,cont);
-        corrente(-netlist[i].alfa*IBE,netlist[i].c,netlist[i].b,Yn,L,C,cont);
-        transcondutancia(netlist[i].alfa*GBE,netlist[i].c,netlist[i].b,netlist[i].b,netlist[i].a,Yn,L,C);
+        condutancia(GEB,netlist[i].a,netlist[i].b,Yn,L,C);
+        corrente(IEB,netlist[i].a,netlist[i].b,Yn,L,C,cont);
+        corrente(netlist[i].alfar*ICB,netlist[i].b,netlist[i].a,Yn,L,C,cont);
+        transcondutancia(netlist[i].alfar*GCB,netlist[i].b,netlist[i].a,netlist[i].c,netlist[i].b,Yn,L,C);
+        condutancia(GCB,netlist[i].c,netlist[i].b,Yn,L,C);
+        corrente(ICB,netlist[i].c,netlist[i].b,Yn,L,C,cont);
+        corrente(netlist[i].alfa*IEB,netlist[i].b,netlist[i].c,Yn,L,C,cont);
+        transcondutancia(netlist[i].alfa*GEB,netlist[i].b,netlist[i].c,netlist[i].a,netlist[i].b,Yn,L,C);
       }
     }
 

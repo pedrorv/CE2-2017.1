@@ -98,6 +98,7 @@ int main (int argc, char *argv[]) {
 
     printf("Prévia do sistema\n");
     imprimeSistemaDouble(Yn1, &cont);
+    printf("k=:%d\n",k);
     k++;
   } while (testeconvergenciaPO(Yn, Yn1, &cont) && (k<10));
   /*
