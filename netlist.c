@@ -193,16 +193,6 @@ int variaveisCorrente(contagem *cont, char lista[MAX_NOS+1][MAX_NOME+2], element
             operacional(netlist[i].a,netlist[i].b,0,netlist[i].y, L, C);
             operacional(netlist[i].x,0,netlist[i].c,netlist[i].d, L, C);
         }
-        else if (tipo=='Q') {
-            cont->nv=cont->nv+2;
-            if (testarnos(cont)) return 1;
-            strcpy(lista[cont->nv-1],"jx"); strcat(lista[cont->nv-1],netlist[i].nome);
-            netlist[i].x=cont->nv-1;
-            strcpy(lista[cont->nv],"jy"); strcat(lista[cont->nv],netlist[i].nome);
-            netlist[i].y=cont->nv;
-            operacional(netlist[i].b,netlist[i].a,0,netlist[i].x, L, C); /*Je*/
-            operacional(netlist[i].c,netlist[i].b,0,netlist[i].y, L, C); /*Jc*/
-        }
     }
 
     return OK;
