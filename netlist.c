@@ -232,10 +232,7 @@ void imprimirNetlist(contagem *cont, char lista[MAX_NOS+1][MAX_NOME+2], elemento
         }
         else if (tipo == 'H') {
             printf("Correntes jx e jy: %d, %d\n",netlist[i].x,netlist[i].y);
-        }  
-        else if (tipo == 'Q') {
-            printf("Correntes jc e je: %d, %d\n",netlist[i].x,netlist[i].y);
-        }  
+        }
     }
 
     printf("O circuito tem %d nos, %d variaveis, %d equacoes e %d elementos\n",cont->nn,cont->nv,cont->neq,cont->ne);
