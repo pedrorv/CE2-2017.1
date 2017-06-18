@@ -9,7 +9,7 @@
 #define MAX_PONTOS 100
 #define TOLG 1e-9
 #define GMIN 1e-9
-#define CONST_CONV 1000000
+#define CONST_CONV 0.01
 #define DEBUG
 
 #endif

@@ -150,7 +150,7 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
 
         printf("Valor de VBC antes de ajuste: %g\n", VBC);
         if (VBC < 0) VBC = 0;
-        if (VBC > 0.65) VBC = 0.65;
+        if (VBC > 0.45) VBC = 0.45;
         printf("Valor de VBC: %g\n", VBC);
         
         GBE=netlist[i].isbe*exp(VBE/netlist[i].vtbe)/netlist[i].vtbe;
@@ -177,7 +177,7 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
 
         printf("Valor de VBC antes de ajuste: %g\n", VBC);
         if (VBC > 0) VBC = 0;
-        if (VBC < -0.65) VBC = -0.65;
+        if (VBC < -0.45) VBC = -0.45;
         printf("Valor de VBC: %g\n", VBC);
         
         GBE=netlist[i].isbe*exp(-VBE/netlist[i].vtbe)/netlist[i].vtbe;
