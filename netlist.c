@@ -103,8 +103,8 @@ int lerNetlist(FILE *arquivo, elemento netlist[MAX_ELEM], char txt[MAX_LINHA+1],
             cont->ne--;
         }
         else if (tipo == 'Q') {
-            sscanf(p,"%10s%10s%10s%10s%lg%lg%lg%lg%lg%lg%lg%lg%lg%lg%lg",
-                nc, nb, na,
+            sscanf(p,"%10s%10s%10s%10s%10s%lg%lg%lg%lg%lg%lg%lg%lg%lg%lg%lg",
+                netlist[cont->ne].nome, nc, nb, na,
                 netlist[cont->ne].modelo, &netlist[cont->ne].alfa, &netlist[cont->ne].alfar,
                 &netlist[cont->ne].isbe,  &netlist[cont->ne].vtbe,  &netlist[cont->ne].isbc, 
                 &netlist[cont->ne].vtbc,  &netlist[cont->ne].va,    &netlist[cont->ne].c0be,
