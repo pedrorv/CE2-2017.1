@@ -188,11 +188,11 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
         condutancia(GBE,netlist[i].b,netlist[i].a,Yn,L,C);
         corrente(-IBE,netlist[i].b,netlist[i].a,Yn,L,C,cont);
         corrente(-netlist[i].alfar*IBC,netlist[i].a,netlist[i].b,Yn,L,C,cont);
-        transcondutancia(-netlist[i].alfar*GBC,netlist[i].a,netlist[i].b,netlist[i].b,netlist[i].c,Yn,L,C);
+        transcondutancia(netlist[i].alfar*GBC,netlist[i].a,netlist[i].b,netlist[i].b,netlist[i].c,Yn,L,C);
         condutancia(GBC,netlist[i].b,netlist[i].c,Yn,L,C);
         corrente(-IBC,netlist[i].b,netlist[i].c,Yn,L,C,cont);
         corrente(-netlist[i].alfa*IBE,netlist[i].c,netlist[i].b,Yn,L,C,cont);
-        transcondutancia(-netlist[i].alfa*GBE,netlist[i].c,netlist[i].b,netlist[i].b,netlist[i].a,Yn,L,C);
+        transcondutancia(netlist[i].alfa*GBE,netlist[i].c,netlist[i].b,netlist[i].b,netlist[i].a,Yn,L,C);
       }
     }
 
