@@ -109,7 +109,6 @@ int resolversistemaPS(double _Complex Yn[MAX_NOS+1][MAX_NOS+2], contagem *cont) 
 }
 
 void imprimeSistemaDouble(double Yn[MAX_NOS+1][MAX_NOS+2], contagem *cont) {
-  printf("Sistema resolvido:\n");
   for (int i=1; i<=cont->neq; i++) {
     for (int j=1; j<=cont->neq+1; j++)
       if (Yn[i][j]!=0) printf("%+3.1f ",Yn[i][j]);
