@@ -92,7 +92,7 @@ void acoplamento(double k,char la[],char lb[],elemento netlist[MAX_ELEM],double 
 
 void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, contagem *cont){
   char tipo;
-  int i;
+  int i, j, k;
   double VBE,GBE,IBE,VBC,GBC,IBC;
 
   for (i=1; i<=cont->ne; i++) {
@@ -161,6 +161,14 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
         corrente(-netlist[i].alfa*IBE,netlist[i].c,netlist[i].b,Yn,L,C,cont);
         transcondutancia(-netlist[i].alfa*GBE,netlist[i].c,netlist[i].b,netlist[i].b,netlist[i].a,Yn,L,C);
       }
+    }
+
+    printf("Sistema apos a estampa de %s\n", netlist[i].nome);
+    for (k=1; k<=cont->neq; k++) {
+      for (j=1; j<=cont->neq+1; j++)
+        if (Yn[k][j]!=0) printf("%+3.1f ",Yn[k][j]);
+        else printf(" ... ");
+      printf("\n");
     }
   }
 }
