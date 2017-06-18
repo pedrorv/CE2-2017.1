@@ -135,7 +135,7 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
     }
     else if (tipo=='O');
     else if (tipo=='Q') {
-      VBE=YnPO[L[netlist[i].b]+1][cont->neq+1]-YnPO[L[netlist[i].a]+1][cont->neq+1];
+      VBE=YnPO[netlist[i].b][cont->neq+1]-YnPO[netlist[i].a][cont->neq+1];
 
       printf("Valor de VBE antes de ajuste: %g\n", VBE);
       if (abs(VBE) > 0.65) { if (VBE < 0) VBE = 0; else VBE = 0.65; };
@@ -144,7 +144,7 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
       GBE=netlist[i].isbe*exp(VBE/netlist[i].vtbe)/netlist[i].vtbe;
       IBE=netlist[i].isbe*(exp(VBE/netlist[i].vtbe)-1) - GBE*VBE;
       
-      VBC=YnPO[L[netlist[i].b]+1][cont->neq+1]-YnPO[L[netlist[i].c]+1][cont->neq+1];
+      VBC=YnPO[netlist[i].b][cont->neq+1]-YnPO[netlist[i].c][cont->neq+1];
 
       printf("Valor de VBC antes de ajuste: %g\n", VBC);
       if (abs(VBC) > 0.65) { if (VBC < 0) VBC = 0; else VBC = 0.65; };
@@ -228,11 +228,20 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
       transadmitancia(1,netlist[i].c,netlist[i].d,netlist[i].x,0,Yn,L,C);
     }
     else if (tipo=='Q') {
-      VBE = YnPO[L[netlist[i].b]][C[cont->neq+1]] - YnPO[L[netlist[i].a]][C[cont->neq+1]];
+      VBE=YnPO[netlist[i].b][cont->neq+1]-YnPO[netlist[i].a][cont->neq+1];
+
+      printf("Valor de VBE antes de ajuste: %g\n", VBE);
       if (abs(VBE) > 0.65) { if (VBE < 0) VBE = 0; else VBE = 0.65; };
+      printf("Valor de VBE: %g\n", VBE);
+
       GBE = netlist[i].isbe * exp(VBE/netlist[i].vtbe) / netlist[i].vtbe;
-      VBC = YnPO[L[netlist[i].b]][C[cont->neq+1]] - YnPO[L[netlist[i].c]][C[cont->neq+1]];
+
+      VBC=YnPO[netlist[i].b][cont->neq+1]-YnPO[netlist[i].c][cont->neq+1];
+
+      printf("Valor de VBC antes de ajuste: %g\n", VBC);
       if (abs(VBC) > 0.65) { if (VBC < 0) VBC = 0; else VBC = 0.65; };
+      printf("Valor de VBC: %g\n", VBC);
+      
       GBC = netlist[i].isbc * exp(VBC/netlist[i].vtbc) / netlist[i].vtbc;
 
       if (netlist[i].modelo[0] == 'N') {
