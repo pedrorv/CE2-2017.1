@@ -98,7 +98,7 @@ int main (int argc, char *argv[]) {
     k++;
   } while (testeconvergenciaPO(Yn, Yn1, &cont) && (k<10));
 
-
+  printf("Sistema resolvido:\n");
   imprimeSistemaDouble(Yn1, &cont);
  
   zerarMatrizDoubleComplex(YnPS, &cont, &freq);
