@@ -135,11 +135,14 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
     }
     else if (tipo=='O');
     else if (tipo=='Q') {
+      
+              
       VBE=YnPO[netlist[i].b][cont->neq+1]-YnPO[netlist[i].a][cont->neq+1];
-      VBC=YnPO[netlist[i].b][cont->neq+1]-YnPO[netlist[i].c][cont->neq+1];
+      VBC=YnPO[netlist[i].b][cont->neq+1]-YnPO[netlist[i].c][cont->neq+1]; 
 
       if (netlist[i].modelo[0] == 'N') {
-        
+        printf("Transistor é NPN\n");
+
         printf("Valor de VBE antes de ajuste: %g\n", VBE);
         if (VBE < 0) VBE = 0;
         if (VBE > 0.65) VBE = 0.65;
@@ -149,26 +152,12 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
         if (VBC < 0) VBC = 0;
         if (VBC > 0.65) VBC = 0.65;
         printf("Valor de VBC: %g\n", VBC);
-      } else if (netlist[i].modelo[0] == 'P') {
-
-        printf("Valor de VBE antes de ajuste: %g\n", VBE);
-        if (VBE < -0.65) VBE = -0.65;
-        if (VBE > 0) VBE = 0;
-        printf("Valor de VBE: %g\n", VBE);
         
-        printf("Valor de VBC antes de ajuste: %g\n", VBC);
-        if (VBC < -0.65) VBC = -0.65;
-        if (VBC > 0) VBC = 0;
-        printf("Valor de VBC: %g\n", VBC);
-      }      
-
-      GBE=netlist[i].isbe*exp(VBE/netlist[i].vtbe)/netlist[i].vtbe;
-      IBE=netlist[i].isbe*(exp(VBE/netlist[i].vtbe)-1) - GBE*VBE;
-      GBC=netlist[i].isbc*exp(VBC/netlist[i].vtbc)/netlist[i].vtbc;
-      IBC=netlist[i].isbc*(exp(VBC/netlist[i].vtbc)-1) - GBE*VBC;
-
-      if (netlist[i].modelo[0] == 'N') {
-        printf("Transistor é NPN\n");
+        GBE=netlist[i].isbe*exp(VBE/netlist[i].vtbe)/netlist[i].vtbe;
+        IBE=netlist[i].isbe*(exp(VBE/netlist[i].vtbe)-1) - GBE*VBE;
+        GBC=netlist[i].isbc*exp(VBC/netlist[i].vtbc)/netlist[i].vtbc;
+        IBC=netlist[i].isbc*(exp(VBC/netlist[i].vtbc)-1) - GBE*VBC;
+       
         condutancia(GBE,netlist[i].b,netlist[i].a,Yn,L,C);
         corrente(IBE,netlist[i].b,netlist[i].a,Yn,L,C,cont);
         corrente(netlist[i].alfar*IBC,netlist[i].a,netlist[i].b,Yn,L,C,cont);
@@ -179,7 +168,23 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
         transcondutancia(netlist[i].alfa*GBE,netlist[i].c,netlist[i].b,netlist[i].b,netlist[i].a,Yn,L,C);
       }
       else if (netlist[i].modelo[0] == 'P') {
-        printf("Transistor é PNP\n");
+        printf("Transistor é PNP\n");        
+        
+        printf("Valor de VBE antes de ajuste: %g\n", VBE);
+        if (VBE < 0) VBE = 0;
+        if (VBE > 0.65) VBE = 0.65;
+        printf("Valor de VBE: %g\n", VBE);
+
+        printf("Valor de VBC antes de ajuste: %g\n", VBC);
+        if (VBC < 0) VBC = 0;
+        if (VBC > 0.65) VBC = 0.65;
+        printf("Valor de VBC: %g\n", VBC);
+        
+        GBE=netlist[i].isbe*exp(-VBE/netlist[i].vtbe)/netlist[i].vtbe;
+        IBE=netlist[i].isbe*(exp(-VBE/netlist[i].vtbe)-1) + GBE*VBE;
+        GBC=netlist[i].isbc*exp(-VBC/netlist[i].vtbc)/netlist[i].vtbc;
+        IBC=netlist[i].isbc*(exp(-VBC/netlist[i].vtbc)-1) + GBE*VBC;
+       
         condutancia(GBE,netlist[i].b,netlist[i].a,Yn,L,C);
         corrente(-IBE,netlist[i].b,netlist[i].a,Yn,L,C,cont);
         corrente(-netlist[i].alfar*IBC,netlist[i].a,netlist[i].b,Yn,L,C,cont);
