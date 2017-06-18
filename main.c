@@ -100,6 +100,12 @@ int main (int argc, char *argv[]) {
     imprimeSistemaDouble(Yn1, &cont);
     k++;
   } while (testeconvergenciaPO(Yn, Yn1, &cont) && (k<10));
+  /*
+  for (int x = 0; x < MAX_NOS+1; x++) {
+        printf("L[%d]: %d\n", x, L[x]);
+        printf("C[%d]: %d\n", x, C[x]);
+      }
+  */
 
   printf("Sistema resolvido:\n");
   imprimeSistemaDouble(Yn1, &cont);

@@ -135,13 +135,21 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
     }
     else if (tipo=='O');
     else if (tipo=='Q') {
-      VBE=YnPO[L[netlist[i].b]][C[cont->neq+1]]-YnPO[L[netlist[i].a]][C[cont->neq+1]];
-      if (VBE>0.8) VBE=0.8;
+      VBE=YnPO[L[netlist[i].b]+1][cont->neq+1]-YnPO[L[netlist[i].a]+1][cont->neq+1];
+
+      printf("Valor de VBE antes de ajuste: %g\n", VBE);
+      if (abs(VBE) > 0.65) { if (VBE < 0) VBE = 0; else VBE = 0.65; };
       printf("Valor de VBE: %g\n", VBE);
+
       GBE=netlist[i].isbe*exp(VBE/netlist[i].vtbe)/netlist[i].vtbe;
       IBE=netlist[i].isbe*(exp(VBE/netlist[i].vtbe)-1) - GBE*VBE;
-      VBC=YnPO[L[netlist[i].b]][C[cont->neq+1]]-YnPO[L[netlist[i].c]][C[cont->neq+1]];
-      if (VBC>0.8) VBC=0.8;
+      
+      VBC=YnPO[L[netlist[i].b]+1][cont->neq+1]-YnPO[L[netlist[i].c]+1][cont->neq+1];
+
+      printf("Valor de VBC antes de ajuste: %g\n", VBC);
+      if (abs(VBC) > 0.65) { if (VBC < 0) VBC = 0; else VBC = 0.65; };
+      printf("Valor de VBC: %g\n", VBC);
+
       GBC=netlist[i].isbc*exp(VBC/netlist[i].vtbc)/netlist[i].vtbc;
       IBC=netlist[i].isbc*(exp(VBC/netlist[i].vtbc)-1) - GBE*VBC;
 
@@ -221,10 +229,10 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
     }
     else if (tipo=='Q') {
       VBE = YnPO[L[netlist[i].b]][C[cont->neq+1]] - YnPO[L[netlist[i].a]][C[cont->neq+1]];
-      //if (VBE>0.8) VBE=0.8; 
+      if (abs(VBE) > 0.65) { if (VBE < 0) VBE = 0; else VBE = 0.65; };
       GBE = netlist[i].isbe * exp(VBE/netlist[i].vtbe) / netlist[i].vtbe;
       VBC = YnPO[L[netlist[i].b]][C[cont->neq+1]] - YnPO[L[netlist[i].c]][C[cont->neq+1]];
-      //if (VBC>0.8) VBC=0.8;
+      if (abs(VBC) > 0.65) { if (VBC < 0) VBC = 0; else VBC = 0.65; };
       GBC = netlist[i].isbc * exp(VBC/netlist[i].vtbc) / netlist[i].vtbc;
 
       if (netlist[i].modelo[0] == 'N') {
