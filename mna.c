@@ -136,15 +136,17 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
     else if (tipo=='O');
     else if (tipo=='Q') {
       VBE=YnPO[L[netlist[i].b]][C[cont->neq+1]]-YnPO[L[netlist[i].a]][C[cont->neq+1]];
-      //if (VBE>0.8) VBE=0.8; 
+      if (VBE>0.8) VBE=0.8;
+      printf("Valor de VBE: %g\n", VBE);
       GBE=netlist[i].isbe*exp(VBE/netlist[i].vtbe)/netlist[i].vtbe;
       IBE=netlist[i].isbe*(exp(VBE/netlist[i].vtbe)-1) - GBE*VBE;
       VBC=YnPO[L[netlist[i].b]][C[cont->neq+1]]-YnPO[L[netlist[i].c]][C[cont->neq+1]];
-      //if (VBC>0.8) VBC=0.8;
+      if (VBC>0.8) VBC=0.8;
       GBC=netlist[i].isbc*exp(VBC/netlist[i].vtbc)/netlist[i].vtbc;
       IBC=netlist[i].isbc*(exp(VBC/netlist[i].vtbc)-1) - GBE*VBC;
 
       if (netlist[i].modelo[0] == 'N') {
+        printf("Transistor é NPN\n");
         condutancia(GBE,netlist[i].b,netlist[i].a,Yn,L,C);
         corrente(IBE,netlist[i].b,netlist[i].a,Yn,L,C,cont);
         corrente(netlist[i].alfar*IBC,netlist[i].a,netlist[i].b,Yn,L,C,cont);
@@ -155,6 +157,7 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
         transcondutancia(netlist[i].alfa*GBE,netlist[i].c,netlist[i].b,netlist[i].b,netlist[i].a,Yn,L,C);
       }
       else if (netlist[i].modelo[0] == 'P') {
+        printf("Transistor é PNP\n");
         condutancia(GBE,netlist[i].b,netlist[i].a,Yn,L,C);
         corrente(-IBE,netlist[i].b,netlist[i].a,Yn,L,C,cont);
         corrente(-netlist[i].alfar*IBC,netlist[i].a,netlist[i].b,Yn,L,C,cont);

@@ -95,6 +95,9 @@ int main (int argc, char *argv[]) {
 
     mnaPO(netlist, Yn, Yn1, L, C, &cont);
     resolversistemaPO(Yn1, &cont);
+
+    printf("Prévia do sistema\n");
+    imprimeSistemaDouble(Yn1, &cont);
     k++;
   } while (testeconvergenciaPO(Yn, Yn1, &cont) && (k<10));
 
