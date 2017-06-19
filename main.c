@@ -114,7 +114,7 @@ int main (int argc, char *argv[]) {
       for (i=0; i<=(freq.npts-1); i++) {
         mnaPS(netlist,Yn1,YnPS[i],L,C,f,&cont);
         resolversistemaPS(YnPS[i],&cont);
-        f*=pow(1/10,freq.npts);
+        f*=pow(10, 1.0/freq.npts);
       }
     } while(f<freq.fs);
 
@@ -128,7 +128,7 @@ int main (int argc, char *argv[]) {
       for (i=0; i<=(freq.npts-1); i++) {
         mnaPS(netlist,Yn1,YnPS[i],L,C,f,&cont);
         resolversistemaPS(YnPS[i],&cont);
-        f*=pow(1/2,freq.npts);
+        f*=pow(2, 1.0/freq.npts);
       }
     } while(f<freq.fs);
 
