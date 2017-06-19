@@ -54,8 +54,6 @@ frequencia freq;
 tabela C,L;
 
 int main (int argc, char *argv[]) {
-  for(i=0; i<=MAX_NOS; i++) {C[i]=i; L[i]=i;} /* Inicializa tabelas */
-
   do {
     printf("Entre nome do arquivo com o netlist (ex: mna.net): ");
     scanf("%50s", nomearquivo);
@@ -63,9 +61,11 @@ int main (int argc, char *argv[]) {
     arquivo = fopen(nomearquivo, "r");
   } while (arquivo == 0);
 
-  cont.nv = 0;
-  cont.ne = 0;
-  strcpy(lista[0],"0");
+  for(i=0; i<=MAX_NOS; i++) {C[i]=i; L[i]=i;} /* Inicializa tabelas */
+  cont.nv = 0; /* inicializa contagem de variáveis */
+  cont.ne = 0;  /* inicializa contagem de elementos */
+  freq.ptspor = 0; /* inicializa ptspor */
+  strcpy(lista[0],"0"); /* inicializa nó 0 */
 
   falhaLeitura = lerNetlist(arquivo, netlist, txt, p, lista, &cont, &freq);
   fclose(arquivo);
@@ -101,12 +101,6 @@ int main (int argc, char *argv[]) {
     printf("k=:%d\n",k);
     k++;
   } while (testeconvergenciaPO(Yn, Yn1, &cont) && (k<10));
-  /*
-  for (int x = 0; x < MAX_NOS+1; x++) {
-        printf("L[%d]: %d\n", x, L[x]);
-        printf("C[%d]: %d\n", x, C[x]);
-      }
-  */
 
   printf("Sistema resolvido:\n");
   imprimeSistemaDouble(Yn1, &cont);
@@ -141,7 +135,7 @@ int main (int argc, char *argv[]) {
     mnaPS(netlist,Yn1,YnPS[i],L,C,freq.fs,&cont);
     resolversistemaPS(YnPS[i],&cont);
   }
-  else { /*Linear*/
+  else if (freq.ptspor==3) { /*Linear*/
     double f = freq.fi;
 
     for (i=0; i<(freq.npts-1); i++) {
