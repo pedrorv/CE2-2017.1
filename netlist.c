@@ -98,8 +98,8 @@ int lerNetlist(FILE *arquivo, elemento netlist[MAX_ELEM], char txt[MAX_LINHA+1],
               freq->ptspor=1;
             else if (strcmp(ptspor,"OCT")==0)
               freq->ptspor=2;
-            else 
-              freq->ptspor=0;
+            else if (strcmp(ptspor,"LIN")==0)
+              freq->ptspor=3;
             cont->ne--;
         }
         else if (tipo == 'Q') {
