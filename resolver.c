@@ -139,3 +139,14 @@ void zerarMatrizDoubleComplex(double _Complex YnPS[MAX_PONTOS+1][MAX_NOS+1][MAX_
     }
   }
 }
+
+void imprimeSistemaDoubleComplex(double _Complex YnPS[MAX_NOS+1][MAX_NOS+2], contagem *cont, frequencia *freq) {
+  for (int i=1; i<=cont->neq; i++) {
+    for (int j=1; j<=cont->neq+1; j++) {
+      if (YnPS[i][j]!=0 && cimag(YnPS[i][j]) == 0) printf("%+3.1f ", creal(YnPS[i][j]));
+      else if (YnPS[i][j]!=0 && cimag(YnPS[i][j]) != 0) printf("%+3.1f %+3.1fj", creal(YnPS[i][j]), cimag(YnPS[i][j]));
+      else printf(" ... ");
+    }
+    printf("\n");
+  }
+}

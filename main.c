@@ -120,6 +120,7 @@ int main (int argc, char *argv[]) {
 
     mnaPS(netlist,Yn1,YnPS[i],L,C,freq.fs,&cont);
     resolversistemaPS(YnPS[i],&cont);
+    imprimeSistemaDoubleComplex(YnPS[i], &cont, &freq);
   }
   else if (freq.ptspor==2) { /*Oitava*/
     double f = freq.fi;
