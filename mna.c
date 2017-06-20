@@ -251,53 +251,65 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
       transadmitancia(1,netlist[i].c,netlist[i].d,netlist[i].x,0,Yn,L,C);
     }
     else if (tipo=='Q') {
+
       VBE=YnPO[netlist[i].b][cont->neq+1]-YnPO[netlist[i].a][cont->neq+1];
-
-      printf("Valor de VBE antes de ajuste: %g\n", VBE);
-      if (abs(VBE) > 0.65) { if (VBE < 0) VBE = 0; else VBE = 0.65; };
-      printf("Valor de VBE: %g\n", VBE);
-
-      GBE = netlist[i].isbe * exp(VBE/netlist[i].vtbe) / netlist[i].vtbe;
-
-      VBC=YnPO[netlist[i].b][cont->neq+1]-YnPO[netlist[i].c][cont->neq+1];
-
-      printf("Valor de VBC antes de ajuste: %g\n", VBC);
-      if (abs(VBC) > 0.65) { if (VBC < 0) VBC = 0; else VBC = 0.65; };
-      printf("Valor de VBC: %g\n", VBC);
-      
-      GBC = netlist[i].isbc * exp(VBC/netlist[i].vtbc) / netlist[i].vtbc;
+      VBC=YnPO[netlist[i].b][cont->neq+1]-YnPO[netlist[i].c][cont->neq+1]; 
+      VEB=-VBE;
+      VCB=-VBC;
 
       if (netlist[i].modelo[0] == 'N') {
+        printf("Transistor é NPN\n");
+
+        printf("Valor de VBE antes de ajuste: %g\n", VBE);
+        if (VBE < 0) VBE = 0;
+        if (VBE > 0.65) VBE = 0.65;
+        printf("Valor de VBE: %g\n", VBE);
+
+        printf("Valor de VBC antes de ajuste: %g\n", VBC);
+        if (VBC < 0) VBC = 0;
+        if (VBC > 0.45) VBC = 0.45;
+        printf("Valor de VBC: %g\n", VBC);
+      
+        GBE=netlist[i].isbe*exp(VBE/netlist[i].vtbe)/netlist[i].vtbe;
+        GBC=netlist[i].isbc*exp(VBC/netlist[i].vtbc)/netlist[i].vtbc;
+
+
         admitancia(GBE, netlist[i].b, netlist[i].a, Yn, L, C);
-        if (VBE>0.3)
-          admitancia(((netlist[i].c0be / sqrt(1 - VBE/0.6)) * jw), netlist[i].b, netlist[i].a, Yn, L, C); 
-        else 
-          admitancia(((netlist[i].c0be / sqrt(0.5)) * jw), netlist[i].b, netlist[i].a, Yn, L, C);  /* Creversa BE */
+        admitancia(((netlist[i].c0be / sqrt(1 - VBE/0.6)) * jw), netlist[i].b, netlist[i].a, Yn, L, C); /* Creversa BE */
         admitancia(((netlist[i].c1be * (exp(VBE/netlist[i].vtbe) - 1)) * jw), netlist[i].b, netlist[i].a, Yn, L, C); /* Cdireta BE */
-        transadmitancia(netlist[i].alfar*GBC, netlist[i].a, netlist[i].b, netlist[i].b, netlist[i].c, Yn, L, C);
+        transadmitancia(netlist[i].alfar*GBC, netlist[i].a, netlist[i].b, netlist[i].b, netlist[i].c, Yn, L, C); 
+        
         admitancia(GBC, netlist[i].b, netlist[i].c, Yn, L, C);
-        if (VBC>0.3)
-          admitancia(((netlist[i].c0bc / sqrt(1 - VBC/0.6)) * jw), netlist[i].b, netlist[i].c, Yn, L, C);
-        else
-          admitancia(((netlist[i].c0bc / sqrt(0.5)) * jw), netlist[i].b, netlist[i].c, Yn, L, C); /* Creversa BC */
+        admitancia(((netlist[i].c0bc / sqrt(1 - VBC/0.6)) * jw), netlist[i].b, netlist[i].c, Yn, L, C); /* Creversa BC */
         admitancia(((netlist[i].c1bc * (exp(VBC/netlist[i].vtbc) - 1)) * jw), netlist[i].b, netlist[i].c, Yn, L, C); /* Cdireta BC */
-        transadmitancia(netlist[i].alfa*GBE, netlist[i].c, netlist[i].b, netlist[i].b, netlist[i].a, Yn, L, C);
+        transadmitancia(netlist[i].alfa*GBE, netlist[i].c, netlist[i].b, netlist[i].b, netlist[i].a, Yn, L, C); 
       }
       else if (netlist[i].modelo[0] == 'P') {
+        printf("Transistor é PNP\n");        
+        
+        printf("Valor de VEB antes de ajuste: %g\n", VEB);
+        if (VEB < 0) VEB = 0;
+        if (VEB > 0.65) VEB = 0.65;
+        printf("Valor de VEB: %g\n", VEB);
+
+        printf("Valor de VCB antes de ajuste: %g\n", VCB);
+        if (VCB < 0) VCB = 0;
+        if (VCB > 0.45) VCB = 0.45;
+        printf("Valor de VCB: %g\n", VCB);
+
+        GEB=netlist[i].isbe*exp(VEB/netlist[i].vtbe)/netlist[i].vtbe;
+        GCB=netlist[i].isbc*exp(VCB/netlist[i].vtbc)/netlist[i].vtbc;
+
+
         admitancia(GBE, netlist[i].b, netlist[i].a, Yn, L, C);
-        if (VBE>0.3)
-          admitancia(((netlist[i].c0be / sqrt(1 - VBE/0.6)) * jw), netlist[i].b, netlist[i].a, Yn, L, C); 
-        else 
-          admitancia(((netlist[i].c0be / sqrt(0.5)) * jw), netlist[i].b, netlist[i].a, Yn, L, C);  /* Creversa BE */
+        admitancia(((netlist[i].c0be / sqrt(1 - VBE/0.6)) * jw), netlist[i].b, netlist[i].a, Yn, L, C); /* Creversa BE */
         admitancia(((netlist[i].c1be * (exp(VBE/netlist[i].vtbe) - 1)) * jw), netlist[i].b, netlist[i].a, Yn, L, C); /* Cdireta BE */
-        transadmitancia(-netlist[i].alfar*GBC, netlist[i].a, netlist[i].b, netlist[i].b, netlist[i].c, Yn, L, C);
+        transadmitancia(-netlist[i].alfar*GBC, netlist[i].a, netlist[i].b, netlist[i].b, netlist[i].c, Yn, L, C); 
+        
         admitancia(GBC, netlist[i].b, netlist[i].c, Yn, L, C);
-        if (VBC>0.3)
-          admitancia(((netlist[i].c0bc / sqrt(1 - VBC/0.6)) * jw), netlist[i].b, netlist[i].c, Yn, L, C);
-        else
-          admitancia(((netlist[i].c0bc / sqrt(0.5)) * jw), netlist[i].b, netlist[i].c, Yn, L, C); /* Creversa BC */
+        admitancia(((netlist[i].c0bc / sqrt(1 - VBC/0.6)) * jw), netlist[i].b, netlist[i].c, Yn, L, C); /* Creversa BC */
         admitancia(((netlist[i].c1bc * (exp(VBC/netlist[i].vtbc) - 1)) * jw), netlist[i].b, netlist[i].c, Yn, L, C); /* Cdireta BC */
-        transadmitancia(-netlist[i].alfa*GBE, netlist[i].c, netlist[i].b, netlist[i].b, netlist[i].a, Yn, L, C);
+        transadmitancia(-netlist[i].alfa*GBE, netlist[i].c, netlist[i].b, netlist[i].b, netlist[i].a, Yn, L, C); 
       }
     }  
     else if (tipo=='O');
