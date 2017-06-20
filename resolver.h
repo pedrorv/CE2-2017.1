@@ -14,3 +14,5 @@ void zerarMatrizesDouble(double Yn[MAX_NOS+1][MAX_NOS+2], double Yn1[MAX_NOS+1][
 void zerarMatrizDoubleComplex(double _Complex YnPS[MAX_PONTOS+1][MAX_NOS+1][MAX_NOS+2], contagem *cont, frequencia *freq);
 
 void imprimeSistemaDoubleComplex(double _Complex YnPS[MAX_NOS+1][MAX_NOS+2], contagem *cont, frequencia *freq);
+
+double graus(double radianos);

@@ -144,9 +144,13 @@ void imprimeSistemaDoubleComplex(double _Complex YnPS[MAX_NOS+1][MAX_NOS+2], con
   for (int i=1; i<=cont->neq; i++) {
     for (int j=1; j<=cont->neq+1; j++) {
       if (YnPS[i][j]!=0 && cimag(YnPS[i][j]) == 0) printf("%+3.3f ", creal(YnPS[i][j]));
-      else if (YnPS[i][j]!=0 && cimag(YnPS[i][j]) != 0) printf("%+3.3f %+3.3fj", creal(YnPS[i][j]), cimag(YnPS[i][j]));
+      else if (YnPS[i][j]!=0 && cimag(YnPS[i][j]) != 0) printf("%+3.3f <%+3.1fº", creal(YnPS[i][j]), graus(carg(YnPS[i][j])));
       else printf(" ..... ");
     }
     printf("\n");
   }
+}
+
+double graus(double radianos) {
+    return radianos * (180.0 / M_PI);
 }
