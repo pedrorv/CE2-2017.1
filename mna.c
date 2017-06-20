@@ -217,6 +217,7 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
     }
     else if (tipo=='L') {
       transadmitancia(1,0,netlist[i].x,netlist[i].a,netlist[i].b,Yn,L,C);
+      transadmitancia(1,netlist[i].a,netlist[i].b,netlist[i].x,0,Yn,L,C);
       admitancia((netlist[i].valor*jw),netlist[i].x,0,Yn,L,C);
     }
     else if (tipo=='C') {
