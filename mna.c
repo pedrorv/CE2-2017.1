@@ -135,9 +135,7 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
       transcondutancia(1,netlist[i].c,netlist[i].d,netlist[i].x,0,Yn,L,C);
     }
     else if (tipo=='O');
-    else if (tipo=='Q') {
-      
-              
+    else if (tipo=='Q') {              
       VBE=YnPO[netlist[i].b][cont->neq+1]-YnPO[netlist[i].a][cont->neq+1];
       VBC=YnPO[netlist[i].b][cont->neq+1]-YnPO[netlist[i].c][cont->neq+1]; 
       VEB=-VBE;
@@ -160,11 +158,13 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
         IBE=netlist[i].isbe*(exp(VBE/netlist[i].vtbe)-1) - GBE*VBE;
         GBC=netlist[i].isbc*exp(VBC/netlist[i].vtbc)/netlist[i].vtbc;
         IBC=netlist[i].isbc*(exp(VBC/netlist[i].vtbc)-1) - GBE*VBC;
+
        
         condutancia(GBE,netlist[i].b,netlist[i].a,Yn,L,C);
         corrente(IBE,netlist[i].b,netlist[i].a,Yn,L,C,cont);
         corrente(netlist[i].alfar*IBC,netlist[i].a,netlist[i].b,Yn,L,C,cont);
         transcondutancia(netlist[i].alfar*GBC,netlist[i].a,netlist[i].b,netlist[i].b,netlist[i].c,Yn,L,C);
+
         condutancia(GBC,netlist[i].b,netlist[i].c,Yn,L,C);
         corrente(IBC,netlist[i].b,netlist[i].c,Yn,L,C,cont);
         corrente(netlist[i].alfa*IBE,netlist[i].c,netlist[i].b,Yn,L,C,cont);
@@ -187,11 +187,13 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
         IEB=netlist[i].isbe*(exp(VEB/netlist[i].vtbe)-1) - GEB*VEB;
         GCB=netlist[i].isbc*exp(VCB/netlist[i].vtbc)/netlist[i].vtbc;
         ICB=netlist[i].isbc*(exp(VCB/netlist[i].vtbc)-1) - GCB*VCB;
+
        
         condutancia(GEB,netlist[i].a,netlist[i].b,Yn,L,C);
         corrente(IEB,netlist[i].a,netlist[i].b,Yn,L,C,cont);
         corrente(netlist[i].alfar*ICB,netlist[i].b,netlist[i].a,Yn,L,C,cont);
         transcondutancia(netlist[i].alfar*GCB,netlist[i].b,netlist[i].a,netlist[i].c,netlist[i].b,Yn,L,C);
+
         condutancia(GCB,netlist[i].c,netlist[i].b,Yn,L,C);
         corrente(ICB,netlist[i].c,netlist[i].b,Yn,L,C,cont);
         corrente(netlist[i].alfa*IEB,netlist[i].b,netlist[i].c,Yn,L,C,cont);
@@ -208,7 +210,7 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
   char tipo;
   int i;
   double _Complex jw=2*M_PI*f*I;
-  double VBE,GBE,VBC,GBC;
+  double VBE,GBE,VBC,GBC,VEB,GEB,VCB,GCB;
    
   for (i=1; i<=cont->ne; i++) {
     tipo=netlist[i].nome[0];
@@ -251,7 +253,6 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
       transadmitancia(1,netlist[i].c,netlist[i].d,netlist[i].x,0,Yn,L,C);
     }
     else if (tipo=='Q') {
-
       VBE=YnPO[netlist[i].b][cont->neq+1]-YnPO[netlist[i].a][cont->neq+1];
       VBC=YnPO[netlist[i].b][cont->neq+1]-YnPO[netlist[i].c][cont->neq+1]; 
       VEB=-VBE;
@@ -301,15 +302,15 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
         GCB=netlist[i].isbc*exp(VCB/netlist[i].vtbc)/netlist[i].vtbc;
 
 
-        admitancia(GBE, netlist[i].b, netlist[i].a, Yn, L, C);
+        admitancia(GEB, netlist[i].a, netlist[i].b, Yn, L, C);
         admitancia(((netlist[i].c0be / sqrt(1 - VBE/0.6)) * jw), netlist[i].b, netlist[i].a, Yn, L, C); /* Creversa BE */
         admitancia(((netlist[i].c1be * (exp(VBE/netlist[i].vtbe) - 1)) * jw), netlist[i].b, netlist[i].a, Yn, L, C); /* Cdireta BE */
-        transadmitancia(-netlist[i].alfar*GBC, netlist[i].a, netlist[i].b, netlist[i].b, netlist[i].c, Yn, L, C); 
+        transadmitancia(netlist[i].alfar*GCB, netlist[i].b, netlist[i].a, netlist[i].c, netlist[i].b, Yn, L, C); 
         
-        admitancia(GBC, netlist[i].b, netlist[i].c, Yn, L, C);
+        admitancia(GCB, netlist[i].c, netlist[i].b, Yn, L, C);
         admitancia(((netlist[i].c0bc / sqrt(1 - VBC/0.6)) * jw), netlist[i].b, netlist[i].c, Yn, L, C); /* Creversa BC */
         admitancia(((netlist[i].c1bc * (exp(VBC/netlist[i].vtbc) - 1)) * jw), netlist[i].b, netlist[i].c, Yn, L, C); /* Cdireta BC */
-        transadmitancia(-netlist[i].alfa*GBE, netlist[i].c, netlist[i].b, netlist[i].b, netlist[i].a, Yn, L, C); 
+        transadmitancia(netlist[i].alfa*GEB, netlist[i].b, netlist[i].c, netlist[i].a, netlist[i].b, Yn, L, C); 
       }
     }  
     else if (tipo=='O');
