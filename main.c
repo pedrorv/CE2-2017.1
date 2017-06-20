@@ -114,12 +114,17 @@ int main (int argc, char *argv[]) {
       for (i=0; i<=(freq.npts-1); i++) {
         mnaPS(netlist,Yn1,YnPS[i],L,C,f,&cont);
         resolversistemaPS(YnPS[i],&cont);
+
+        printf("\nSistema resolvido PS:\n");
+        imprimeSistemaDoubleComplex(YnPS[i], &cont, &freq);
         f*=pow(10, 1.0/freq.npts);
       }
     } while(f<freq.fs);
 
     mnaPS(netlist,Yn1,YnPS[i],L,C,freq.fs,&cont);
     resolversistemaPS(YnPS[i],&cont);
+
+    printf("\nSistema resolvido PS:\n");
     imprimeSistemaDoubleComplex(YnPS[i], &cont, &freq);
   }
   else if (freq.ptspor==2) { /*Oitava*/
