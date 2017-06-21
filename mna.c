@@ -276,13 +276,21 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
 
 
         admitancia(GBE, netlist[i].b, netlist[i].a, Yn, L, C);
-        admitancia(((netlist[i].c0be / sqrt(1 - VBE/0.6)) * jw), netlist[i].b, netlist[i].a, Yn, L, C); /* Creversa BE */
-        admitancia(((netlist[i].c1be * (exp(VBE/netlist[i].vtbe) - 1)) * jw), netlist[i].b, netlist[i].a, Yn, L, C); /* Cdireta BE */
+        if (VBE>0.6)
+          admitancia(((netlist[i].c0be / sqrt(0.5)) * jw), netlist[i].b, netlist[i].a, Yn, L, C);
+        else
+          admitancia(((netlist[i].c0be / sqrt(1 - VBE/0.6)) * jw), netlist[i].b, netlist[i].a, Yn, L, C); /* Creversa BE */
+        if (VBE>0)
+          admitancia(((netlist[i].c1be * (exp(VBE/netlist[i].vtbe) - 1)) * jw), netlist[i].b, netlist[i].a, Yn, L, C); /* Cdireta BE */
         transadmitancia(netlist[i].alfar*GBC, netlist[i].a, netlist[i].b, netlist[i].b, netlist[i].c, Yn, L, C); 
         
         admitancia(GBC, netlist[i].b, netlist[i].c, Yn, L, C);
-        admitancia(((netlist[i].c0bc / sqrt(1 - VBC/0.6)) * jw), netlist[i].b, netlist[i].c, Yn, L, C); /* Creversa BC */
-        admitancia(((netlist[i].c1bc * (exp(VBC/netlist[i].vtbc) - 1)) * jw), netlist[i].b, netlist[i].c, Yn, L, C); /* Cdireta BC */
+        if (VBC>0.6)
+            admitancia(((netlist[i].c0bc / sqrt(0.5)) * jw), netlist[i].b, netlist[i].c, Yn, L, C);
+        else
+          admitancia(((netlist[i].c0bc / sqrt(1 - VBC/0.6)) * jw), netlist[i].b, netlist[i].c, Yn, L, C); /* Creversa BC */
+        if (VBC>0)
+          admitancia(((netlist[i].c1bc * (exp(VBC/netlist[i].vtbc) - 1)) * jw), netlist[i].b, netlist[i].c, Yn, L, C); /* Cdireta BC */
         transadmitancia(netlist[i].alfa*GBE, netlist[i].c, netlist[i].b, netlist[i].b, netlist[i].a, Yn, L, C); 
       }
       else if (netlist[i].modelo[0] == 'P') {
@@ -303,18 +311,26 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
 
 
         admitancia(GEB, netlist[i].a, netlist[i].b, Yn, L, C);
-        admitancia(((netlist[i].c0be / sqrt(1 - VBE/0.6)) * jw), netlist[i].b, netlist[i].a, Yn, L, C); /* Creversa BE */
-        admitancia(((netlist[i].c1be * (exp(VBE/netlist[i].vtbe) - 1)) * jw), netlist[i].b, netlist[i].a, Yn, L, C); /* Cdireta BE */
+        if (VEB>0)
+          admitancia(((netlist[i].c0be / sqrt(0.5)) * jw), netlist[i].b, netlist[i].a, Yn, L, C);
+        else
+          admitancia(((netlist[i].c0be / sqrt(1 - VEB/0.6)) * jw), netlist[i].b, netlist[i].a, Yn, L, C); /* Creversa EB */
+        if (VEB>0)
+          admitancia(((netlist[i].c1be * (exp(VEB/netlist[i].vtbe) - 1)) * jw), netlist[i].b, netlist[i].a, Yn, L, C); /* Cdireta EB */
         transadmitancia(netlist[i].alfar*GCB, netlist[i].b, netlist[i].a, netlist[i].c, netlist[i].b, Yn, L, C); 
         
         admitancia(GCB, netlist[i].c, netlist[i].b, Yn, L, C);
-        admitancia(((netlist[i].c0bc / sqrt(1 - VBC/0.6)) * jw), netlist[i].b, netlist[i].c, Yn, L, C); /* Creversa BC */
-        admitancia(((netlist[i].c1bc * (exp(VBC/netlist[i].vtbc) - 1)) * jw), netlist[i].b, netlist[i].c, Yn, L, C); /* Cdireta BC */
+        if (VCB>0)
+          admitancia(((netlist[i].c0bc / sqrt(0.5)) * jw), netlist[i].b, netlist[i].c, Yn, L, C); /* Creversa BC */
+        else
+          admitancia(((netlist[i].c0bc / sqrt(1 - VCB/0.6)) * jw), netlist[i].b, netlist[i].c, Yn, L, C); /* Creversa BC */
+        if (VCB>0)
+          admitancia(((netlist[i].c1bc * (exp(VCB/netlist[i].vtbc) - 1)) * jw), netlist[i].b, netlist[i].c, Yn, L, C); /* Cdireta BC */
         transadmitancia(netlist[i].alfa*GEB, netlist[i].b, netlist[i].c, netlist[i].a, netlist[i].b, Yn, L, C); 
       }
     }  
     else if (tipo=='O');
-    printf("Sistema apos a estampa de %s\n", netlist[i].nome);
-    imprimeSistemaDoubleComplex(Yn, cont);
+    //printf("Sistema apos a estampa de %s\n", netlist[i].nome);
+    //imprimeSistemaDoubleComplex(Yn, cont);
   }
 }
