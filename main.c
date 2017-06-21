@@ -119,7 +119,7 @@ int main (int argc, char *argv[]) {
         resolversistemaPS(YnPS[k],&cont);
 
         printf("\nSistema resolvido PS na frequencia %lg :\n",f);
-        imprimeSistemaDoubleComplex(YnPS[k], &cont, &freq);
+        imprimeSistemaDoubleComplex(YnPS[k], &cont);
         f=f*passo;
         k++;
       }
@@ -129,7 +129,7 @@ int main (int argc, char *argv[]) {
     resolversistemaPS(YnPS[k],&cont);
 
     printf("\nSistema resolvido PS na frequencia %lg :\n",f);
-    imprimeSistemaDoubleComplex(YnPS[k], &cont, &freq);
+    imprimeSistemaDoubleComplex(YnPS[k], &cont);
   }
   else if (freq.ptspor==2) { /*Oitava*/
     double f = freq.fi;
@@ -143,7 +143,7 @@ int main (int argc, char *argv[]) {
         resolversistemaPS(YnPS[k],&cont);
 
         printf("\nSistema resolvido PS na frequencia %lg :\n",f);
-        imprimeSistemaDoubleComplex(YnPS[k], &cont, &freq);
+        imprimeSistemaDoubleComplex(YnPS[k], &cont);
         f=f*passo;
         k++;
       }
@@ -153,7 +153,7 @@ int main (int argc, char *argv[]) {
     resolversistemaPS(YnPS[k],&cont);
 
     printf("\nSistema resolvido PS na frequencia %lg :\n",f);
-    imprimeSistemaDoubleComplex(YnPS[k], &cont, &freq);
+    imprimeSistemaDoubleComplex(YnPS[k], &cont);
   }
   else if (freq.ptspor==3) { /*Linear*/
     double f = freq.fi;
@@ -162,14 +162,14 @@ int main (int argc, char *argv[]) {
       mnaPS(netlist,Yn1,YnPS[i],L,C,f,&cont);
       resolversistemaPS(YnPS[i],&cont);
       printf("\nSistema resolvido PS na frequencia %lg :\n",f);
-      imprimeSistemaDoubleComplex(YnPS[i], &cont, &freq);
+      imprimeSistemaDoubleComplex(YnPS[i], &cont);
       f+=(freq.fs-freq.fi)/(freq.npts-1);
     }
 
     mnaPS(netlist,Yn,YnPS[i],L,C,f,&cont);
     resolversistemaPS(YnPS[i],&cont);
     printf("\nSistema resolvido PS na frequencia %lg :\n",f);
-    imprimeSistemaDoubleComplex(YnPS[i], &cont, &freq);
+    imprimeSistemaDoubleComplex(YnPS[i], &cont);
   }
   
   /*imprimirsistemaPS*/

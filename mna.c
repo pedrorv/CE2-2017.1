@@ -314,5 +314,7 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
       }
     }  
     else if (tipo=='O');
+    printf("Sistema apos a estampa de %s\n", netlist[i].nome);
+    imprimeSistemaDoubleComplex(Yn, cont);
   }
 }
