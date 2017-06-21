@@ -2,6 +2,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "macros.h"
 #include "mna.h"
@@ -76,16 +77,15 @@ void acoplamento(double k,char la[],char lb[],elemento netlist[MAX_ELEM],double 
   double _Complex jw=2*M_PI*f*I;
   
   for (i=1; i<=cont->ne; i++) {
-    if(netlist[i].nome==la){
+    if((strcmp(netlist[i].nome,la)==0)){
       l1=netlist[i].valor;
       a=i;
     }
-    if(netlist[i].nome==lb){
+    if((strcmp(netlist[i].nome,lb)==0)){
       l2=netlist[i].valor;
       b=i;
     }
   }
-
   m=k*sqrt(l1*l2);
   transadmitancia(m*jw,netlist[a].x,0,netlist[b].x,0,Yn,L,C);
   transadmitancia(m*jw,netlist[b].x,0,netlist[a].x,0,Yn,L,C);
@@ -206,8 +206,8 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
       }
     }
 
-    printf("Sistema apos a estampa de %s\n", netlist[i].nome);
-    imprimeSistemaDouble(Yn, cont);
+    //printf("Sistema apos a estampa de %s\n", netlist[i].nome);
+    //imprimeSistemaDouble(Yn, cont);
   }
 }
 
