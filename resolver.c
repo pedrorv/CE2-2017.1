@@ -111,7 +111,13 @@ int resolversistemaPS(double _Complex Yn[MAX_NOS+1][MAX_NOS+2], contagem *cont) 
 void imprimeSistemaDouble(double Yn[MAX_NOS+1][MAX_NOS+2], contagem *cont) {
   for (int i=1; i<=cont->neq; i++) {
     for (int j=1; j<=cont->neq+1; j++)
-      if (Yn[i][j]!=0) printf("%+3.1f ",Yn[i][j]);
+      if (Yn[i][j]!=0) {
+        if (j != cont->neq+1) {
+           printf("%+3.1f ",Yn[i][j]);
+        } else {
+           printf("%+3.3f ",Yn[i][j]);
+        }
+      }
       else printf(" ... ");
     printf("\n");
   }
@@ -143,9 +149,14 @@ void zerarMatrizDoubleComplex(double _Complex YnPS[MAX_PONTOS+1][MAX_NOS+1][MAX_
 void imprimeSistemaDoubleComplex(double _Complex YnPS[MAX_NOS+1][MAX_NOS+2], contagem *cont) {
   for (int i=1; i<=cont->neq; i++) {
     for (int j=1; j<=cont->neq+1; j++) {
-      if (YnPS[i][j]!=0 && cimag(YnPS[i][j]) == 0) printf("%+3.3f ", creal(YnPS[i][j]));
-      else if (YnPS[i][j]!=0 && cimag(YnPS[i][j]) != 0) printf("%+3.3f <%+3.1fº", creal(YnPS[i][j]), graus(carg(YnPS[i][j])));
-      else printf(" ..... ");
+      if (YnPS[i][j]!=0) {
+        if (j != cont->neq+1) {
+          printf("%+3.1f ", creal(YnPS[i][j]));
+        } else {
+          printf("%+3.3f <%+3.1f", creal(YnPS[i][j]), graus(carg(YnPS[i][j])));
+        }
+      }
+      else printf(" ... ");
     }
     printf("\n");
   }
