@@ -153,7 +153,7 @@ int variaveisCorrente(contagem *cont, char lista[MAX_NOS+1][MAX_NOME+2], element
             strcpy(lista[cont->nv],"j"); /* Tem espaco para mais dois caracteres */
             strcat(lista[cont->nv],netlist[i].nome);
             netlist[i].x=cont->nv;
-            operacional(netlist[i].a,netlist[i].b,0,netlist[i].x, L, C);
+            cont->neq++;
         }
         else if (tipo == 'L') {
             cont->nv++;
@@ -161,7 +161,7 @@ int variaveisCorrente(contagem *cont, char lista[MAX_NOS+1][MAX_NOME+2], element
             strcpy(lista[cont->nv],"j"); /* Tem espaco para mais dois caracteres */
             strcat(lista[cont->nv],netlist[i].nome);
             netlist[i].x=cont->nv;
-            operacional(netlist[i].a,netlist[i].b,0,netlist[i].x, L, C);
+            cont->neq++;
         }
         else if (tipo=='O') {
             operacional(netlist[i].a,netlist[i].b,netlist[i].c,netlist[i].d, L, C);
@@ -173,7 +173,7 @@ int variaveisCorrente(contagem *cont, char lista[MAX_NOS+1][MAX_NOME+2], element
             strcpy(lista[cont->nv],"j"); /* Tem espaco para mais dois caracteres */
             strcat(lista[cont->nv],netlist[i].nome);
             netlist[i].x=cont->nv;
-            operacional(netlist[i].a,netlist[i].b,0,netlist[i].x, L, C);
+            cont->neq++;
         }
         else if (tipo=='F') {
             cont->nv++;
@@ -181,7 +181,7 @@ int variaveisCorrente(contagem *cont, char lista[MAX_NOS+1][MAX_NOME+2], element
             strcpy(lista[cont->nv],"j"); /* Tem espaco para mais dois caracteres */
             strcat(lista[cont->nv],netlist[i].nome);
             netlist[i].x=cont->nv;
-            operacional(netlist[i].x,0,netlist[i].c,netlist[i].d, L, C);
+            cont->neq++;
         }
         else if (tipo=='H') {
             cont->nv=cont->nv+2;
@@ -190,8 +190,8 @@ int variaveisCorrente(contagem *cont, char lista[MAX_NOS+1][MAX_NOME+2], element
             netlist[i].x=cont->nv-1;
             strcpy(lista[cont->nv],"jy"); strcat(lista[cont->nv],netlist[i].nome);
             netlist[i].y=cont->nv;
-            operacional(netlist[i].a,netlist[i].b,0,netlist[i].y, L, C);
-            operacional(netlist[i].x,0,netlist[i].c,netlist[i].d, L, C);
+            cont->neq++;
+            cont->neq++;
         }
     }
 

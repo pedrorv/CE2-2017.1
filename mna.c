@@ -119,20 +119,25 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
     }
     else if (tipo=='V') {
       transcondutancia(1,0,netlist[i].x,netlist[i].a,netlist[i].b,Yn,L,C);
+      transcondutancia(1,netlist[i].a,netlist[i].b,netlist[i].x,0,Yn,L,C);
       corrente(netlist[i].valor,netlist[i].x,0,Yn,L,C,cont);
     }
     else if (tipo=='E') {
       transcondutancia(1,0,netlist[i].x,netlist[i].a,netlist[i].b,Yn,L,C);
+      transcondutancia(1,netlist[i].a,netlist[i].b,netlist[i].x,0,Yn,L,C);
       transcondutancia(netlist[i].valor,netlist[i].x,0,netlist[i].c,netlist[i].d,Yn,L,C);
     }
     else if (tipo=='F') {
       transcondutancia(netlist[i].valor,netlist[i].a,netlist[i].b,netlist[i].x,0,Yn,L,C);
       transcondutancia(1,netlist[i].c,netlist[i].d,netlist[i].x,0,Yn,L,C);
+      transcondutancia(1,0,netlist[i].x,netlist[i].c,netlist[i].d,Yn,L,C);
     }
     else if (tipo=='H') {
       transcondutancia(1,0,netlist[i].y,netlist[i].a,netlist[i].b,Yn,L,C);
+      transcondutancia(1,netlist[i].c,netlist[i].d,netlist[i].y,0,Yn,L,C);
       transcondutancia(netlist[i].valor,netlist[i].y,0,netlist[i].x,0,Yn,L,C);
       transcondutancia(1,netlist[i].c,netlist[i].d,netlist[i].x,0,Yn,L,C);
+      transcondutancia(1,0,netlist[i].x,netlist[i].c,netlist[i].d,Yn,L,C);
     }
     else if (tipo=='O');
     else if (tipo=='Q') {              
@@ -237,20 +242,25 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
     }
     else if (tipo=='V') {
       transadmitancia(1,0,netlist[i].x,netlist[i].a,netlist[i].b,Yn,L,C);
+      transadmitancia(1,netlist[i].a,netlist[i].b,netlist[i].x,0,Yn,L,C);
       fasorcorrente(netlist[i].modulo,netlist[i].fase,netlist[i].x,0,Yn,L,C,cont);
     }
     else if (tipo=='E') {
       transadmitancia(1,0,netlist[i].x,netlist[i].a,netlist[i].b,Yn,L,C);
+      transadmitancia(1,netlist[i].a,netlist[i].b,netlist[i].x,0,Yn,L,C);
       transadmitancia(netlist[i].valor,netlist[i].x,0,netlist[i].c,netlist[i].d,Yn,L,C);
     }
     else if (tipo=='F') {
       transadmitancia(netlist[i].valor,netlist[i].a,netlist[i].b,netlist[i].x,0,Yn,L,C);
       transadmitancia(1,netlist[i].c,netlist[i].d,netlist[i].x,0,Yn,L,C);
+      transadmitancia(1,0,netlist[i].x,netlist[i].c,netlist[i].d,Yn,L,C);
     }
     else if (tipo=='H') {
       transadmitancia(1,0,netlist[i].y,netlist[i].a,netlist[i].b,Yn,L,C);
+      transadmitancia(1,netlist[i].a,netlist[i].b,netlist[i].y,0,Yn,L,C);
       transadmitancia(netlist[i].valor,netlist[i].y,0,netlist[i].x,0,Yn,L,C);
       transadmitancia(1,netlist[i].c,netlist[i].d,netlist[i].x,0,Yn,L,C);
+      transadmitancia(1,0,netlist[i].x,netlist[i].c,netlist[i].d,Yn,L,C);
     }
     else if (tipo=='Q') {
       VBE=YnPO[netlist[i].b][cont->neq+1]-YnPO[netlist[i].a][cont->neq+1];
