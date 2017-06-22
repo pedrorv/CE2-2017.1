@@ -46,7 +46,8 @@ double
   Yn1[MAX_NOS+1][MAX_NOS+2];
 
 double _Complex
-  YnPS[MAX_PONTOS+1][MAX_NOS+1][MAX_NOS+2];
+  YnPS[MAX_PONTOS+1][MAX_NOS+1][MAX_NOS+2],
+  YnPontos[MAX_PONTOS+1][MAX_NOS+1];
 
 contagem cont;
 
@@ -118,6 +119,8 @@ int main (int argc, char *argv[]) {
         mnaPS(netlist,Yn1,YnPS[k],L,C,f,&cont);
         resolversistemaPS(YnPS[k],&cont);
 
+        guardarResultados(YnPontos, YnPS, &cont, k, f);
+
         printf("\nSistema resolvido PS na frequencia %lg :\n",f);
         imprimeSistemaDoubleComplex(YnPS[k], &cont);
         f=f*passo;
@@ -142,6 +145,8 @@ int main (int argc, char *argv[]) {
         mnaPS(netlist,Yn1,YnPS[k],L,C,f,&cont);
         resolversistemaPS(YnPS[k],&cont);
 
+        guardarResultados(YnPontos, YnPS, &cont, k, f);
+
         printf("\nSistema resolvido PS na frequencia %lg :\n",f);
         imprimeSistemaDoubleComplex(YnPS[k], &cont);
         f=f*passo;
@@ -161,6 +166,9 @@ int main (int argc, char *argv[]) {
     for (i=0; i<(freq.npts-1); i++) {
       mnaPS(netlist,Yn1,YnPS[i],L,C,f,&cont);
       resolversistemaPS(YnPS[i],&cont);
+
+      guardarResultados(YnPontos, YnPS, &cont, i, f);
+
       printf("\nSistema resolvido PS na frequencia %lg :\n",f);
       imprimeSistemaDoubleComplex(YnPS[i], &cont);
       f+=(freq.fs-freq.fi)/(freq.npts-1);
