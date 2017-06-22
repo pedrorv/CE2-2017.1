@@ -16,3 +16,5 @@ void zerarMatrizDoubleComplex(double _Complex YnPS[MAX_PONTOS+1][MAX_NOS+1][MAX_
 void imprimeSistemaDoubleComplex(double _Complex YnPS[MAX_NOS+1][MAX_NOS+2], contagem *cont);
 
 double graus(double radianos);
+
+void guardarResultados(double _Complex YnPontos[MAX_PONTOS+1][MAX_NOS+1], double _Complex YnPS[MAX_PONTOS+1][MAX_NOS+1][MAX_NOS+2], contagem *cont, int ponto, double freq);
