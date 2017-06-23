@@ -121,7 +121,7 @@ int main (int argc, char *argv[]) {
         mnaPS(netlist,Yn1,YnPS[k],L,C,f,&cont);
         resolversistemaPS(YnPS[k],&cont);
 
-        guardarResultados(YnPontos, YnPS, &cont, k, f);
+        guardarResultados(YnPontos, Yn1, YnPS, &cont, k, f);
 
         printf("\nSistema resolvido PS na frequencia %lg :\n",f);
         imprimeSistemaDoubleComplex(YnPS[k], &cont);
@@ -133,7 +133,7 @@ int main (int argc, char *argv[]) {
     mnaPS(netlist,Yn1,YnPS[k],L,C,freq.fs,&cont);
     resolversistemaPS(YnPS[k],&cont);
 
-    guardarResultados(YnPontos, YnPS, &cont, k, freq.fs);
+    guardarResultados(YnPontos, Yn1, YnPS, &cont, k, freq.fs);
 
     nPontos = k;
 
@@ -151,7 +151,7 @@ int main (int argc, char *argv[]) {
         mnaPS(netlist,Yn1,YnPS[k],L,C,f,&cont);
         resolversistemaPS(YnPS[k],&cont);
 
-        guardarResultados(YnPontos, YnPS, &cont, k, f);
+        guardarResultados(YnPontos, Yn1, YnPS, &cont, k, f);
 
         printf("\nSistema resolvido PS na frequencia %lg :\n",f);
         imprimeSistemaDoubleComplex(YnPS[k], &cont);
@@ -163,7 +163,7 @@ int main (int argc, char *argv[]) {
     mnaPS(netlist,Yn1,YnPS[k],L,C,freq.fs,&cont);
     resolversistemaPS(YnPS[k],&cont);
 
-    guardarResultados(YnPontos, YnPS, &cont, k, freq.fs);
+    guardarResultados(YnPontos, Yn1, YnPS, &cont, k, freq.fs);
 
     nPontos = k;
 
@@ -177,7 +177,7 @@ int main (int argc, char *argv[]) {
       mnaPS(netlist,Yn1,YnPS[i],L,C,f,&cont);
       resolversistemaPS(YnPS[i],&cont);
 
-      guardarResultados(YnPontos, YnPS, &cont, i, f);
+      guardarResultados(YnPontos, Yn1, YnPS, &cont, i, f);
 
       printf("\nSistema resolvido PS na frequencia %lg :\n",f);
       imprimeSistemaDoubleComplex(YnPS[i], &cont);
@@ -187,7 +187,7 @@ int main (int argc, char *argv[]) {
     mnaPS(netlist,Yn,YnPS[i],L,C,f,&cont);
     resolversistemaPS(YnPS[i],&cont);
 
-    guardarResultados(YnPontos, YnPS, &cont, i, freq.fs);
+    guardarResultados(YnPontos, Yn1, YnPS, &cont, i, freq.fs);
 
     nPontos = i;
 
