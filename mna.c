@@ -94,7 +94,7 @@ void acoplamento(double k,char la[],char lb[],elemento netlist[MAX_ELEM],double 
 void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, contagem *cont){
   char tipo;
   int i;
-  double VBE,GBE,IBE,VBC,GBC,IBC,VEB,GEB,IEB,VCB,GCB,ICB;
+  double VBE,GBE,VBC,GBC,VEB,GEB,VCB,GCB,VCE,VEC,GCE,GEC,IBE,IBC,IEB,ICB,ICE,IEC;
 
   for (i=1; i<=cont->ne; i++) {
     tipo=netlist[i].nome[0];
@@ -145,6 +145,8 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
       VBC=YnPO[netlist[i].b][cont->neq+1]-YnPO[netlist[i].c][cont->neq+1]; 
       VEB=-VBE;
       VCB=-VBC;
+      VCE=VBE+VCB;
+      VEC=-VCE;
 
       if (netlist[i].modelo[0] == 'N') {
         printf("Transistor é NPN\n");
@@ -159,11 +161,19 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
         if (VBC > 0.45) VBC = 0.45;
         printf("Valor de VBC: %g\n", VBC);
         
+        
         GBE=netlist[i].isbe*exp(VBE/netlist[i].vtbe)/netlist[i].vtbe;
         IBE=netlist[i].isbe*(exp(VBE/netlist[i].vtbe)-1) - GBE*VBE;
         GBC=netlist[i].isbc*exp(VBC/netlist[i].vtbc)/netlist[i].vtbc;
         IBC=netlist[i].isbc*(exp(VBC/netlist[i].vtbc)-1) - GBE*VBC;
 
+        if (VCE>0){
+          GCE=(netlist[i].alfa*(GBE*VBE+IBE)-(GBC*VBC+IBC))/netlist[i].va;
+          ICE=GCE*VCE;
+          
+          condutancia(GCE,netlist[i].c,netlist[i].a,Yn,L,C);
+          corrente(ICE,netlist[i].c,netlist[i].a,Yn,L,C,cont);          
+        }
        
         condutancia(GBE,netlist[i].b,netlist[i].a,Yn,L,C);
         corrente(IBE,netlist[i].b,netlist[i].a,Yn,L,C,cont);
@@ -192,7 +202,14 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
         IEB=netlist[i].isbe*(exp(VEB/netlist[i].vtbe)-1) - GEB*VEB;
         GCB=netlist[i].isbc*exp(VCB/netlist[i].vtbc)/netlist[i].vtbc;
         ICB=netlist[i].isbc*(exp(VCB/netlist[i].vtbc)-1) - GCB*VCB;
-
+        
+        if (VEC>0){
+          GEC=(netlist[i].alfa*(GEB*VEB+IEB)-(GCB*VCB+ICB))/netlist[i].va;
+          IEC=GEC*VEC;
+          
+          condutancia(GEC,netlist[i].a,netlist[i].c,Yn,L,C);
+          corrente(IEC,netlist[i].a,netlist[i].c,Yn,L,C,cont);      
+        }
        
         condutancia(GEB,netlist[i].a,netlist[i].b,Yn,L,C);
         corrente(IEB,netlist[i].a,netlist[i].b,Yn,L,C,cont);
@@ -215,7 +232,7 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
   char tipo;
   int i;
   double _Complex jw=2*M_PI*f*I;
-  double VBE,GBE,VBC,GBC,VEB,GEB,VCB,GCB;
+  double VBE,GBE,VBC,GBC,VEB,GEB,VCB,GCB,VCE,VEC,GCE,GEC;
    
   for (i=1; i<=cont->ne; i++) {
     tipo=netlist[i].nome[0];
@@ -267,6 +284,8 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
       VBC=YnPO[netlist[i].b][cont->neq+1]-YnPO[netlist[i].c][cont->neq+1]; 
       VEB=-VBE;
       VCB=-VBC;
+      VCE=VBE+VCB;
+      VEC=-VCE;
 
       if (netlist[i].modelo[0] == 'N') {
         printf("Transistor é NPN\n");
@@ -284,6 +303,11 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
         GBE=netlist[i].isbe*exp(VBE/netlist[i].vtbe)/netlist[i].vtbe;
         GBC=netlist[i].isbc*exp(VBC/netlist[i].vtbc)/netlist[i].vtbc;
 
+        if (VCE>0){
+          GCE=(netlist[i].alfa*GBE*VBE-GBC*VBC)/netlist[i].va;
+          
+          admitancia(GCE,netlist[i].c,netlist[i].a,Yn,L,C);       
+        }
 
         admitancia(GBE, netlist[i].b, netlist[i].a, Yn, L, C);
         if (VBE>0.6)
@@ -318,6 +342,12 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
 
         GEB=netlist[i].isbe*exp(VEB/netlist[i].vtbe)/netlist[i].vtbe;
         GCB=netlist[i].isbc*exp(VCB/netlist[i].vtbc)/netlist[i].vtbc;
+        
+        if (VEC>0){
+          GEC=(netlist[i].alfa*GEB*VEB-GCB*VCB)/netlist[i].va;
+          
+          admitancia(GEC,netlist[i].a,netlist[i].c,Yn,L,C);   
+        }
 
 
         admitancia(GEB, netlist[i].a, netlist[i].b, Yn, L, C);
