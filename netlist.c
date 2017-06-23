@@ -273,7 +273,7 @@ int gerarArquivoTab(FILE *arquivoTab, char nomearquivo[MAX_LINHA+1], char lista[
         strcat(linhaDoArquivo, auxiliar);
         strcat(linhaDoArquivo, " ");
 
-        for (int coluna = 1; coluna <= cont->neq+2; coluna+=1) {
+        for (int coluna = 1; coluna <= cont->neq; coluna+=1) {
             snprintf(auxiliar, 20, "%3.5f", creal(YnPontos[linha][coluna]));
             strcat(linhaDoArquivo, auxiliar);
             strcat(linhaDoArquivo, " ");
