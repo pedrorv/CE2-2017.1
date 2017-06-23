@@ -276,7 +276,8 @@ int gerarArquivoTab(FILE *arquivoTab, char nomearquivo[MAX_LINHA+1], char lista[
         
 
         for (int coluna = 1; coluna <= cont->neq; coluna+=1) {
-            snprintf(auxiliar, 20, "%3.5f", ( fabs(creal(YnPontos[linha][coluna])) + ( fabs(creal(YnPontos[linha][coluna])) * YnPO[coluna][cont->neq+1] ) ) );
+            //snprintf(auxiliar, 20, "%3.5f", ( fabs(creal(YnPontos[linha][coluna])) + ( fabs(creal(YnPontos[linha][coluna])) * YnPO[coluna][cont->neq+1] ) ) );
+            snprintf(auxiliar, 20, "%3.5f", ( (cabs(YnPontos[linha][coluna])) + ( (cabs(YnPontos[linha][coluna])) * YnPO[coluna][cont->neq+1] ) ) );
             strcat(linhaDoArquivo, auxiliar);
             strcat(linhaDoArquivo, " ");
             snprintf(auxiliar, 20, "%3.5f", graus(carg(YnPontos[linha][coluna])));
