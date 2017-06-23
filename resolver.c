@@ -115,10 +115,10 @@ void imprimeSistemaDouble(double Yn[MAX_NOS+1][MAX_NOS+2], contagem *cont) {
         if (j != cont->neq+1) {
            printf("%+3.1f ",Yn[i][j]);
         } else {
-           printf("%+3.3f ",Yn[i][j]);
+           printf("%+3.5f ",Yn[i][j]);
         }
       }
-      else printf(" ... ");
+      else printf(" ..... ");
     printf("\n");
   }
 }
@@ -153,10 +153,10 @@ void imprimeSistemaDoubleComplex(double _Complex YnPS[MAX_NOS+1][MAX_NOS+2], con
         if (j != cont->neq+1) {
           printf("%+3.1f ", creal(YnPS[i][j]));
         } else {
-          printf("%+3.3f <%+3.1f", creal(YnPS[i][j]), graus(carg(YnPS[i][j])));
+          printf("%+3.5f <%+3.1f", creal(YnPS[i][j]), graus(carg(YnPS[i][j])));
         }
       }
-      else printf(" ... ");
+      else printf(" ..... ");
     }
     printf("\n");
   }
