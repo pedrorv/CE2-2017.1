@@ -7,3 +7,5 @@
 !*/
 # Ignora .exe 
 *.exe
+# Ignora .tab 
+*.tab
