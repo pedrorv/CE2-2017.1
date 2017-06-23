@@ -237,3 +237,34 @@ void imprimirNetlist(contagem *cont, char lista[MAX_NOS+1][MAX_NOME+2], elemento
 
     printf("O circuito tem %d nos, %d variaveis, %d equacoes e %d elementos\n",cont->nn,cont->nv,cont->neq,cont->ne);
 }
+
+int gerarArquivoTab(FILE *arquivoTab, char nomearquivo[MAX_LINHA+1], char lista[MAX_NOS+1][MAX_NOME+2], double _Complex YnPontos[MAX_PONTOS+1][MAX_NOS+1], contagem *cont, int nPontos) {
+    char *nomeTab, linhaDoArquivo[256];
+    size_t caracteres = strlen(nomearquivo);
+
+    nomeTab = malloc(caracteres);
+    nomeTab[0] = '\0';
+    linhaDoArquivo[0] = '\0';
+
+    strncat(nomeTab, nomearquivo, (caracteres-4));
+    strcat(nomeTab, ".tab\0");
+
+    arquivoTab = fopen(nomeTab, "w");
+
+    strcat(linhaDoArquivo, "f ");
+
+    for (int i=1; i<=cont->nv; i++) {
+        strcat(linhaDoArquivo, lista[i]);
+        strcat(linhaDoArquivo, "m ");
+        strcat(linhaDoArquivo, lista[i]);
+        strcat(linhaDoArquivo, "f ");
+    }
+
+    strcat(linhaDoArquivo, "\n");
+    fprintf(arquivoTab, linhaDoArquivo);
+
+
+    fclose(arquivoTab);
+
+    return OK;
+}

@@ -26,7 +26,8 @@ elemento netlist[MAX_ELEM]; /* Netlist */
 int
   falhaLeitura, /* Status da leitura do netlist */
   falhaVariaveis, /* Status das variaveis de corrente */
-  i,j,k;
+  i,j,k,
+  nPontos; /* Guarda número de pontos analisados */
 
 char
 /* Foram colocados limites nos formatos de leitura para alguma protecao
@@ -39,6 +40,7 @@ char
   *p;
 
 FILE *arquivo;
+FILE *arquivoTab;
 
 double
   g,
@@ -131,6 +133,8 @@ int main (int argc, char *argv[]) {
     mnaPS(netlist,Yn1,YnPS[k],L,C,freq.fs,&cont);
     resolversistemaPS(YnPS[k],&cont);
 
+    nPontos = k;
+
     printf("\nSistema resolvido PS na frequencia %lg :\n",f);
     imprimeSistemaDoubleComplex(YnPS[k], &cont);
   }
@@ -157,6 +161,8 @@ int main (int argc, char *argv[]) {
     mnaPS(netlist,Yn1,YnPS[k],L,C,freq.fs,&cont);
     resolversistemaPS(YnPS[k],&cont);
 
+    nPontos = k;
+
     printf("\nSistema resolvido PS na frequencia %lg :\n",f);
     imprimeSistemaDoubleComplex(YnPS[k], &cont);
   }
@@ -176,10 +182,15 @@ int main (int argc, char *argv[]) {
 
     mnaPS(netlist,Yn,YnPS[i],L,C,f,&cont);
     resolversistemaPS(YnPS[i],&cont);
+
+    nPontos = i;
+
     printf("\nSistema resolvido PS na frequencia %lg :\n",f);
     imprimeSistemaDoubleComplex(YnPS[i], &cont);
   }
-  
+
+  gerarArquivoTab(arquivoTab, nomearquivo, lista, YnPontos, &cont, nPontos);
+
   /*imprimirsistemaPS*/
   return OK;
 }
