@@ -114,7 +114,6 @@ int main (int argc, char *argv[]) {
     double f = freq.fi;
     double passo = pow(10, 1.0/freq.npts);
     
-    printf("\nPasso : %lg \n",passo);
     k=0;
     do {
       for (i=0; i<=(freq.npts-1); i++) {
@@ -123,8 +122,6 @@ int main (int argc, char *argv[]) {
 
         guardarResultados(YnPontos, Yn1, YnPS, &cont, k, f);
 
-        printf("\nSistema resolvido PS na frequencia %lg :\n",f);
-        imprimeSistemaDoubleComplex(YnPS[k], &cont);
         f=f*passo;
         k++;
       }
@@ -136,15 +133,11 @@ int main (int argc, char *argv[]) {
     guardarResultados(YnPontos, Yn1, YnPS, &cont, k, freq.fs);
 
     nPontos = k;
-
-    printf("\nSistema resolvido PS na frequencia %lg :\n",f);
-    imprimeSistemaDoubleComplex(YnPS[k], &cont);
   }
   else if (freq.ptspor==2) { /*Oitava*/
     double f = freq.fi;
     double passo = pow(2, 1.0/freq.npts);
     
-    printf("\nPasso : %lg \n",passo);
     k=0;
     do {
       for (i=0; i<=(freq.npts-1); i++) {
@@ -153,8 +146,6 @@ int main (int argc, char *argv[]) {
 
         guardarResultados(YnPontos, Yn1, YnPS, &cont, k, f);
 
-        printf("\nSistema resolvido PS na frequencia %lg :\n",f);
-        imprimeSistemaDoubleComplex(YnPS[k], &cont);
         f=f*passo;
         k++;
       }
@@ -166,9 +157,6 @@ int main (int argc, char *argv[]) {
     guardarResultados(YnPontos, Yn1, YnPS, &cont, k, freq.fs);
 
     nPontos = k;
-
-    printf("\nSistema resolvido PS na frequencia %lg :\n",f);
-    imprimeSistemaDoubleComplex(YnPS[k], &cont);
   }
   else if (freq.ptspor==3) { /*Linear*/
     double f = freq.fi;
@@ -179,8 +167,6 @@ int main (int argc, char *argv[]) {
 
       guardarResultados(YnPontos, Yn1, YnPS, &cont, i, f);
 
-      printf("\nSistema resolvido PS na frequencia %lg :\n",f);
-      imprimeSistemaDoubleComplex(YnPS[i], &cont);
       f+=(freq.fs-freq.fi)/(freq.npts-1);
     }
 
@@ -191,12 +177,12 @@ int main (int argc, char *argv[]) {
 
     nPontos = i;
 
-    printf("\nSistema resolvido PS na frequencia %lg :\n",f);
-    imprimeSistemaDoubleComplex(YnPS[i], &cont);
   }
 
   gerarArquivoTab(arquivoTab, nomearquivo, lista, Yn1, YnPontos, &cont, nPontos);
 
-  /*imprimirsistemaPS*/
+  printf("Arquivo .tab da resposta em frequencia foi salvo com o mesmo nome do netlist.\n");
+  printf("Programa concluido.\n");
+
   return OK;
 }
