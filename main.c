@@ -133,6 +133,8 @@ int main (int argc, char *argv[]) {
     mnaPS(netlist,Yn1,YnPS[k],L,C,freq.fs,&cont);
     resolversistemaPS(YnPS[k],&cont);
 
+    guardarResultados(YnPontos, YnPS, &cont, k, f);
+
     nPontos = k;
 
     printf("\nSistema resolvido PS na frequencia %lg :\n",f);
@@ -161,6 +163,8 @@ int main (int argc, char *argv[]) {
     mnaPS(netlist,Yn1,YnPS[k],L,C,freq.fs,&cont);
     resolversistemaPS(YnPS[k],&cont);
 
+    guardarResultados(YnPontos, YnPS, &cont, k, f);
+
     nPontos = k;
 
     printf("\nSistema resolvido PS na frequencia %lg :\n",f);
@@ -182,6 +186,8 @@ int main (int argc, char *argv[]) {
 
     mnaPS(netlist,Yn,YnPS[i],L,C,f,&cont);
     resolversistemaPS(YnPS[i],&cont);
+
+    guardarResultados(YnPontos, YnPS, &cont, i, f);
 
     nPontos = i;
 

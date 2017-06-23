@@ -1,4 +1,6 @@
 #include <ctype.h>
+#include <complex.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,6 +8,7 @@
 #include "macros.h"
 #include "mna.h"
 #include "netlist.h"
+#include "resolver.h"
 #include "tipos.h"
 
 /* Rotina que conta os nos e atribui numeros a eles */
@@ -239,12 +242,13 @@ void imprimirNetlist(contagem *cont, char lista[MAX_NOS+1][MAX_NOME+2], elemento
 }
 
 int gerarArquivoTab(FILE *arquivoTab, char nomearquivo[MAX_LINHA+1], char lista[MAX_NOS+1][MAX_NOME+2], double _Complex YnPontos[MAX_PONTOS+1][MAX_NOS+1], contagem *cont, int nPontos) {
-    char *nomeTab, linhaDoArquivo[256];
+    char *nomeTab, linhaDoArquivo[256], auxiliar[20];
     size_t caracteres = strlen(nomearquivo);
 
     nomeTab = malloc(caracteres);
     nomeTab[0] = '\0';
     linhaDoArquivo[0] = '\0';
+    auxiliar[0] = '\0';
 
     strncat(nomeTab, nomearquivo, (caracteres-4));
     strcat(nomeTab, ".tab\0");
@@ -262,6 +266,25 @@ int gerarArquivoTab(FILE *arquivoTab, char nomearquivo[MAX_LINHA+1], char lista[
 
     strcat(linhaDoArquivo, "\n");
     fprintf(arquivoTab, linhaDoArquivo);
+
+    for (int linha = 0; linha <= nPontos; linha+=1) {
+        linhaDoArquivo[0] = '\0';
+        snprintf(auxiliar, 20, "%3.5f", creal(YnPontos[linha][0]));
+        strcat(linhaDoArquivo, auxiliar);
+        strcat(linhaDoArquivo, " ");
+
+        for (int coluna = 1; coluna <= cont->neq+2; coluna+=1) {
+            snprintf(auxiliar, 20, "%3.5f", creal(YnPontos[linha][coluna]));
+            strcat(linhaDoArquivo, auxiliar);
+            strcat(linhaDoArquivo, " ");
+            snprintf(auxiliar, 20, "%3.5f", graus(carg(YnPontos[linha][coluna])));
+            strcat(linhaDoArquivo, auxiliar);
+            strcat(linhaDoArquivo, " ");
+        }
+
+        strcat(linhaDoArquivo, "\n");
+        fprintf(arquivoTab, linhaDoArquivo);
+    }
 
 
     fclose(arquivoTab);
