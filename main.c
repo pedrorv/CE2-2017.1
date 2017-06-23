@@ -179,9 +179,11 @@ int main (int argc, char *argv[]) {
 
   }
 
-  gerarArquivoTab(arquivoTab, nomearquivo, lista, Yn1, YnPontos, &cont, nPontos);
-
-  printf("Arquivo .tab da resposta em frequencia foi salvo com o mesmo nome do netlist.\n");
+  if (freq.ptspor!=0) {
+    gerarArquivoTab(arquivoTab, nomearquivo, lista, Yn1, YnPontos, &cont, nPontos);
+    printf("Arquivo .tab da resposta em frequencia foi salvo com o mesmo nome do netlist.\n");
+  }
+  
   printf("Programa concluido.\n");
 
   return OK;
