@@ -195,7 +195,7 @@ int main (int argc, char *argv[]) {
     imprimeSistemaDoubleComplex(YnPS[i], &cont);
   }
 
-  gerarArquivoTab(arquivoTab, nomearquivo, lista, YnPontos, &cont, nPontos);
+  gerarArquivoTab(arquivoTab, nomearquivo, lista, Yn1, YnPontos, &cont, nPontos);
 
   /*imprimirsistemaPS*/
   return OK;

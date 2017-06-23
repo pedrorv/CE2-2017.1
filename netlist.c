@@ -241,7 +241,7 @@ void imprimirNetlist(contagem *cont, char lista[MAX_NOS+1][MAX_NOME+2], elemento
     printf("O circuito tem %d nos, %d variaveis, %d equacoes e %d elementos\n",cont->nn,cont->nv,cont->neq,cont->ne);
 }
 
-int gerarArquivoTab(FILE *arquivoTab, char nomearquivo[MAX_LINHA+1], char lista[MAX_NOS+1][MAX_NOME+2], double _Complex YnPontos[MAX_PONTOS+1][MAX_NOS+1], contagem *cont, int nPontos) {
+int gerarArquivoTab(FILE *arquivoTab, char nomearquivo[MAX_LINHA+1], char lista[MAX_NOS+1][MAX_NOME+2], double YnPO[MAX_NOS+1][MAX_NOS+2], double _Complex YnPontos[MAX_PONTOS+1][MAX_NOS+1], contagem *cont, int nPontos) {
     char *nomeTab, linhaDoArquivo[MAX_NOS*40], auxiliar[20];
     size_t caracteres = strlen(nomearquivo);
 
@@ -274,7 +274,7 @@ int gerarArquivoTab(FILE *arquivoTab, char nomearquivo[MAX_LINHA+1], char lista[
         strcat(linhaDoArquivo, " ");
 
         for (int coluna = 1; coluna <= cont->neq; coluna+=1) {
-            snprintf(auxiliar, 20, "%3.5f", creal(YnPontos[linha][coluna]));
+            snprintf(auxiliar, 20, "%3.5f", (abs(creal(YnPontos[linha][coluna])) + abs(creal(YnPontos[linha][coluna])) * YnPO[coluna][cont->neq+1]));
             strcat(linhaDoArquivo, auxiliar);
             strcat(linhaDoArquivo, " ");
             snprintf(auxiliar, 20, "%3.5f", graus(carg(YnPontos[linha][coluna])));

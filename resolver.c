@@ -170,6 +170,6 @@ double graus(double radianos) {
 void guardarResultados(double _Complex YnPontos[MAX_PONTOS+1][MAX_NOS+1], double YnPO[MAX_NOS+1][MAX_NOS+2], double _Complex YnPS[MAX_PONTOS+1][MAX_NOS+1][MAX_NOS+2], contagem *cont, int ponto, double freq) {
   YnPontos[ponto][0] = freq;
   for (int eq = 1; eq <= cont->neq; eq+=1) {
-    YnPontos[ponto][eq] = YnPS[ponto][eq][cont->neq+1] + YnPO[eq][cont->neq+1];
+    YnPontos[ponto][eq] = YnPS[ponto][eq][cont->neq+1];
   }
 }
