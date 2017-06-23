@@ -242,7 +242,7 @@ void imprimirNetlist(contagem *cont, char lista[MAX_NOS+1][MAX_NOME+2], elemento
 }
 
 int gerarArquivoTab(FILE *arquivoTab, char nomearquivo[MAX_LINHA+1], char lista[MAX_NOS+1][MAX_NOME+2], double _Complex YnPontos[MAX_PONTOS+1][MAX_NOS+1], contagem *cont, int nPontos) {
-    char *nomeTab, linhaDoArquivo[256], auxiliar[20];
+    char *nomeTab, linhaDoArquivo[MAX_NOS*40], auxiliar[20];
     size_t caracteres = strlen(nomearquivo);
 
     nomeTab = malloc(caracteres);
