@@ -14,6 +14,7 @@ http://www.coe.ufrj.br/~acmq/cursos/mna1amp.zip
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
+#include <complex.h>
 
 #include "macros.h"
 #include "mna.h"
@@ -48,13 +49,15 @@ double
   Yn1[MAX_NOS+1][MAX_NOS+2];
 
 double _Complex
-  YnPS[MAX_PONTOS+1][MAX_NOS+1][MAX_NOS+2],
-  YnPontos[MAX_PONTOS+1][MAX_NOS+1];
+  YnPS[MAX_PONTOS+1][MAX_NOS+1][MAX_NOS+2];
 
 contagem cont;
 
 frequencia freq;
 tabela C,L;
+
+char *nomeTab, linhaDoArquivo[256], auxiliar[35];
+
 
 int main (int argc, char *argv[]) {
   do {
@@ -109,78 +112,95 @@ int main (int argc, char *argv[]) {
   imprimeSistemaDouble(Yn1, &cont);
  
   zerarMatrizDoubleComplex(YnPS, &cont, &freq);
-         
-  if (freq.ptspor==1) { /*Decada*/
-    double f = freq.fi;
-    double passo = pow(10, 1.0/freq.npts);
-    
-    k=0;
-    do {
-      for (i=0; i<=(freq.npts-1); i++) {
-        mnaPS(netlist,Yn1,YnPS[k],L,C,f,&cont);
-        resolversistemaPS(YnPS[k],&cont);
 
-        guardarResultados(YnPontos, Yn1, YnPS, &cont, k, f);
+  if (freq.ptspor != 0) {
+    /* Prepara tabela de saída */
+    size_t caracteres = strlen(nomearquivo);
 
-        f=f*passo;
-        k++;
-      }
-    } while(f<freq.fs);
+    nomeTab = (char *) malloc((caracteres+2) * sizeof(char));
+    nomeTab[0] = '\0';
+    linhaDoArquivo[0] = '\0';
+    auxiliar[0] = '\0';
 
-    mnaPS(netlist,Yn1,YnPS[k],L,C,freq.fs,&cont);
-    resolversistemaPS(YnPS[k],&cont);
+    strncat(nomeTab, nomearquivo, (caracteres-4));
+    strcat(nomeTab, ".tab\0");
 
-    guardarResultados(YnPontos, Yn1, YnPS, &cont, k, freq.fs);
+    arquivoTab = fopen(nomeTab, "w");
 
-    nPontos = k;
-  }
-  else if (freq.ptspor==2) { /*Oitava*/
-    double f = freq.fi;
-    double passo = pow(2, 1.0/freq.npts);
-    
-    k=0;
-    do {
-      for (i=0; i<=(freq.npts-1); i++) {
-        mnaPS(netlist,Yn1,YnPS[k],L,C,f,&cont);
-        resolversistemaPS(YnPS[k],&cont);
+    strcat(linhaDoArquivo, "f ");
 
-        guardarResultados(YnPontos, Yn1, YnPS, &cont, k, f);
-
-        f=f*passo;
-        k++;
-      }
-    } while(f<freq.fs);
-
-    mnaPS(netlist,Yn1,YnPS[k],L,C,freq.fs,&cont);
-    resolversistemaPS(YnPS[k],&cont);
-
-    guardarResultados(YnPontos, Yn1, YnPS, &cont, k, freq.fs);
-
-    nPontos = k;
-  }
-  else if (freq.ptspor==3) { /*Linear*/
-    double f = freq.fi;
-
-    for (i=0; i<(freq.npts-1); i++) {
-      mnaPS(netlist,Yn1,YnPS[i],L,C,f,&cont);
-      resolversistemaPS(YnPS[i],&cont);
-
-      guardarResultados(YnPontos, Yn1, YnPS, &cont, i, f);
-
-      f+=(freq.fs-freq.fi)/(freq.npts-1);
+    for (int i=1; i<=cont.neq; i++) {
+        strcat(linhaDoArquivo, lista[i]);
+        strcat(linhaDoArquivo, "m ");
+        strcat(linhaDoArquivo, lista[i]);
+        strcat(linhaDoArquivo, "f ");
     }
 
-    mnaPS(netlist,Yn,YnPS[i],L,C,f,&cont);
-    resolversistemaPS(YnPS[i],&cont);
+    strcat(linhaDoArquivo, "\n");
+    fprintf(arquivoTab, linhaDoArquivo);
 
-    guardarResultados(YnPontos, Yn1, YnPS, &cont, i, freq.fs);
+    /* Começa a calcular PS */
 
-    nPontos = i;
+    double f = freq.fi;
 
-  }
+    k = 0;
+    do {
+      mnaPS(netlist,Yn1,YnPS[k],L,C,f,&cont);
+      resolversistemaPS(YnPS[k],&cont);
 
-  if (freq.ptspor!=0) {
-    gerarArquivoTab(arquivoTab, nomearquivo, lista, Yn1, YnPontos, &cont, nPontos);
+      linhaDoArquivo[0] = '\0';
+      snprintf(auxiliar, 20, "%3.2f", f);
+      strcat(linhaDoArquivo, auxiliar);
+      strcat(linhaDoArquivo, " ");
+      
+      for (int coluna = 1; coluna <= cont.neq; coluna+=1) {
+          snprintf(auxiliar, 20, "%3.5f", (cabs(YnPS[k][coluna][cont.neq+1])) );
+          strcat(linhaDoArquivo, auxiliar);
+          strcat(linhaDoArquivo, " ");
+          snprintf(auxiliar, 20, "%3.5f", graus(carg(YnPS[k][coluna][cont.neq+1])));
+          strcat(linhaDoArquivo, auxiliar);
+          strcat(linhaDoArquivo, " ");
+      }
+
+      strcat(linhaDoArquivo, "\n");
+      fprintf(arquivoTab, linhaDoArquivo);
+
+      if (freq.ptspor == 1) {
+        f *= pow(10, 1.0/freq.npts);
+      } 
+      else if (freq.ptspor == 2) {
+        f *= pow(2, 1.0/freq.npts);
+      }
+      else if (freq.ptspor == 3) {
+        f += (freq.fs-freq.fi)/(freq.npts-1);
+      }
+
+      k++;
+    } while (f < freq.fs);
+    
+    mnaPS(netlist,Yn1,YnPS[k],L,C,freq.fs,&cont);
+    resolversistemaPS(YnPS[k],&cont);
+
+    linhaDoArquivo[0] = '\0';
+    snprintf(auxiliar, 20, "%3.2f", freq.fs);
+    strcat(linhaDoArquivo, auxiliar);
+    strcat(linhaDoArquivo, " ");
+    
+    for (int coluna = 1; coluna <= cont.neq; coluna+=1) {
+        snprintf(auxiliar, 20, "%3.5f", (cabs(YnPS[k][coluna][cont.neq+1])) );
+        strcat(linhaDoArquivo, auxiliar);
+        strcat(linhaDoArquivo, " ");
+        snprintf(auxiliar, 20, "%3.5f", graus(carg(YnPS[k][coluna][cont.neq+1])));
+        strcat(linhaDoArquivo, auxiliar);
+        strcat(linhaDoArquivo, " ");
+    }
+
+    strcat(linhaDoArquivo, "\n");
+    fprintf(arquivoTab, linhaDoArquivo);
+
+    fclose(arquivoTab);
+    
+    
     printf("Arquivo .tab da resposta em frequencia foi salvo com o mesmo nome do netlist.\n");
   }
   
