@@ -296,8 +296,8 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
           admitancia(((netlist[i].c0be / sqrt(0.5)) * jw), netlist[i].b, netlist[i].a, Yn, L, C);
         else
           admitancia(((netlist[i].c0be / sqrt(1 - VBE/0.6)) * jw), netlist[i].b, netlist[i].a, Yn, L, C); /* Creversa BE */
-        /*if (VBE>0)
-          admitancia(((netlist[i].c1be * (exp(VBE/netlist[i].vtbe) - 1)) * jw), netlist[i].b, netlist[i].a, Yn, L, C);  Cdireta BE */
+        if (VBE>0)
+          admitancia(((netlist[i].c1be * (exp(VBE/netlist[i].vtbe) - 1)) * jw), netlist[i].b, netlist[i].a, Yn, L, C); /* Cdireta BE */
         transadmitancia(netlist[i].alfar*GBC, netlist[i].a, netlist[i].b, netlist[i].b, netlist[i].c, Yn, L, C); 
         
         admitancia(GBC, netlist[i].b, netlist[i].c, Yn, L, C);
