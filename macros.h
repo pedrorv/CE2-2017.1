@@ -8,7 +8,7 @@
 #define MAX_NOS 80
 #define MAX_PONTOS 10000
 #define TOLG 1e-9
-#define GMIN 1e-12
+#define GMIN 1e-18
 #define CONST_CONV 0.01
 #define DEBUG
 

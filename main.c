@@ -166,10 +166,10 @@ int main (int argc, char *argv[]) {
       fprintf(arquivoTab, linhaDoArquivo);
 
       if (freq.ptspor == 1) {
-        f *= pow(10, 1.0/freq.npts);
+        f *= pow(10, 1.0/(freq.npts-1));
       } 
       else if (freq.ptspor == 2) {
-        f *= pow(2, 1.0/freq.npts);
+        f *= pow(2, 1.0/(freq.npts-1));
       }
       else if (freq.ptspor == 3) {
         f += (freq.fs-freq.fi)/(freq.npts-1);
@@ -187,7 +187,7 @@ int main (int argc, char *argv[]) {
     strcat(linhaDoArquivo, " ");
     
     for (int coluna = 1; coluna <= cont.neq; coluna+=1) {
-        snprintf(auxiliar, 20, "%3.5f", (cabs(YnPS[k][coluna][cont.neq+1])) );
+        snprintf(auxiliar, 20, "%3.5f", (cabs(YnPS[k][coluna][cont.neq+1])));
         strcat(linhaDoArquivo, auxiliar);
         strcat(linhaDoArquivo, " ");
         snprintf(auxiliar, 20, "%3.5f", graus(carg(YnPS[k][coluna][cont.neq+1])));

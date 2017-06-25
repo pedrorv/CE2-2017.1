@@ -150,10 +150,10 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
 
       if (netlist[i].modelo[0] == 'N') {
         if (VBE < 0) VBE = 0;
-        if (VBE > 0.65) VBE = 0.65;
+        if (VBE > 0.7) VBE = 0.7;
 
         if (VBC < 0) VBC = 0;
-        if (VBC > 0.45) VBC = 0.45;
+        if (VBC > 0.65) VBC = 0.65;
         
         
         GBE=netlist[i].isbe*exp(VBE/netlist[i].vtbe)/netlist[i].vtbe;
@@ -181,10 +181,10 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
       }
       else if (netlist[i].modelo[0] == 'P') {
         if (VEB < 0) VEB = 0;
-        if (VEB > 0.65) VEB = 0.65;
+        if (VEB > 0.7) VEB = 0.7;
 
         if (VCB < 0) VCB = 0;
-        if (VCB > 0.45) VCB = 0.45;
+        if (VCB > 0.65) VCB = 0.65;
         
         GEB=netlist[i].isbe*exp(VEB/netlist[i].vtbe)/netlist[i].vtbe;
         IEB=netlist[i].isbe*(exp(VEB/netlist[i].vtbe)-1) - GEB*VEB;
@@ -220,7 +220,8 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
   char tipo;
   int i;
   double _Complex jw=2*M_PI*f*I;
-  double VBE,GBE,VBC,GBC,VEB,GEB,VCB,GCB,VCE,VEC,GCE,GEC;
+  double VBE,GBE,VBC,GBC,VEB,GEB,VCB,GCB;
+  /*double VCE,VEC,GCE,GEC;*/
    
   for (i=1; i<=cont->ne; i++) {
     tipo=netlist[i].nome[0];
@@ -272,36 +273,35 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
       VBC=YnPO[netlist[i].b][cont->neq+1]-YnPO[netlist[i].c][cont->neq+1]; 
       VEB=-VBE;
       VCB=-VBC;
-      VCE=VBE+VCB;
-      VEC=-VCE;
+      /*VCE=VBE+VCB;
+      VEC=-VCE;*/
 
       if (netlist[i].modelo[0] == 'N') {
         if (VBE < 0) VBE = 0;
-        if (VBE > 0.65) VBE = 0.65;
+        if (VBE > 0.7) VBE = 0.7;
 
         if (VBC < 0) VBC = 0;
-        if (VBC > 0.45) VBC = 0.45;
+        if (VBC > 0.65) VBC = 0.65;
       
         GBE=netlist[i].isbe*exp(VBE/netlist[i].vtbe)/netlist[i].vtbe;
         GBC=netlist[i].isbc*exp(VBC/netlist[i].vtbc)/netlist[i].vtbc;
 
-        if (VCE>0){
-          GCE=(netlist[i].alfa*GBE*VBE-GBC*VBC)/netlist[i].va;
-          
+        /*if (VCE>0){
+          GCE=(netlist[i].alfa*GBE*VBE-GBC*VBC)/netlist[i].va;          
           admitancia(GCE,netlist[i].c,netlist[i].a,Yn,L,C);       
-        }
+        }*/
 
         admitancia(GBE, netlist[i].b, netlist[i].a, Yn, L, C);
-        if (VBE>0.6)
+        if (VBE>0.3)
           admitancia(((netlist[i].c0be / sqrt(0.5)) * jw), netlist[i].b, netlist[i].a, Yn, L, C);
         else
           admitancia(((netlist[i].c0be / sqrt(1 - VBE/0.6)) * jw), netlist[i].b, netlist[i].a, Yn, L, C); /* Creversa BE */
-        if (VBE>0)
-          admitancia(((netlist[i].c1be * (exp(VBE/netlist[i].vtbe) - 1)) * jw), netlist[i].b, netlist[i].a, Yn, L, C); /* Cdireta BE */
+        /*if (VBE>0)
+          admitancia(((netlist[i].c1be * (exp(VBE/netlist[i].vtbe) - 1)) * jw), netlist[i].b, netlist[i].a, Yn, L, C);  Cdireta BE */
         transadmitancia(netlist[i].alfar*GBC, netlist[i].a, netlist[i].b, netlist[i].b, netlist[i].c, Yn, L, C); 
         
         admitancia(GBC, netlist[i].b, netlist[i].c, Yn, L, C);
-        if (VBC>0.6)
+        if (VBC>0.3)
             admitancia(((netlist[i].c0bc / sqrt(0.5)) * jw), netlist[i].b, netlist[i].c, Yn, L, C);
         else
           admitancia(((netlist[i].c0bc / sqrt(1 - VBC/0.6)) * jw), netlist[i].b, netlist[i].c, Yn, L, C); /* Creversa BC */
@@ -311,23 +311,22 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
       }
       else if (netlist[i].modelo[0] == 'P') {
         if (VEB < 0) VEB = 0;
-        if (VEB > 0.65) VEB = 0.65;
+        if (VEB > 0.7) VEB = 0.7;
         
         if (VCB < 0) VCB = 0;
-        if (VCB > 0.45) VCB = 0.45;
+        if (VCB > 0.65) VCB = 0.65;
 
         GEB=netlist[i].isbe*exp(VEB/netlist[i].vtbe)/netlist[i].vtbe;
         GCB=netlist[i].isbc*exp(VCB/netlist[i].vtbc)/netlist[i].vtbc;
         
-        if (VEC>0){
-          GEC=(netlist[i].alfa*GEB*VEB-GCB*VCB)/netlist[i].va;
-          
+        /*if (VEC>0){
+          GEC=(netlist[i].alfa*GEB*VEB-GCB*VCB)/netlist[i].va;          
           admitancia(GEC,netlist[i].a,netlist[i].c,Yn,L,C);   
-        }
+        }*/
 
 
         admitancia(GEB, netlist[i].a, netlist[i].b, Yn, L, C);
-        if (VEB>0)
+        if (VEB>0.3)
           admitancia(((netlist[i].c0be / sqrt(0.5)) * jw), netlist[i].b, netlist[i].a, Yn, L, C);
         else
           admitancia(((netlist[i].c0be / sqrt(1 - VEB/0.6)) * jw), netlist[i].b, netlist[i].a, Yn, L, C); /* Creversa EB */
@@ -336,7 +335,7 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
         transadmitancia(netlist[i].alfar*GCB, netlist[i].b, netlist[i].a, netlist[i].c, netlist[i].b, Yn, L, C); 
         
         admitancia(GCB, netlist[i].c, netlist[i].b, Yn, L, C);
-        if (VCB>0)
+        if (VCB>0.3)
           admitancia(((netlist[i].c0bc / sqrt(0.5)) * jw), netlist[i].b, netlist[i].c, Yn, L, C); /* Creversa BC */
         else
           admitancia(((netlist[i].c0bc / sqrt(1 - VCB/0.6)) * jw), netlist[i].b, netlist[i].c, Yn, L, C); /* Creversa BC */
