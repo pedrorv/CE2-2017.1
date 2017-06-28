@@ -107,10 +107,10 @@ int main (int argc, char *argv[]) {
     //imprimeSistemaDouble(Yn1, &cont);
     //printf("k=:%d\n",k);
     k++;
-  } while (testeconvergenciaPO(Yn, Yn1, &cont) && (k<10));
+  } while (testeconvergenciaPO(Yn, Yn1, &cont) && (k<100));
 
   if (testeconvergenciaPO(Yn, Yn1, &cont)) {
-    printf("Sistema não convergiu.");
+    printf("Sistema não convergiu.\n");
     exit(1);
   }
 
