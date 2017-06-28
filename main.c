@@ -34,6 +34,7 @@ char
 /* Foram colocados limites nos formatos de leitura para alguma protecao
    contra excesso de caracteres nestas variaveis */
   nomearquivo[MAX_LINHA+1],
+  fimDoPrograma[MAX_LINHA+1],
   tipo,
   na[MAX_NOME],nb[MAX_NOME],nc[MAX_NOME],nd[MAX_NOME],
   lista[MAX_NOS+1][MAX_NOME+2], /*Tem que caber jx antes do nome */
@@ -102,9 +103,9 @@ int main (int argc, char *argv[]) {
     mnaPO(netlist, Yn, Yn1, L, C, &cont);
     resolversistemaPO(Yn1, &cont);
 
-    printf("Prévia do sistema\n");
-    imprimeSistemaDouble(Yn1, &cont);
-    printf("k=:%d\n",k);
+    //printf("Prévia do sistema\n");
+    //imprimeSistemaDouble(Yn1, &cont);
+    //printf("k=:%d\n",k);
     k++;
   } while (testeconvergenciaPO(Yn, Yn1, &cont) && (k<10));
 
@@ -113,8 +114,18 @@ int main (int argc, char *argv[]) {
     exit(1);
   }
 
-  printf("Sistema resolvido:\n");
-  imprimeSistemaDouble(Yn1, &cont);
+  //printf("Sistema resolvido:\n");
+  //imprimeSistemaDouble(Yn1, &cont);
+
+  printf("Solucao:\n");
+  strcpy(txt,"Tensao");
+  for (i=1; i<=cont.nv; i++) {
+    if (i==cont.nn+1) strcpy(txt,"Corrente");
+    if (C[i]!=0)
+      printf("%s %s (%d): %g\n",txt,lista[i],C[i],Yn[C[i]][cont.neq+1]);
+    else
+      printf("%s %s (%d): nao calculada\n",txt,lista[i],C[i]);
+  }
  
   zerarMatrizDoubleComplex(YnPS, &cont, &freq);
 
