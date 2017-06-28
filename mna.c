@@ -141,8 +141,8 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
     }
     else if (tipo=='O');
     else if (tipo=='Q') {              
-      VBE=YnPO[netlist[i].b][cont->neq+1]-YnPO[netlist[i].a][cont->neq+1];
-      VBC=YnPO[netlist[i].b][cont->neq+1]-YnPO[netlist[i].c][cont->neq+1]; 
+      VBE=YnPO[L[netlist[i].b]][cont->neq+1]-YnPO[L[netlist[i].a]][cont->neq+1];
+      VBC=YnPO[L[netlist[i].b]][cont->neq+1]-YnPO[L[netlist[i].c]][cont->neq+1]; 
       VEB=-VBE;
       VCB=-VBC;
       VCE=VBE+VCB;
@@ -269,8 +269,8 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
       transadmitancia(1,0,netlist[i].x,netlist[i].c,netlist[i].d,Yn,L,C);
     }
     else if (tipo=='Q') {
-      VBE=YnPO[netlist[i].b][cont->neq+1]-YnPO[netlist[i].a][cont->neq+1];
-      VBC=YnPO[netlist[i].b][cont->neq+1]-YnPO[netlist[i].c][cont->neq+1]; 
+      VBE=YnPO[L[netlist[i].b]][cont->neq+1]-YnPO[L[netlist[i].a]][cont->neq+1];
+      VBC=YnPO[L[netlist[i].b]][cont->neq+1]-YnPO[L[netlist[i].c]][cont->neq+1]; 
       VEB=-VBE;
       VCB=-VBC;
       //VCE=VBE+VCB;
