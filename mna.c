@@ -151,20 +151,18 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
 
       if (netlist[i].modelo[0] == 'N') {
         if (VBE > 0.7) VBE = 0.7;
-        if (VBC > 0.7) VBC = 0.7;
+        if (VBE < 0) VBE = 0;
+        if (VBC > 0.5) VBC = 0.5;
+        if (VBC < 0) VBC = 0;
                 
         GBE=netlist[i].isbe*exp(VBE/netlist[i].vtbe)/netlist[i].vtbe;
-        if (GBE<GMIN) GBE=GMIN;
         IBE=netlist[i].isbe*(exp(VBE/netlist[i].vtbe)-1) - GBE*VBE;
         GBC=netlist[i].isbc*exp(VBC/netlist[i].vtbc)/netlist[i].vtbc;
-        if (GBC<GMIN) GBC=GMIN;
         IBC=netlist[i].isbc*(exp(VBC/netlist[i].vtbc)-1) - GBE*VBC;
 
-        if (VCE>0){
-          GCE=(netlist[i].alfa*(GBE*VBE+IBE)-(GBC*VBC+IBC))/netlist[i].va;
-          if (GCE<GMIN) GCE=GMIN;
-          ICE=GCE*VCE;
-          
+        GCE=(netlist[i].alfa*(GBE*VBE+IBE)-(GBC*VBC+IBC))/netlist[i].va;
+        ICE=GCE*VCE;
+        if (VCE>0){      
           condutancia(GCE,netlist[i].c,netlist[i].a,Yn,L,C);
           corrente(ICE,netlist[i].c,netlist[i].a,Yn,L,C,cont);          
         }
@@ -183,20 +181,18 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
       }
       else if (netlist[i].modelo[0] == 'P') {
         if (VEB > 0.7) VEB = 0.7;
-        if (VCB > 0.7) VCB = 0.7;
+        if (VEB < 0) VEB = 0;
+        if (VCB > 0.5) VCB = 0.5;
+        if (VCB < 0) VCB = 0;
         
         GEB=netlist[i].isbe*exp(VEB/netlist[i].vtbe)/netlist[i].vtbe;
-        if (GEB<GMIN) GEB=GMIN;
         IEB=netlist[i].isbe*(exp(VEB/netlist[i].vtbe)-1) - GEB*VEB;
         GCB=netlist[i].isbc*exp(VCB/netlist[i].vtbc)/netlist[i].vtbc;
-        if (GCB<GMIN) GCB=GMIN;
         ICB=netlist[i].isbc*(exp(VCB/netlist[i].vtbc)-1) - GCB*VCB;
+        GEC=(netlist[i].alfa*(GEB*VEB+IEB)-(GCB*VCB+ICB))/netlist[i].va;
+        IEC=GEC*VEC;
         
         if (VEC>0){
-          GEC=(netlist[i].alfa*(GEB*VEB+IEB)-(GCB*VCB+ICB))/netlist[i].va;
-          if (GEC<GMIN) GEC=GMIN;
-          IEC=GEC*VEC;
-          
           condutancia(GEC,netlist[i].a,netlist[i].c,Yn,L,C);
           corrente(IEC,netlist[i].a,netlist[i].c,Yn,L,C,cont);      
         }
