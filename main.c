@@ -117,20 +117,34 @@ int main (int argc, char *argv[]) {
       k++;
     } while (testeconvergenciaPO(Yn, Yn1, &cont) && (k<50));
     if (k==50){
-      zerarMatrizesDouble(Yn, Yn1, &cont);
+      //zerarMatrizesDouble(Yn, Yn1, &cont);
       for (i=0; i<=cont.neq; i++) {
-        sorte=((double)(rand()%100))/10;
-        Yn1[i][cont.neq+1]=sorte;
+        double d=Yn[i][cont.neq+1]-Yn1[i][cont.neq+1];
+        if (fabs(d)>1) d=d/fabs(Yn[i][j]);
+        if (fabs(d)>CONST_CONV) {
+          sorte=((double)(rand()%100))/10;
+          Yn1[i][cont.neq+1]=sorte;
+        }
       }
-      printf("Prévia do sistema\n");
-      imprimeSistemaDouble(Yn1, &cont);
-      printf("k=:%d n=:%d\n",k,n);
+      //printf("Prévia do sistema\n");
+      //imprimeSistemaDouble(Yn1, &cont);
+      //printf("k=:%d n=:%d\n",k,n);
       n++;
     }
   } while ((k==50) && (n<50));
 
+  printf("Solucao:\n");
+  strcpy(txt,"Tensao");
+  for (i=1; i<=cont.nv; i++) {
+    if (i==cont.nn+1) strcpy(txt,"Corrente");
+    if (C[i]!=0)
+      printf("%s %s (%d): %g\n",txt,lista[i],C[i],Yn[C[i]][cont.neq+1]);
+    else
+      printf("%s %s (%d): nao calculada\n",txt,lista[i],C[i]);
+  }
+
   if (testeconvergenciaPO(Yn, Yn1, &cont)) {
-    printf("N�o convergiu.Digite qualquer tecla e aperte enter para encerrar o programa\n");
+    printf("N�o convergiu.Digite qualquer tecla e aperte enter para encerrar o programa\n");
     scanf("%50s", fimDoPrograma);
     return OK;
   }
