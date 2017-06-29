@@ -64,6 +64,7 @@ void admitancia(double _Complex  y, int a, int b, double _Complex Yn[MAX_NOS+1][
 void corrente(double i, int a, int b,double  Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, contagem *cont) {
   Yn[L[a]][cont->neq+1]-=i;
   Yn[L[b]][cont->neq+1]+=i;
+  condutancia(GMIN,a,b,Yn,L,C);
 }
 
 void fasorcorrente(double modulo, double fase, int a, int b, double _Complex Yn[MAX_NOS+1][MAX_NOS+2], tabela L, tabela C, contagem *cont) {
@@ -150,12 +151,10 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
 
 
       if (netlist[i].modelo[0] == 'N') {
-        if (VBE > 0.5) VBE = 0.7;
-        else VBE = 0;
-        //if (VBE < 0) VBE = 0;
+        if (VBE > 0.7) VBE = 0.7;
+        if (VBE < 0) VBE = 0;
         if (VBC > 0.5) VBC = 0.7;
-        else VBC = 0;
-        //if (VBC < 0) VBC = 0;
+        if (VBC < 0) VBC = 0;
                 
         GBE=netlist[i].isbe*exp(VBE/netlist[i].vtbe)/netlist[i].vtbe;
         IBE=netlist[i].isbe*(exp(VBE/netlist[i].vtbe)-1) - GBE*VBE;
@@ -182,12 +181,12 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
         printf("Transistor %s VBE %lg VBC %lg GBE %lg GBC %lg GCE %lg IBE %lg IBC %lg ICE %lg\n", netlist[i].nome,VBE,VBC,GBE,GBC,GCE,IBE,IBC,ICE);
       }
       else if (netlist[i].modelo[0] == 'P') {
-        if (VEB > 0.5) VEB = 0.7;
-        else VCB = 0;
-        //if (VEB < 0) VEB = 0;
+        if (VEB > 0.7) VEB = 0.7;
+        //else VCB = 0;
+        if (VEB < 0) VEB = 0;
         if (VCB > 0.5) VCB = 0.7;
-        else VCB = 0;
-        //if (VCB < 0) VCB = 0;
+        //else VCB = 0;
+        if (VCB < 0) VCB = 0;
         
         GEB=netlist[i].isbe*exp(VEB/netlist[i].vtbe)/netlist[i].vtbe;
         IEB=netlist[i].isbe*(exp(VEB/netlist[i].vtbe)-1) - GEB*VEB;
