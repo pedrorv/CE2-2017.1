@@ -123,9 +123,9 @@ int lerNetlist(FILE *arquivo, elemento netlist[MAX_ELEM], char txt[MAX_LINHA+1],
                 netlist[cont->ne].vtbc,  netlist[cont->ne].va,    netlist[cont->ne].c0be,
                 netlist[cont->ne].c1be,  netlist[cont->ne].c0bc,  netlist[cont->ne].c1bc
             );
-            netlist[cont->ne].a=numero(na, lista, cont);
-            netlist[cont->ne].b=numero(nb, lista, cont);
             netlist[cont->ne].c=numero(nc, lista, cont);
+            netlist[cont->ne].b=numero(nb, lista, cont);
+            netlist[cont->ne].a=numero(na, lista, cont);
         }
         else if (tipo=='*') { /* Comentario comeca com "*" */
             printf("Comentario: %s", txt);

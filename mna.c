@@ -148,21 +148,21 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
       VCE=VBE+VCB;
       VEC=-VCE;
 
-      if (netlist[i].modelo[0] == 'N') {
-        if (VBE < 0) VBE = 0;
-        if (VBE > 0.7) VBE = 0.7;
 
-        if (VBC < 0) VBC = 0;
-        if (VBC > 0.65) VBC = 0.65;
-        
-        
+      if (netlist[i].modelo[0] == 'N') {
+        if (VBE > 0.7) VBE = 0.7;
+        if (VBC > 0.7) VBC = 0.7;
+                
         GBE=netlist[i].isbe*exp(VBE/netlist[i].vtbe)/netlist[i].vtbe;
+        if (GBE<GMIN) GBE=GMIN;
         IBE=netlist[i].isbe*(exp(VBE/netlist[i].vtbe)-1) - GBE*VBE;
         GBC=netlist[i].isbc*exp(VBC/netlist[i].vtbc)/netlist[i].vtbc;
+        if (GBC<GMIN) GBC=GMIN;
         IBC=netlist[i].isbc*(exp(VBC/netlist[i].vtbc)-1) - GBE*VBC;
 
         if (VCE>0){
           GCE=(netlist[i].alfa*(GBE*VBE+IBE)-(GBC*VBC+IBC))/netlist[i].va;
+          if (GCE<GMIN) GCE=GMIN;
           ICE=GCE*VCE;
           
           condutancia(GCE,netlist[i].c,netlist[i].a,Yn,L,C);
@@ -178,21 +178,23 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
         corrente(IBC,netlist[i].b,netlist[i].c,Yn,L,C,cont);
         corrente(netlist[i].alfa*IBE,netlist[i].c,netlist[i].b,Yn,L,C,cont);
         transcondutancia(netlist[i].alfa*GBE,netlist[i].c,netlist[i].b,netlist[i].b,netlist[i].a,Yn,L,C);
+        
+        printf("Transistor %s VBE %lg VBC %lg GBE %lg GBC %lg GCE %lg IBE %lg IBC %lg ICE %lg\n", netlist[i].nome,VBE,VBC,GBE,GBC,GCE,IBE,IBC,ICE);
       }
       else if (netlist[i].modelo[0] == 'P') {
-        if (VEB < 0) VEB = 0;
         if (VEB > 0.7) VEB = 0.7;
-
-        if (VCB < 0) VCB = 0;
-        if (VCB > 0.65) VCB = 0.65;
+        if (VCB > 0.7) VCB = 0.7;
         
         GEB=netlist[i].isbe*exp(VEB/netlist[i].vtbe)/netlist[i].vtbe;
+        if (GEB<GMIN) GEB=GMIN;
         IEB=netlist[i].isbe*(exp(VEB/netlist[i].vtbe)-1) - GEB*VEB;
         GCB=netlist[i].isbc*exp(VCB/netlist[i].vtbc)/netlist[i].vtbc;
+        if (GCB<GMIN) GCB=GMIN;
         ICB=netlist[i].isbc*(exp(VCB/netlist[i].vtbc)-1) - GCB*VCB;
         
         if (VEC>0){
           GEC=(netlist[i].alfa*(GEB*VEB+IEB)-(GCB*VCB+ICB))/netlist[i].va;
+          if (GEC<GMIN) GEC=GMIN;
           IEC=GEC*VEC;
           
           condutancia(GEC,netlist[i].a,netlist[i].c,Yn,L,C);
@@ -208,6 +210,8 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
         corrente(ICB,netlist[i].c,netlist[i].b,Yn,L,C,cont);
         corrente(netlist[i].alfa*IEB,netlist[i].b,netlist[i].c,Yn,L,C,cont);
         transcondutancia(netlist[i].alfa*GEB,netlist[i].b,netlist[i].c,netlist[i].a,netlist[i].b,Yn,L,C);
+        
+        printf("Transistor %s VEB %lg VCB %lg GEB %lg GCB %lg GEC %lg IEB %lg ICB %lg IEC %lg\n", netlist[i].nome,VEB,VCB,GEB,GCB,GEC,IEB,ICB,IEC);
       }
     }
 
@@ -220,8 +224,8 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
   char tipo;
   int i;
   double _Complex jw=2*M_PI*f*I;
-  double VBE,GBE,VBC,GBC,VEB,GEB,VCB,GCB;
-  double VCE,VEC,GCE,GEC;
+  double VBE,GBE,VBC,GBC,VEB,GEB,VCB,GCB,GCE,GEC;
+  //double VCE,VEC;
   double CBE,CBC,CEB,CCB;
    
   for (i=1; i<=cont->ne; i++) {
@@ -274,8 +278,8 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
       VBC=YnPO[L[netlist[i].b]][cont->neq+1]-YnPO[L[netlist[i].c]][cont->neq+1]; 
       VEB=-VBE;
       VCB=-VBC;
-      VCE=VBE+VCB;
-      VEC=-VCE;
+      //VCE=VBE+VCB;
+      //VEC=-VCE;
 
       if (netlist[i].modelo[0] == 'N') {
         if (VBE > 0.7) VBE = 0.7;
@@ -305,7 +309,7 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
         admitancia((CBC * jw), netlist[i].b, netlist[i].c, Yn, L, C);
         transadmitancia(netlist[i].alfa*GBE, netlist[i].c, netlist[i].b, netlist[i].b, netlist[i].a, Yn, L, C); 
         
-        printf("Transistor %s VBE %lg VBC %lg GBE %lg GBC %lg GCE %lg CBE %lg CBC %lg\n", netlist[i].nome,VBE,VBC,GBE,GBC,GCE,CBE,CBC);
+        //printf("Transistor %s VBE %lg VBC %lg GBE %lg GBC %lg GCE %lg CBE %lg CBC %lg\n", netlist[i].nome,VBE,VBC,GBE,GBC,GCE,CBE,CBC);
       }
       else if (netlist[i].modelo[0] == 'P') {
         if (VEB > 0.7) VEB = 0.7;
@@ -335,7 +339,7 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
         admitancia((CCB * jw), netlist[i].c, netlist[i].b, Yn, L, C);
         transadmitancia(netlist[i].alfa*GEB, netlist[i].b, netlist[i].c, netlist[i].a, netlist[i].b, Yn, L, C); 
         
-        printf("Transistor %s VEB %lg VCB %lg GEB %lg GCB %lg GEC %lg CEB %lg CCB %lg\n", netlist[i].nome,VEB,VCB,GEB,GCB,GEC,CEB,CCB);
+        //printf("Transistor %s VEB %lg VCB %lg GEB %lg GCB %lg GEC %lg CEB %lg CCB %lg\n", netlist[i].nome,VEB,VCB,GEB,GCB,GEC,CEB,CCB);
       }
     }  
     else if (tipo=='O');

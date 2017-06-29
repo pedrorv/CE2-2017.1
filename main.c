@@ -15,6 +15,7 @@ http://www.coe.ufrj.br/~acmq/cursos/mna1amp.zip
 #include <math.h>
 #include <string.h>
 #include <complex.h>
+#include <time.h>
 
 #include "macros.h"
 #include "mna.h"
@@ -22,12 +23,13 @@ http://www.coe.ufrj.br/~acmq/cursos/mna1amp.zip
 #include "resolver.h"
 #include "tipos.h"
 
+
 elemento netlist[MAX_ELEM]; /* Netlist */
 
 int
   falhaLeitura, /* Status da leitura do netlist */
   falhaVariaveis, /* Status das variaveis de corrente */
-  i,j,k,
+  i,j,k,n,
   nPontos; /* Guarda número de pontos analisados */
 
 char
@@ -45,7 +47,7 @@ FILE *arquivo;
 FILE *arquivoTab;
 
 double
-  g,
+  g,sorte,
   Yn[MAX_NOS+1][MAX_NOS+2],
   Yn1[MAX_NOS+1][MAX_NOS+2];
 
@@ -93,24 +95,39 @@ int main (int argc, char *argv[]) {
   imprimirNetlist(&cont, lista, netlist, C);
   
   zerarMatrizesDouble(Yn, Yn1, &cont);
-  
-  k=0;
+  srand((unsigned)time(NULL));
+  n=1;
   do {
-    for (i=0; i<=cont.neq; i++) {
-      for (j=0; j<=cont.neq+1; j++) {
-        Yn[i][j]=Yn1[i][j];
-        Yn1[i][j]=0;
+    k=0;
+    do {
+      for (i=0; i<=cont.neq; i++) {
+        for (j=0; j<=cont.neq+1; j++) {
+          if (i>0) Yn[i][j]=Yn1[i][j];
+          else Yn[i][j]=0;
+          Yn1[i][j]=0;
+        }
       }
+
+      mnaPO(netlist, Yn, Yn1, L, C, &cont);
+      if(resolversistemaPO(Yn1, &cont)) k=49;
+
+      printf("Prévia do sistema\n");
+      imprimeSistemaDouble(Yn1, &cont);
+      printf("k=:%d n=:%d\n",k,n);
+      k++;
+    } while (testeconvergenciaPO(Yn, Yn1, &cont) && (k<50));
+    if (k==50){
+      zerarMatrizesDouble(Yn, Yn1, &cont);
+      for (i=0; i<=cont.neq; i++) {
+        sorte=((double)(rand()%100))/10;
+        Yn1[i][cont.neq+1]=sorte;
+      }
+      printf("Prévia do sistema\n");
+      imprimeSistemaDouble(Yn1, &cont);
+      printf("k=:%d n=:%d\n",k,n);
+      n++;
     }
-
-    mnaPO(netlist, Yn, Yn1, L, C, &cont);
-    resolversistemaPO(Yn1, &cont);
-
-    //printf("Prévia do sistema\n");
-    //imprimeSistemaDouble(Yn1, &cont);
-    //printf("k=:%d\n",k);
-    k++;
-  } while (testeconvergenciaPO(Yn, Yn1, &cont) && (k<100));
+  } while ((k==50) && (n<50));
 
   if (testeconvergenciaPO(Yn, Yn1, &cont)) {
     printf("N�o convergiu.Digite qualquer tecla e aperte enter para encerrar o programa\n");
@@ -118,8 +135,8 @@ int main (int argc, char *argv[]) {
     return OK;
   }
 
-  //printf("Sistema resolvido:\n");
-  //imprimeSistemaDouble(Yn1, &cont);
+  printf("Sistema resolvido:\n");
+  imprimeSistemaDouble(Yn1, &cont);
 
   printf("Solucao:\n");
   strcpy(txt,"Tensao");
