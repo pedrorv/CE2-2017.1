@@ -159,7 +159,7 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
         GBE=netlist[i].isbe*exp(VBE/netlist[i].vtbe)/netlist[i].vtbe;
         IBE=netlist[i].isbe*(exp(VBE/netlist[i].vtbe)-1) - GBE*VBE;
         GBC=netlist[i].isbc*exp(VBC/netlist[i].vtbc)/netlist[i].vtbc;
-        IBC=netlist[i].isbc*(exp(VBC/netlist[i].vtbc)-1) - GBE*VBC;
+        IBC=netlist[i].isbc*(exp(VBC/netlist[i].vtbc)-1) - GBC*VBC;
 
         GCE=(netlist[i].alfa*(GBE*VBE+IBE)-(GBC*VBC+IBC))/netlist[i].va;
         ICE=GCE*VCE;
