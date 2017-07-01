@@ -101,7 +101,7 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
     tipo=netlist[i].nome[0];
 
     if (tipo=='R') {
-      condutancia(1/netlist[i].valor,netlist[i].a,netlist[i].b,Yn,L,C);
+      condutancia(1.0/netlist[i].valor,netlist[i].a,netlist[i].b,Yn,L,C);
     }
     else if (tipo=='L') {
       transcondutancia(1,0,netlist[i].x,netlist[i].a,netlist[i].b,Yn,L,C);
@@ -153,7 +153,7 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
       if (netlist[i].modelo[0] == 'N') {
         if (VBE > 0.7) VBE = 0.7;
         if (VBE < 0) VBE = 0;
-        if (VBC > 0.5) VBC = 0.7;
+        if (VBC > 0.7) VBC = 0.7;
         if (VBC < 0) VBC = 0;
                 
         GBE=netlist[i].isbe*exp(VBE/netlist[i].vtbe)/netlist[i].vtbe;
@@ -163,6 +163,7 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
 
         GCE=(netlist[i].alfa*(GBE*VBE+IBE)-(GBC*VBC+IBC))/netlist[i].va;
         ICE=GCE*VCE;
+        
         if (VCE>0){      
           condutancia(GCE,netlist[i].c,netlist[i].a,Yn,L,C);
           corrente(ICE,netlist[i].c,netlist[i].a,Yn,L,C,cont);          
@@ -182,10 +183,8 @@ void mnaPO(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
       }
       else if (netlist[i].modelo[0] == 'P') {
         if (VEB > 0.7) VEB = 0.7;
-        //else VCB = 0;
         if (VEB < 0) VEB = 0;
-        if (VCB > 0.5) VCB = 0.7;
-        //else VCB = 0;
+        if (VCB > 0.7) VCB = 0.7;
         if (VCB < 0) VCB = 0;
         
         GEB=netlist[i].isbe*exp(VEB/netlist[i].vtbe)/netlist[i].vtbe;
