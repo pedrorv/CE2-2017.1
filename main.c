@@ -1,4 +1,4 @@
-/* 
+﻿/* 
 Trabalho Final de Circuitos Elétricos 2 - 2017.1
 
 Emerson Santos
@@ -59,7 +59,7 @@ contagem cont;
 frequencia freq;
 tabela C,L;
 
-char *nomeTab, linhaDoArquivo[256], auxiliar[35];
+char *nomeTab, linhaDoArquivo[1024], auxiliar[100];
 
 
 int main (int argc, char *argv[]) {
