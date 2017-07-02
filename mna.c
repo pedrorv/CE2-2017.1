@@ -280,11 +280,21 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
       VEC=-VCE;
 
       if (netlist[i].modelo[0] == 'N') {
+        if (VBE > 0.8) {
+          GBE=netlist[i].isbe*exp(0.8/netlist[i].vtbe)/netlist[i].vtbe;
+          IBE=netlist[i].isbe*(exp(0.8/netlist[i].vtbe)-1) - GBE*0.8;
+        } else {
+          GBE=netlist[i].isbe*exp(VBE/netlist[i].vtbe)/netlist[i].vtbe;
+          IBE=netlist[i].isbe*(exp(VBE/netlist[i].vtbe)-1) - GBE*VBE;
+        }
 
-        GBE=netlist[i].isbe*exp(VBE/netlist[i].vtbe)/netlist[i].vtbe;
-        GBC=netlist[i].isbc*exp(VBC/netlist[i].vtbc)/netlist[i].vtbc;
-        IBE=netlist[i].isbe*(exp(VBE/netlist[i].vtbe)-1) - GBE*VBE;
-        IBC=netlist[i].isbc*(exp(VBC/netlist[i].vtbc)-1) - GBC*VBC;
+        if (VBC > 0.8) {
+          GBC=netlist[i].isbc*exp(0.8/netlist[i].vtbc)/netlist[i].vtbc;
+          IBC=netlist[i].isbc*(exp(0.8/netlist[i].vtbc)-1) - GBC*0.8;
+        } else {
+          GBC=netlist[i].isbc*exp(VBC/netlist[i].vtbc)/netlist[i].vtbc;
+          IBC=netlist[i].isbc*(exp(VBC/netlist[i].vtbc)-1) - GBC*VBC;
+        }        
 
         GCE=(netlist[i].alfa*(GBE*VBE+IBE)-(GBC*VBC+IBC))/netlist[i].va;
         
@@ -300,7 +310,11 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
         
         if (VBE>0) {
           //admitancia(((netlist[i].c1be * (exp(0.6/netlist[i].vtbe) - 1)) * jw), netlist[i].b, netlist[i].a, Yn, L, C); /* Cdireta BE */
-          CBE+=(netlist[i].c1be * (exp(VBE/netlist[i].vtbe) - 1));
+          if (VBE > 0.8) {
+            CBE += netlist[i].c1be * (exp(0.8/(netlist[i].vtbe)) - 1);
+          } else {
+            CBE += netlist[i].c1be * (exp(VBE/(netlist[i].vtbe)) - 1);
+          }
         }
         
         admitancia((CBE * jw), netlist[i].b, netlist[i].a, Yn, L, C);
@@ -314,7 +328,11 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
         
         if (VBC>0) {
           //admitancia(((netlist[i].c1bc * (exp(0.6/netlist[i].vtbc) - 1)) * jw), netlist[i].b, netlist[i].c, Yn, L, C);; /* Cdireta BC */
-          CBC+=(netlist[i].c1bc * (exp(VBC/netlist[i].vtbc) - 1));
+          if (VBC > 0.8) {
+            CBC+=(netlist[i].c1bc * (exp(0.8/netlist[i].vtbc) - 1));
+          } else {
+            CBC+=(netlist[i].c1bc * (exp(VBC/netlist[i].vtbc) - 1));
+          }
         }
 
         admitancia((CBC * jw), netlist[i].b, netlist[i].c, Yn, L, C);
