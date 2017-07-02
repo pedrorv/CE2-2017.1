@@ -161,6 +161,10 @@ int main (int argc, char *argv[]) {
     else
       printf("%s %s (%d): nao calculada\n",txt,lista[i],C[i]);
   }
+
+  for (int y = 1; y <= cont.neq+1; y++) {
+    Yn1[0][y] = 0;
+  }
  
   zerarMatrizDoubleComplex(YnPS, &cont, &freq);
 
