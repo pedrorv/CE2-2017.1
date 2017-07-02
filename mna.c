@@ -223,7 +223,7 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
   int i;
   double _Complex jw=2*M_PI*f*I;
   double VBE,GBE,VBC,GBC,VEB,GEB,VCB,GCB,GCE,GEC;
-  //double VCE,VEC;
+  double VCE,VEC;
   double CBE,CBC,CEB,CCB;
    
   for (i=1; i<=cont->ne; i++) {
@@ -276,25 +276,22 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
       VBC=YnPO[L[netlist[i].b]][cont->neq+1]-YnPO[L[netlist[i].c]][cont->neq+1]; 
       VEB=-VBE;
       VCB=-VBC;
-      //VCE=VBE+VCB;
-      //VEC=-VCE;
+      VCE=VBE+VCB;
+      VEC=-VCE;
 
-      if (netlist[i].modelo[0] == 'N') {
-        if (VBE > 0.7) VBE = 0.7;
-        if (VBC > 0.65) VBC = 0.65;
-      
+      if (netlist[i].modelo[0] == 'N') {    
         GBE=netlist[i].isbe*exp(VBE/netlist[i].vtbe)/netlist[i].vtbe;
         GBC=netlist[i].isbc*exp(VBC/netlist[i].vtbc)/netlist[i].vtbc;
         GCE=(netlist[i].alfa*GBE*VBE-GBC*VBC)/netlist[i].va; 
         
-        //if (VCE>0) admitancia(GCE,netlist[i].c,netlist[i].a,Yn,L,C);       
+        if (VCE>0) admitancia(GCE,netlist[i].c,netlist[i].a,Yn,L,C);       
 
         admitancia(GBE, netlist[i].b, netlist[i].a, Yn, L, C);
         if (VBE>0.3)
           CBE=netlist[i].c0be / sqrt(0.5);
         else
           CBE=netlist[i].c0be / sqrt(1 - VBE/0.6); /* Creversa BE */
-        //if (VBE>0) CBE+=netlist[i].c1be * (exp(VBE/netlist[i].vtbe) - 1); /* Cdireta BE */
+        //if (VBE>0) admitancia((netlist[i].c1be * (exp(VBE/netlist[i].vtbe) - 1) * jw), netlist[i].b, netlist[i].a, Yn, L, C); /* Cdireta BE */
         admitancia((CBE * jw), netlist[i].b, netlist[i].a, Yn, L, C);
         transadmitancia(netlist[i].alfar*GBC, netlist[i].a, netlist[i].b, netlist[i].b, netlist[i].c, Yn, L, C); 
         
@@ -303,28 +300,26 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
           CBC=netlist[i].c0bc / sqrt(0.5);
         else
           CBC=netlist[i].c0bc / sqrt(1 - VBC/0.6); /* Creversa BC */        
-        //if (VBC>0) CBC+=netlist[i].c1bc * (exp(VBC/netlist[i].vtbc) - 1); /* Cdireta BC */
+        //if (VBC>0) admitancia((netlist[i].c1bc * (exp(VBC/netlist[i].vtbc) - 1) * jw), netlist[i].b, netlist[i].c, Yn, L, C);; /* Cdireta BC */
         admitancia((CBC * jw), netlist[i].b, netlist[i].c, Yn, L, C);
         transadmitancia(netlist[i].alfa*GBE, netlist[i].c, netlist[i].b, netlist[i].b, netlist[i].a, Yn, L, C); 
         
         //printf("Transistor %s VBE %lg VBC %lg GBE %lg GBC %lg GCE %lg CBE %lg CBC %lg\n", netlist[i].nome,VBE,VBC,GBE,GBC,GCE,CBE,CBC);
       }
       else if (netlist[i].modelo[0] == 'P') {
-        if (VEB > 0.7) VEB = 0.7;
-        if (VCB > 0.65) VCB = 0.65;
 
         GEB=netlist[i].isbe*exp(VEB/netlist[i].vtbe)/netlist[i].vtbe;
         GCB=netlist[i].isbc*exp(VCB/netlist[i].vtbc)/netlist[i].vtbc;
         GEC=(netlist[i].alfa*GEB*VEB-GCB*VCB)/netlist[i].va;  
              
-        //if (VEC>0) admitancia(GEC,netlist[i].a,netlist[i].c,Yn,L,C);   
+        if (VEC>0) admitancia(GEC,netlist[i].a,netlist[i].c,Yn,L,C);   
 
         admitancia(GEB, netlist[i].a, netlist[i].b, Yn, L, C);
         if (VEB>0.3)
           CEB=netlist[i].c0be / sqrt(0.5);
         else
           CEB=netlist[i].c0be / sqrt(1 - VEB/0.6); /* Creversa EB */
-        //if (VEB>0) CEB+=netlist[i].c1be * (exp(VBE/netlist[i].vtbe) - 1); /* Cdireta EB */
+        //if (VEB>0) admitancia((netlist[i].c1be * (exp(VBE/netlist[i].vtbe) - 1) * jw), netlist[i].a, netlist[i].b, Yn, L, C); /* Cdireta EB */
         admitancia((CEB * jw), netlist[i].a, netlist[i].b, Yn, L, C);
         transadmitancia(netlist[i].alfar*GCB, netlist[i].b, netlist[i].a, netlist[i].c, netlist[i].b, Yn, L, C); 
         
@@ -333,7 +328,7 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
           CCB=netlist[i].c0bc / sqrt(0.5);
         else
           CCB=netlist[i].c0bc / sqrt(1 - VCB/0.6); /* Creversa CB */        
-        //if (VCB>0) CCB+=netlist[i].c1bc * (exp(VCB/netlist[i].vtbc) - 1); /* Cdireta CB */
+        //if (VCB>0) admitancia((netlist[i].c1bc * (exp(VCB/netlist[i].vtbc) - 1) * jw), netlist[i].c, netlist[i].b, Yn, L, C); /* Cdireta CB */
         admitancia((CCB * jw), netlist[i].c, netlist[i].b, Yn, L, C);
         transadmitancia(netlist[i].alfa*GEB, netlist[i].b, netlist[i].c, netlist[i].a, netlist[i].b, Yn, L, C); 
         
