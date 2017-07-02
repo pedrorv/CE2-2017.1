@@ -227,7 +227,14 @@ void imprimirNetlist(contagem *cont, char lista[MAX_NOS+1][MAX_NOME+2], elemento
             printf("%s %d %d %d %d\n",netlist[i].nome,netlist[i].a,netlist[i].b,netlist[i].c,netlist[i].d);
         }
         else if (tipo == 'Q') {
-            printf("%s %d %d %d\n",netlist[i].nome,netlist[i].c,netlist[i].b,netlist[i].a);
+            printf(
+                "%s %d %d %d %s %g %g %g %g %g %g %g %g %g %g %g\n",
+                netlist[i].nome, netlist[i].c, netlist[i].b, netlist[i].a, 
+                netlist[i].modelo, netlist[i].alfa, netlist[i].alfar,
+                netlist[i].isbe,  netlist[i].vtbe,  netlist[i].isbc, 
+                netlist[i].vtbc,  netlist[i].va,    netlist[i].c0be,
+                netlist[i].c1be,  netlist[i].c0bc,  netlist[i].c1bc
+            );
         }
 
         if (tipo == 'V' || tipo == 'E' || tipo == 'F' || tipo == 'O') {
