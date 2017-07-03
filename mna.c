@@ -294,9 +294,17 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
         } else {
           GBC=netlist[i].isbc*exp(VBC/netlist[i].vtbc)/netlist[i].vtbc;
           IBC=netlist[i].isbc*(exp(VBC/netlist[i].vtbc)-1) - GBC*VBC;
-        }        
+        }
 
-        GCE=(netlist[i].alfa*(GBE*VBE+IBE)-(GBC*VBC+IBC))/netlist[i].va;
+        if (VBE > 0.8 && VBC > 0.8) {
+          GCE=(netlist[i].alfa*(GBE*0.8+IBE)-(GBC*0.8+IBC))/netlist[i].va;
+        } else if (VBE > 0.8) {
+          GCE=(netlist[i].alfa*(GBE*0.8+IBE)-(GBC*VBC+IBC))/netlist[i].va;
+        } else if (VBC > 0.8) {
+          GCE=(netlist[i].alfa*(GBE*VBE+IBE)-(GBC*0.8+IBC))/netlist[i].va;
+        } else {
+          GCE=(netlist[i].alfa*(GBE*VBE+IBE)-(GBC*VBC+IBC))/netlist[i].va;
+        }
         
         if (VCE>0) admitancia(GCE,netlist[i].c,netlist[i].a,Yn,L,C);       
 
@@ -329,9 +337,9 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
         if (VBC>0) {
           //admitancia(((netlist[i].c1bc * (exp(0.6/netlist[i].vtbc) - 1)) * jw), netlist[i].b, netlist[i].c, Yn, L, C);; /* Cdireta BC */
           if (VBC > 0.8) {
-            CBC+=(netlist[i].c1bc * (exp(0.8/netlist[i].vtbc) - 1));
+            CBC += netlist[i].c1bc * (exp(0.8/netlist[i].vtbc) - 1);
           } else {
-            CBC+=(netlist[i].c1bc * (exp(VBC/netlist[i].vtbc) - 1));
+            CBC += netlist[i].c1bc * (exp(VBC/netlist[i].vtbc) - 1);
           }
         }
 
