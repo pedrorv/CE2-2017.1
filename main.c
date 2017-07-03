@@ -204,12 +204,12 @@ int main (int argc, char *argv[]) {
       resolversistemaPS(YnPS[k],&cont);
 
       linhaDoArquivo[0] = '\0';
-      snprintf(auxiliar, 20, "%3.2f", f);
+      snprintf(auxiliar, 20, "%3.6f", f);
       strcat(linhaDoArquivo, auxiliar);
       strcat(linhaDoArquivo, " ");
       
       for (int coluna = 1; coluna <= cont.neq; coluna+=1) {
-          snprintf(auxiliar, 20, "%3.5f", (cabs(YnPS[k][coluna][cont.neq+1])) );
+          snprintf(auxiliar, 20, "%3.7f", (cabs(YnPS[k][coluna][cont.neq+1])) );
           strcat(linhaDoArquivo, auxiliar);
           strcat(linhaDoArquivo, " ");
           snprintf(auxiliar, 20, "%3.5f", graus(carg(YnPS[k][coluna][cont.neq+1])));
