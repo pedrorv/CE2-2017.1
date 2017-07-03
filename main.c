@@ -80,14 +80,14 @@ int main (int argc, char *argv[]) {
   fclose(arquivo);
   
   if (falhaLeitura) {
-    printf("Falha de leitura.Digite qualquer tecla e aperte enter para encerrar o programa\n");
+    printf("Falha de leitura.\nDigite qualquer tecla e aperte enter para encerrar o programa\n");
     scanf("%50s", fimDoPrograma);
     return OK;
   }
   falhaVariaveis = variaveisCorrente(&cont, lista, netlist, L, C);
 
   if (falhaVariaveis) {
-    printf("Falha de variaveis.Digite qualquer tecla e aperte enter para encerrar o programa\n");
+    printf("Falha de variaveis.\nDigite qualquer tecla e aperte enter para encerrar o programa\n");
     scanf("%50s", fimDoPrograma);
     return OK;
   }
@@ -144,7 +144,7 @@ int main (int argc, char *argv[]) {
   }
 
   if (testeconvergenciaPO(Yn, Yn1, &cont)) {
-    printf("N�o convergiu.Digite qualquer tecla e aperte enter para encerrar o programa\n");
+    printf("Nao convergiu.\nDigite qualquer tecla e aperte enter para encerrar o programa\n");
     scanf("%50s", fimDoPrograma);
     return OK;
   }
@@ -259,7 +259,7 @@ int main (int argc, char *argv[]) {
     printf("Arquivo .tab da resposta em frequencia foi salvo com o mesmo nome do netlist.\n");
   }
   
-  printf("Programa concluido.Digite qualquer tecla e aperte enter para encerrar o programa\n");
+  printf("Programa concluido.\nDigite qualquer tecla e aperte enter para encerrar o programa\n");
   scanf("%50s", fimDoPrograma);
   return OK;
 }
