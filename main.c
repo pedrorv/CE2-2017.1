@@ -134,7 +134,7 @@ int main (int argc, char *argv[]) {
   } while ((k==50) && (n<50));
 
   if (testeconvergenciaPO(Yn, Yn1, &cont)) {
-    printf("Solucao:\n");
+    printf("\nSolucao:\n");
     strcpy(txt,"Tensao");
     for (i=1; i<=cont.nv; i++) {
       if (i==cont.nn+1) strcpy(txt,"Corrente");
@@ -149,10 +149,10 @@ int main (int argc, char *argv[]) {
     return OK;
   }
 
-  printf("Sistema resolvido:\n");
-  imprimeSistemaDouble(Yn1, &cont);
+  //printf("Sistema resolvido:\n");
+  //imprimeSistemaDouble(Yn1, &cont);
 
-  printf("Solucao:\n");
+  printf("\nSolucao:\n");
   strcpy(txt,"Tensao");
   for (i=1; i<=cont.nv; i++) {
     if (i==cont.nn+1) strcpy(txt,"Corrente");
@@ -256,7 +256,7 @@ int main (int argc, char *argv[]) {
     fclose(arquivoTab);
     
     
-    printf("Arquivo .tab da resposta em frequencia foi salvo com o mesmo nome do netlist.\n");
+    printf("\nArquivo .tab da resposta em frequencia foi salvo com o mesmo nome do netlist.\n");
   }
   
   printf("Programa concluido.\nDigite qualquer tecla e aperte enter para encerrar o programa\n");

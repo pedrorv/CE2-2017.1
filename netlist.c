@@ -46,9 +46,9 @@ int testarnos(contagem *cont) {
 int lerNetlist(FILE *arquivo, elemento netlist[MAX_ELEM], char txt[MAX_LINHA+1], char *p, char lista[MAX_NOS+1][MAX_NOME+2], contagem *cont, frequencia *freq) {
     char tipo, na[MAX_NOME],nb[MAX_NOME],nc[MAX_NOME],nd[MAX_NOME],ptspor[MAX_NOME];
 
-    printf("Lendo netlist:\n");
+    printf("\nLendo netlist:\n");
     fgets(txt, MAX_LINHA, arquivo);
-    printf("Título: %s", txt);
+    printf("Titulo: %s", txt);
 
     while (fgets(txt, MAX_LINHA, arquivo)) {
         cont->ne++; /* Não usa o netlist[0] */
@@ -205,7 +205,7 @@ void imprimirNetlist(contagem *cont, char lista[MAX_NOS+1][MAX_NOME+2], elemento
     char tipo;
     int i;
     
-    printf("Variaveis internas: \n");
+    printf("\nVariaveis internas: \n");
     for (i=0; i<=cont->nv; i++) {
         printf("%d -> %s (%d)\n",i,lista[i],C[i]);
     }
