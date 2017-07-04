@@ -417,7 +417,7 @@ void mnaPS(elemento netlist[MAX_ELEM], double YnPO[MAX_NOS+1][MAX_NOS+2], double
 
         transadmitancia(netlist[i].alfa*GEB, netlist[i].c, netlist[i].b, netlist[i].b, netlist[i].a, Yn, L, C); 
         
-        //printf("Transistor %s VBE %lg VBC %lg GBE %lg GBC %lg GCE %lg CBE %lg CBC %lg\n", netlist[i].nome,VBE,VBC,GBE,GBC,GCE,CBE,CBC);
+        //printf("Transistor %s VEB %lg VCB %lg GEB %lg GCB %lg GEC %lg CEB %lg CCB %lg\n", netlist[i].nome,VEB,VCB,GEB,GCB,GEC,CEB,CCB);
       }
     }
     else if (tipo=='O');
